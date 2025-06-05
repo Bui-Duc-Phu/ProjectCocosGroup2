@@ -47,7 +47,8 @@
     },
     "_is3DNode": true,
     "groupIndex": 0,
-    "_id": "beUIdtu6dFqL3/J8FXF7nG"
+    "autoReleaseAssets": false,
+    "_id": "fbdbf45c-685a-4840-aa92-d53dae9af8e8"
   },
   {
     "__type__": "cc.Node",
@@ -152,7 +153,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 370.64897274300847
+      "z": 421.75437164302167
     },
     "_scale": {
       "__type__": "cc.Vec3",
