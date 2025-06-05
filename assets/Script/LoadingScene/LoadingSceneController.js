@@ -50,6 +50,6 @@ cc.Class({
             cc.director.loadScene('PortalScene');
             this.node.destroy();
         });
-    }
+    },
 
 });

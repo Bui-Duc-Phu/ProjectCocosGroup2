@@ -836,7 +836,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": -365,
-      "y": 0,
+      "y": 20,
       "z": 0
     },
     "_scale": {
@@ -962,7 +962,9 @@
     "fillLight": {
       "__id__": 10
     },
-    "spineSkeleton": null,
+    "spineSkeleton": {
+      "__id__": 18
+    },
     "_id": "73fE7cYyNOvZEVHe6gVvj2"
   },
   {
