@@ -1,5 +1,5 @@
-const Emitter = require('../Utils/Emitter');
-const SoundEvent = require('../Sound/SoundEvent');
+const Emitter = require('Emitter');
+const EventKey = require('EventKey');
 
 const BGM_VOLUME_KEY = 'game_bgmVolume';
 const SFX_VOLUME_KEY = 'game_sfxVolume';
@@ -50,11 +50,11 @@ cc.Class({
 
     registerEvents() {
         this.eventHandlers = {
-            [SoundEvent.SOUND_EVENTS.SET_BGM_VOLUME_REQUEST]: this.handleSetBgmVolumeRequest.bind(this),
-            [SoundEvent.SOUND_EVENTS.SET_SFX_VOLUME_REQUEST]: this.handleSetSfxVolumeRequest.bind(this),
-            [SoundEvent.SOUND_EVENTS.PLAY_CLICK_SOUND_REQUEST]: this.playSoundClick.bind(this),
-            [SoundEvent.SOUND_EVENTS.PLAY_BGM_REQUEST]: this.playBgm.bind(this),
-            [SoundEvent.SOUND_EVENTS.STOP_BGM_REQUEST]: this.stopBgm.bind(this),
+            [EventKey.SOUND.SET_BGM_VOLUME]: this.handleSetBgmVolumeRequest.bind(this),
+            [EventKey.SOUND.SET_SFX_VOLUME]: this.handleSetEffectVolumeRequest.bind(this),
+            [EventKey.SOUND.ON_CLICK_SOUND]: this.playSoundClick.bind(this),
+            [EventKey.SOUND.PLAY_BGM]: this.playBgm.bind(this),
+            [EventKey.SOUND.STOP_BGM]: this.stopBgm.bind(this),
         };
         for (const event in this.eventHandlers) {
             Emitter.registerEvent(event, this.eventHandlers[event]);
@@ -66,7 +66,7 @@ cc.Class({
         }
         cc.audioEngine.stop(this.currentBgmAudioId);
     },
-    loadInitialVolumes() {
+    loadInitialVolumes(type) {
         let storedBgmVolume = cc.sys.localStorage.getItem(BGM_VOLUME_KEY);
         if (storedBgmVolume !== null) {
             this.bgmVolume = parseFloat(storedBgmVolume);
@@ -86,7 +86,7 @@ cc.Class({
         cc.audioEngine.setVolume(this.currentBgmAudioId, this.bgmVolume);
         cc.sys.localStorage.setItem(BGM_VOLUME_KEY, this.bgmVolume.toString());
     },
-    handleSetSfxVolumeRequest(newVolume) {
+    handleSetEffectVolumeRequest(newVolume) {
         this.effectVolume = Math.max(0, Math.min(1, newVolume));
         cc.audioEngine.setVolume(this.currentClickAudioId, this.effectVolume);
         cc.sys.localStorage.setItem(SFX_VOLUME_KEY, this.effectVolume.toString());
