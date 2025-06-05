@@ -1,5 +1,6 @@
 
 
+const SpineAnimation = require('../Utils/SpineAnimation');
 cc.Class({
     extends: cc.Component,
 
@@ -33,13 +34,15 @@ cc.Class({
         this.loadingBar.progress = 0;
         this.fillLight.width = this.loadingBar.totalLength;
         this.loadingLabel.string = `${this.dotStates[this.currentDotStateIndex]} 0%`;
+        this.spineSkeleton.setAnimation(0, SpineAnimation.ANIM_LIST.HOVERBOARD, true);
 
-        cc.director.preloadScene('PortalScene', (completedCount, totalCount, item) => {
+        cc.director.preloadScene('Portal', (completedCount, totalCount, item) => {
             console.log(`Preloading scene: ${item.url}`);
             console.log(this.loadingBar.progress);
             let progress = totalCount > 0 ? completedCount / totalCount : 0;
-            this.loadingBar.progress = progress;
+            this.loadingBar.progress = progress > this.loadingBar.progress ? progress : this.loadingBar.progress;
             this.fillLight.width = this.loadingBar.totalLength;
+            this.spineSkeleton.node.setPosition(this.fillLight.width - this.loadingBar.totalLength / 2, 20);
 
             let loadingPrefix = this.dotStates[this.currentDotStateIndex];
             this.loadingLabel.string = `${loadingPrefix} ${Math.floor(progress * 100)}%`;
@@ -47,8 +50,9 @@ cc.Class({
             this.currentDotStateIndex = (this.currentDotStateIndex + 1) % this.dotStates.length;
         }, () => {
             cc.log("Scene preloaded successfully.");
-            cc.director.loadScene('PortalScene');
+            cc.director.loadScene('Portal');
             this.node.destroy();
+
         });
     },
 
