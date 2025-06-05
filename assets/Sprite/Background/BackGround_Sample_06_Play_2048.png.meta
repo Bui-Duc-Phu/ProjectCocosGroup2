@@ -1,0 +1,34 @@
+{
+  "ver": "2.3.3",
+  "uuid": "63dee544-5f2c-4e94-a423-4ff884e29d22",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "platformSettings": {},
+  "subMetas": {
+    "BackGround_Sample_06_Play_2048": {
+      "ver": "1.0.4",
+      "uuid": "0e07cca1-da55-4f00-bead-1af092ec2c34",
+      "rawTextureUuid": "63dee544-5f2c-4e94-a423-4ff884e29d22",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 2560,
+      "height": 1440,
+      "rawWidth": 2560,
+      "rawHeight": 1440,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
