@@ -4,6 +4,6 @@ cc.Class({
     properties: {
     },
     onIconButtonClick() {
-        cc.director.loadScene("LoadingScene");
+        cc.director.loadScene("Loading");
     }
 });
