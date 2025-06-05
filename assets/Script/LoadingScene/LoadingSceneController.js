@@ -40,7 +40,7 @@ cc.Class({
             console.log(`Preloading scene: ${item.url}`);
             console.log(this.loadingBar.progress);
             let progress = totalCount > 0 ? completedCount / totalCount : 0;
-            this.loadingBar.progress = progress;
+            this.loadingBar.progress = progress > this.loadingBar.progress ? progress : this.loadingBar.progress;
             this.fillLight.width = this.loadingBar.totalLength;
             this.spineSkeleton.node.setPosition(this.fillLight.width - this.loadingBar.totalLength / 2, 20);
 
