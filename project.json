@@ -1,7 +1,7 @@
 {
   "engine": "cocos-creator-js",
   "packages": "packages",
-  "name": "GameGroup2",
-  "id": "694b14e0-1bf8-4657-99de-a37dfef28679",
+  "name": "ProjectCocosGroup2",
+  "id": "8a449475-2b5e-445f-b7ed-17d29850c7c1",
   "version": "2.1.3"
 }
