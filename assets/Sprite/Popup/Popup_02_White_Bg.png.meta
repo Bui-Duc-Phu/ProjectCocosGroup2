@@ -1,6 +1,6 @@
 {
   "ver": "2.3.3",
-  "uuid": "59bdfd12-3a34-42c2-973f-7ce6daacb054",
+  "uuid": "af9c16c0-92f4-4a2e-a53b-d014f630d535",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -9,10 +9,10 @@
   "packable": true,
   "platformSettings": {},
   "subMetas": {
-    "Slider_Border_EdgeDeco_03_Border": {
+    "Popup_02_White_Bg": {
       "ver": "1.0.4",
-      "uuid": "4304ed38-29d5-4a2f-bfab-d09f5be20927",
-      "rawTextureUuid": "59bdfd12-3a34-42c2-973f-7ce6daacb054",
+      "uuid": "a436ed96-8194-4d27-a018-7fdc44b3dbcf",
+      "rawTextureUuid": "af9c16c0-92f4-4a2e-a53b-d014f630d535",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -20,14 +20,14 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 309,
-      "height": 81,
-      "rawWidth": 309,
-      "rawHeight": 81,
-      "borderTop": 35,
-      "borderBottom": 34,
-      "borderLeft": 142,
-      "borderRight": 144,
+      "width": 54,
+      "height": 52,
+      "rawWidth": 54,
+      "rawHeight": 52,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
       "subMetas": {}
     }
   }
