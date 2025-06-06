@@ -1,10 +1,10 @@
 const EventKey = {
     SOUND: {
-        SET_BGM_VOLUME: 'soundControllerSetBgmVolumeRequest',
-        SET_SFX_VOLUME: 'soundControllerSetSfxVolumeRequest',
-        ON_CLICK_SOUND: 'soundControllerPlayClickSoundRequest',
-        PLAY_BGM: 'soundControllerPlayBgmRequest',
-        STOP_BGM: 'soundControllerStopBgmRequest',
+        SET_BGM_VOLUME: 'SET_BGM_VOLUME',
+        SET_SFX_VOLUME: 'SET_SFX_VOLUME',
+        ON_CLICK_SOUND: 'ON_CLICK_SOUND',
+        PLAY_BGM: 'PLAY_BGM',
+        STOP_BGM: 'STOP_BGM',
     },
 };
 

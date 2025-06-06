@@ -5,10 +5,11 @@ cc.Class({
 
     properties: {
     },
-    onIconButtonClick() {
+    onGamePortalButtonClick() {
+        Emitter.emit(EventKey.SOUND.STOP_BGM);
         cc.director.loadScene("Loading");
     },
-    onPlayBgmButtonClick() {
+    onPlayBGMButtonClick() {
         Emitter.emit(EventKey.SOUND.PLAY_BGM, 'room');
     }
 });

@@ -41,20 +41,20 @@ cc.Class({
     },
 
     onLoad() {
-        this.loadInitialVolumes();
+        this.getBGMVolumes();
+        this.getSFXVolume();
         this.registerEvents();
 
-        this.node.parent = null;
         cc.game.addPersistRootNode(this.node);
     },
 
     registerEvents() {
         this.eventHandlers = {
-            [EventKey.SOUND.SET_BGM_VOLUME]: this.handleSetBgmVolumeRequest.bind(this),
-            [EventKey.SOUND.SET_SFX_VOLUME]: this.handleSetEffectVolumeRequest.bind(this),
+            [EventKey.SOUND.SET_BGM_VOLUME]: this.setBGMVolume.bind(this),
+            [EventKey.SOUND.SET_SFX_VOLUME]: this.setSFXVolume.bind(this),
             [EventKey.SOUND.ON_CLICK_SOUND]: this.playSoundClick.bind(this),
-            [EventKey.SOUND.PLAY_BGM]: this.playBgm.bind(this),
-            [EventKey.SOUND.STOP_BGM]: this.stopBgm.bind(this),
+            [EventKey.SOUND.PLAY_BGM]: this.playBGM.bind(this),
+            [EventKey.SOUND.STOP_BGM]: this.stopBGM.bind(this),
         };
         for (const event in this.eventHandlers) {
             Emitter.registerEvent(event, this.eventHandlers[event]);
@@ -66,32 +66,35 @@ cc.Class({
         }
         cc.audioEngine.stop(this.currentBgmAudioId);
     },
-    loadInitialVolumes(type) {
+    getBGMVolumes() {
         let storedBgmVolume = cc.sys.localStorage.getItem(BGM_VOLUME_KEY);
         if (storedBgmVolume !== null) {
             this.bgmVolume = parseFloat(storedBgmVolume);
         } else {
             cc.sys.localStorage.setItem(BGM_VOLUME_KEY, this.bgmVolume.toString());
         }
-
+        return this.bgmVolume;
+    },
+    getSFXVolume() {
         let storedSfxVolume = cc.sys.localStorage.getItem(SFX_VOLUME_KEY);
         if (storedSfxVolume !== null) {
             this.effectVolume = parseFloat(storedSfxVolume);
         } else {
             cc.sys.localStorage.setItem(SFX_VOLUME_KEY, this.effectVolume.toString());
         }
+        return this.effectVolume;
     },
-    handleSetBgmVolumeRequest(newVolume) {
-        this.bgmVolume = Math.max(0, Math.min(1, newVolume));
+    setBGMVolume(newVolume) {
+        this.bgmVolume = newVolume;
         cc.audioEngine.setVolume(this.currentBgmAudioId, this.bgmVolume);
         cc.sys.localStorage.setItem(BGM_VOLUME_KEY, this.bgmVolume.toString());
     },
-    handleSetEffectVolumeRequest(newVolume) {
-        this.effectVolume = Math.max(0, Math.min(1, newVolume));
+    setSFXVolume(newVolume) {
+        this.effectVolume = newVolume;
         cc.audioEngine.setVolume(this.currentClickAudioId, this.effectVolume);
         cc.sys.localStorage.setItem(SFX_VOLUME_KEY, this.effectVolume.toString());
     },
-    playBgm(bgmName) {
+    playBGM(bgmName) {
         if (this.currentBgmAudioId !== null) {
             cc.audioEngine.stop(this.currentBgmAudioId);
         }
@@ -107,7 +110,7 @@ cc.Class({
         this.currentClickAudioId = cc.audioEngine.play(this.audioClick, false, this.effectVolume);
         console.log("Playing click sound with volume:", this.effectVolume);
     },
-    stopBgm() {
+    stopBGM() {
         if (this.currentBgmAudioId !== null) {
             cc.audioEngine.stop(this.currentBgmAudioId);
             this.currentBgmAudioId = null;
