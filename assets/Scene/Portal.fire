@@ -701,7 +701,7 @@
     },
     "component": "",
     "_componentId": "6e6b5em33xDWpU/llsooyN7",
-    "handler": "onIconButtonClick",
+    "handler": "onGamePortalButtonClick",
     "customEventData": ""
   },
   {
@@ -975,7 +975,7 @@
     },
     "component": "",
     "_componentId": "6e6b5em33xDWpU/llsooyN7",
-    "handler": "onPlayBgmButtonClick",
+    "handler": "onPlayBGMButtonClick",
     "customEventData": ""
   },
   {
