@@ -6,6 +6,12 @@ const EventKey = {
         PLAY_BGM: 'soundControllerPlayBgmRequest',
         STOP_BGM: 'soundControllerStopBgmRequest',
     },
+    POPUP: {
+        SHOW: 'showPopup',
+        // SHOW_SHOP: 'showPopupShop',
+        // SHOW_HERO: 'showPopupHero',
+        // SHOW_SKILL: 'showPopupSkill',
+    }
 };
 
 module.exports = EventKey;

@@ -1,41 +1,24 @@
-// Learn cc.Class:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/class.html
-//  - [English] http://docs.cocos2d-x.org/creator/manual/en/scripting/class.html
-// Learn Attribute:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://docs.cocos2d-x.org/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] https://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
+const Emitter = require('Emitter');
+const EventKey = require('EventKey');
+const typePopup ={
+    Setting: 'Setting',
+    Shop: 'Shop',
+    Hero: 'Hero',
+    Skill: 'Skill'
+}
 cc.Class({
     extends: cc.Component,
-
-    properties: {
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
+    showSetting(){
+        Emitter.emit(EventKey.POPUP.SHOW,typePopup.Setting);
     },
-
-    // LIFE-CYCLE CALLBACKS:
-
-    // onLoad () {},
-
-    start () {
-
+    showShop(){
+        Emitter.emit(EventKey.POPUP.SHOW,typePopup.Shop);
     },
-
-    // update (dt) {},
+    showHero(){
+        Emitter.emit(EventKey.POPUP.SHOW,typePopup.Hero);
+    },
+    showSkill(){
+        Emitter.emit(EventKey.POPUP.SHOW,typePopup.Skill);
+    }
 });
