@@ -1,6 +1,6 @@
 
 
-const SpineAnimation = require('../Utils/SpineAnimation');
+const SpineAnimation = require('SpineAnimation');
 cc.Class({
     extends: cc.Component,
 
@@ -55,5 +55,6 @@ cc.Class({
 
         });
     },
+
 
 });
