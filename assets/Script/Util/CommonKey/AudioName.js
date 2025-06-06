@@ -1,14 +1,14 @@
-const audioName = {
+const AudioName = {
     BGM : {
-        LOBBY: "BGM_Lobby",
-        ROOM: "BGM_Room",
-        BATTLE: "BGM_Battle",
+        LOBBY: "LobbyBGM",
+        ROOM: "roomBGM",
+        BATTLE: "battleBGM",
     },
     SFX : {
-        CLICK: "SFX_Click",
-        RESULT_BATTLE: "SFX_Result_Battle",
-        GOLD_USE: "SFX_Gold_Use",
-        GOLD_GET: "SFX_Gold_Get",
+        CLICK: "clickSFX",
+        RESULT_BATTLE: "resultBattleSFX",
+        GOLD_USE: "goldUseSFX",
+        GOLD_GET: "goldGetSFX",
     },
 };
-module.exports = audioName;
+module.exports = AudioName;

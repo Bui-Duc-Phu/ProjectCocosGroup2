@@ -1,6 +1,5 @@
 const Emitter = require('Emitter');
 const EventKey = require('EventKey');
-const audioName = require('audioName');
 
 const BGM_VOLUME_KEY = 'game_bgmVolume';
 const SFX_VOLUME_KEY = 'game_sfxVolume';
@@ -9,20 +8,12 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        audioClick: {
-            default: null,
+        bgmList: {
+            default: [],
             type: cc.AudioClip
         },
-        audioLobbyBgm: {
-            default: null,
-            type: cc.AudioClip
-        },
-        audioRoomBgm: {
-            default: null,
-            type: cc.AudioClip
-        },
-        audioGold: {
-            default: null,
+        sfxList: {
+            default: [],
             type: cc.AudioClip
         },
         bgmVolume: {
@@ -31,7 +22,7 @@ cc.Class({
             range: [0.0, 1, 0.1],
             slide: true
         },
-        effectVolume: {
+        sfxVolume: {
             default: 0,
             type: cc.Float,
             range: [0.0, 1, 0.1],
@@ -45,7 +36,6 @@ cc.Class({
         this.getBGMVolumes();
         this.getSFXVolume();
         this.registerEvents();
-
         cc.game.addPersistRootNode(this.node);
     },
 
@@ -53,7 +43,7 @@ cc.Class({
         this.eventHandlers = {
             [EventKey.SOUND.SET_BGM_VOLUME]: this.setBGMVolume.bind(this),
             [EventKey.SOUND.SET_SFX_VOLUME]: this.setSFXVolume.bind(this),
-            [EventKey.SOUND.ON_CLICK_SOUND]: this.playSFX.bind(this),
+            [EventKey.SOUND.PLAY_SFX]: this.playSFX.bind(this),
             [EventKey.SOUND.PLAY_BGM]: this.playBGM.bind(this),
             [EventKey.SOUND.STOP_BGM]: this.stopBGM.bind(this),
         };
@@ -79,11 +69,11 @@ cc.Class({
     getSFXVolume() {
         let storedSfxVolume = cc.sys.localStorage.getItem(SFX_VOLUME_KEY);
         if (storedSfxVolume !== null) {
-            this.effectVolume = parseFloat(storedSfxVolume);
+            this.sfxVolume = parseFloat(storedSfxVolume);
         } else {
-            cc.sys.localStorage.setItem(SFX_VOLUME_KEY, this.effectVolume.toString());
+            cc.sys.localStorage.setItem(SFX_VOLUME_KEY, this.sfxVolume.toString());
         }
-        return this.effectVolume;
+        return this.sfxVolume;
     },
     setBGMVolume(newVolume) {
         this.bgmVolume = newVolume;
@@ -91,30 +81,27 @@ cc.Class({
         cc.sys.localStorage.setItem(BGM_VOLUME_KEY, this.bgmVolume.toString());
     },
     setSFXVolume(newVolume) {
-        this.effectVolume = newVolume;
-        cc.audioEngine.setVolume(this.currentClickAudioId, this.effectVolume);
-        cc.sys.localStorage.setItem(SFX_VOLUME_KEY, this.effectVolume.toString());
+        this.sfxVolume = newVolume;
+        cc.audioEngine.setVolume(this.currentClickAudioId, this.sfxVolume);
+        cc.sys.localStorage.setItem(SFX_VOLUME_KEY, this.sfxVolume.toString());
+    },
+    onEnableBGM(isEnabled, bgmName) {
+        if (isEnabled) {
+            this.playBGM(bgmName);
+        } else {
+            this.stopBGM();
+        }
     },
     playBGM(bgmName) {
         if (this.currentBgmAudioId !== null) {
             cc.audioEngine.stop(this.currentBgmAudioId);
         }
-        if (bgmName === audioName.BGM.LOBBY) {
-            this.currentBgmAudioId = cc.audioEngine.play(this.audioLobbyBgm, true, this.bgmVolume);
-        }
-        else if (bgmName === audioName.BGM.ROOM) {
-            this.currentBgmAudioId = cc.audioEngine.play(this.audioRoomBgm, true, this.bgmVolume);
-        }
-        console.log("Playing BGM:", bgmName, "with volume:", this.bgmVolume);
+        let bgmClip = this.bgmList.find(clip => clip.name === bgmName);
+        this.currentBgmAudioId = cc.audioEngine.play(bgmClip, true, this.bgmVolume);
     },
     playSFX(sfxName) {
-        switch (sfxName) {
-            case audioName.SFX.CLICK:
-                cc.audioEngine.play(this.audioClick, false, this.effectVolume);
-                break;
-            default:
-                cc.audioEngine.play(this.audioClick, false, this.effectVolume);
-        }
+        let sfxClip = this.sfxList.find(clip => clip.name === sfxName);
+        this.sfxAudioId = cc.audioEngine.play(sfxClip, false, this.sfxVolume);
     },
     stopBGM() {
         if (this.currentBgmAudioId !== null) {
