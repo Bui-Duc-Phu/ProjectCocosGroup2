@@ -36,7 +36,7 @@ cc.Class({
         this.loadingLabel.string = `${this.dotStates[this.currentDotStateIndex]} 0%`;
         this.spineSkeleton.setAnimation(0, SpineAnimation.ANIM_LIST.HOVERBOARD, true);
 
-        cc.director.preloadScene('Portal', (completedCount, totalCount, item) => {
+        cc.director.preloadScene('Lobby', (completedCount, totalCount, item) => {
             console.log(`Preloading scene: ${item.url}`);
             console.log(this.loadingBar.progress);
             let progress = totalCount > 0 ? completedCount / totalCount : 0;
@@ -50,7 +50,7 @@ cc.Class({
             this.currentDotStateIndex = (this.currentDotStateIndex + 1) % this.dotStates.length;
         }, () => {
             cc.log("Scene preloaded successfully.");
-            cc.director.loadScene('Portal');
+            cc.director.loadScene('Lobby');
             this.node.destroy();
 
         });

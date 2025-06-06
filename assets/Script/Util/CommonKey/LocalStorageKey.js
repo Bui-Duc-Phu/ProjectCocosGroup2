@@ -1,4 +1,4 @@
-const localStorageKey = {
+const LocalStorageKey = {
     SOUND: {
         BGM_VOLUME_KEY: 'BGM_VOLUME',
         SFX_VOLUME_KEY: 'SFX_VOLUME',
@@ -12,4 +12,4 @@ const localStorageKey = {
         SKILL2_LEVEL: 'PLAYER_SKILL2_LEVEL',
     },
 };
-module.exports = localStorageKey;
+module.exports = LocalStorageKey;
