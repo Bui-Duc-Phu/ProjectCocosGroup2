@@ -1,8 +1,8 @@
 const Emitter = require('Emitter');
 const EventKey = require('EventKey');
 
-const BGM_VOLUME_KEY = 'game_bgmVolume';
-const SFX_VOLUME_KEY = 'game_sfxVolume';
+const LocalStorageKey = require('LocalStorageKey')
+
 
 cc.Class({
     extends: cc.Component,
@@ -41,6 +41,7 @@ cc.Class({
 
     registerEvents() {
         this.eventHandlers = {
+            [EventKey.SOUND.ENABLE_BGM]: this.onEnableBGM.bind(this),
             [EventKey.SOUND.SET_BGM_VOLUME]: this.setBGMVolume.bind(this),
             [EventKey.SOUND.SET_SFX_VOLUME]: this.setSFXVolume.bind(this),
             [EventKey.SOUND.PLAY_SFX]: this.playSFX.bind(this),
@@ -58,35 +59,37 @@ cc.Class({
         cc.audioEngine.stop(this.currentBgmAudioId);
     },
     getBGMVolumes() {
-        let storedBgmVolume = cc.sys.localStorage.getItem(BGM_VOLUME_KEY);
+        let storedBgmVolume = cc.sys.localStorage.getItem(LocalStorageKey.SOUND.BGM_VOLUME_KEY);
         if (storedBgmVolume !== null) {
             this.bgmVolume = parseFloat(storedBgmVolume);
         } else {
-            cc.sys.localStorage.setItem(BGM_VOLUME_KEY, this.bgmVolume.toString());
+            cc.sys.localStorage.setItem(LocalStorageKey.SOUND.BGM_VOLUME_KEY, this.bgmVolume.toString());
         }
         return this.bgmVolume;
     },
     getSFXVolume() {
-        let storedSfxVolume = cc.sys.localStorage.getItem(SFX_VOLUME_KEY);
+        let storedSfxVolume = cc.sys.localStorage.getItem(LocalStorageKey.SOUND.SFX_VOLUME_KEY);
         if (storedSfxVolume !== null) {
             this.sfxVolume = parseFloat(storedSfxVolume);
         } else {
-            cc.sys.localStorage.setItem(SFX_VOLUME_KEY, this.sfxVolume.toString());
+            cc.sys.localStorage.setItem(LocalStorageKey.SOUND.SFX_VOLUME_KEY, this.sfxVolume.toString());
         }
         return this.sfxVolume;
     },
     setBGMVolume(newVolume) {
         this.bgmVolume = newVolume;
         cc.audioEngine.setVolume(this.currentBgmAudioId, this.bgmVolume);
-        cc.sys.localStorage.setItem(BGM_VOLUME_KEY, this.bgmVolume.toString());
+        cc.sys.localStorage.setItem(LocalStorageKey.SOUND.BGM_VOLUME_KEY, this.bgmVolume.toString());
     },
     setSFXVolume(newVolume) {
         this.sfxVolume = newVolume;
         cc.audioEngine.setVolume(this.currentClickAudioId, this.sfxVolume);
-        cc.sys.localStorage.setItem(SFX_VOLUME_KEY, this.sfxVolume.toString());
+        cc.sys.localStorage.setItem(LocalStorageKey.SOUND.SFX_VOLUME_KEY, this.sfxVolume.toString());
     },
     onEnableBGM(isEnabled, bgmName) {
+        console.log("vo ham enabel bgm")
         if (isEnabled) {
+            console.log("nhan su kien phat bgm");
             this.playBGM(bgmName);
         } else {
             this.stopBGM();
