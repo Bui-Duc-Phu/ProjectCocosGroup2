@@ -1,4 +1,4 @@
-const AudioName = {
+const audioName = {
     BGM : {
         LOBBY: "BGM_Lobby",
         ROOM: "BGM_Room",
@@ -11,4 +11,4 @@ const AudioName = {
         GOLD_GET: "SFX_Gold_Get",
     },
 };
-module.exports = AudioName;
+module.exports = audioName;

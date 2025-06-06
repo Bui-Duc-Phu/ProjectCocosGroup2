@@ -1,0 +1,15 @@
+const localStorageKey = {
+    SOUND: {
+        BGM_VOLUME_KEY: 'BGM_VOLUME',
+        SFX_VOLUME_KEY: 'SFX_VOLUME',
+    },
+    PLAYER: {
+        GOLD: 'PLAYER_GOLD',
+        BOMB_AMOUNT: 'PLAYER_BOMB_AMOUNT',
+        HP_POTION_AMOUNT: 'PLAYER_HP_POTION_AMOUNT',
+        NORMAL_ATTACK_LEVEL: 'PLAYER_NORMAL_ATTACK_LEVEL',
+        SKILL1_LEVEL: 'PLAYER_SKILL1_LEVEL',
+        SKILL2_LEVEL: 'PLAYER_SKILL2_LEVEL',
+    },
+};
+module.exports = localStorageKey;

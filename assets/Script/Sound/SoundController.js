@@ -1,6 +1,6 @@
 const Emitter = require('Emitter');
 const EventKey = require('EventKey');
-const AudioName = require('AudioName');
+const audioName = require('audioName');
 
 const BGM_VOLUME_KEY = 'game_bgmVolume';
 const SFX_VOLUME_KEY = 'game_sfxVolume';
@@ -99,17 +99,17 @@ cc.Class({
         if (this.currentBgmAudioId !== null) {
             cc.audioEngine.stop(this.currentBgmAudioId);
         }
-        if (bgmName === AudioName.BGM.LOBBY) {
+        if (bgmName === audioName.BGM.LOBBY) {
             this.currentBgmAudioId = cc.audioEngine.play(this.audioLobbyBgm, true, this.bgmVolume);
         }
-        else if (bgmName === AudioName.BGM.ROOM) {
+        else if (bgmName === audioName.BGM.ROOM) {
             this.currentBgmAudioId = cc.audioEngine.play(this.audioRoomBgm, true, this.bgmVolume);
         }
         console.log("Playing BGM:", bgmName, "with volume:", this.bgmVolume);
     },
     playSFX(sfxName) {
         switch (sfxName) {
-            case AudioName.SFX.CLICK:
+            case audioName.SFX.CLICK:
                 cc.audioEngine.play(this.audioClick, false, this.effectVolume);
                 break;
             default:

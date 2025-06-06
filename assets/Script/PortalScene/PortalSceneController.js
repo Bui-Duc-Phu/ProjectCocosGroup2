@@ -1,6 +1,6 @@
 const Emitter = require('Emitter');
 const EventKey = require('EventKey');
-const AudioName = require('AudioName');
+const audioName = require('audioName');
 cc.Class({
     extends: cc.Component,
 
@@ -11,6 +11,6 @@ cc.Class({
         cc.director.loadScene("Loading");
     },
     onPlayBGMButtonClick() {
-        Emitter.emit(EventKey.SOUND.PLAY_BGM, AudioName.BGM.ROOM);
+        Emitter.emit(EventKey.SOUND.PLAY_BGM, audioName.BGM.ROOM);
     }
 });
