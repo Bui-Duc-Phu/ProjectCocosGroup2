@@ -47,12 +47,12 @@ cc.Class({
             type: cc.Integer,
             visible: false
         },
-        speed: {
+        durationMove: {
             default: 0,
             type: cc.Integer,
             visible: false
         },
-        reward: {
+        gold: {
             default: 0,
             type: cc.Integer,
             visible: false
@@ -72,8 +72,8 @@ cc.Class({
         this.type = data.type;
         this.HP = data.HP;
         this.damage = data.damage;
-        this.speed = data.speed;
-        this.reward = data.reward;
+        this.durationMove = data.durationMove;
+        this.gold = data.gold;
         this.hpBar.progress = 1;
     },
 

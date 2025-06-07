@@ -12,6 +12,9 @@ const EventKey = {
         // SHOW_SHOP: 'showPopupShop',
         // SHOW_HERO: 'showPopupHero',
         // SHOW_SKILL: 'showPopupSkill',
+    },
+    MONSTER: {
+        ON_DIE: 'ON_DIE',
     }
 };
 

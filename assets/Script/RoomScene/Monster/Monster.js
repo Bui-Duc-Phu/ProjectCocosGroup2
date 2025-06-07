@@ -1,23 +1,16 @@
-
-
+const Emitter = require("Emitter");
+const EventKey = require("EventKey");
 cc.Class({
     extends: require('MonsterItem'),
 
     properties: {
-        
-    
-    },
-    
-    init(data) {
-        super.init(data);
     },
 
-  
-    onMove(duration) {
+    onMove() {
         this.moveTween = cc.tween(this.node)
-            .by(10, { x: -1560 })
+            .by(this.durationMove, { x: -1560 })
             .call(() => {
-                this.onDie();
+                Emitter.emit(EventKey.MONSTER.ON_DIE, this);
             })
             .start();
         this.floatTween = cc.tween(this.node)
@@ -35,7 +28,6 @@ cc.Class({
                     )
             )
             .start();
-
     },
 
     onDie() {
