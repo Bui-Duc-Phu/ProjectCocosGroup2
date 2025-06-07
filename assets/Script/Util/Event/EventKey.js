@@ -3,6 +3,7 @@ const EventKey = {
         SET_BGM_VOLUME: 'SET_BGM_VOLUME',
         SET_SFX_VOLUME: 'SET_SFX_VOLUME',
         PLAY_SFX: 'PLAY_SFX',
+        ENABLE_BGM: 'ENABLE_BGM',
         PLAY_BGM: 'PLAY_BGM',
         STOP_BGM: 'STOP_BGM',
     },
