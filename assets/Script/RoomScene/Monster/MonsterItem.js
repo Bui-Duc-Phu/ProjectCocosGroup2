@@ -75,6 +75,7 @@ cc.Class({
         this.durationMove = data.durationMove;
         this.gold = data.gold;
         this.hpBar.progress = 1;
+        this.sprite.spriteFrame = data.spriteFrame;
     },
 
     onMove() {
