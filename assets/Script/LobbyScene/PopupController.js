@@ -26,6 +26,10 @@ cc.Class({
             type: require('PopupItem'),
             default: null
         },
+        overlay: {
+            type:cc.Node,
+            default: null
+        }
 
     },
     onLoad() {
@@ -35,12 +39,13 @@ cc.Class({
     init() {
         this.onShowPopup = this.showPopup.bind(this);
         this.hideAllPopup();
+        this.overlay.active = false;
     },
     registerEvent() {
         Emitter.registerEvent(EventKey.POPUP.SHOW, this.onShowPopup)
     },
     showPopup(type) {
-        this.hideAllPopup();
+        this.overlay.active = true;
         switch (type) {
             case typePopup.Setting:
                 this.popupSetting.show();
