@@ -1,6 +1,6 @@
 const AudioName = {
     BGM : {
-        LOBBY: "LobbyBGM",
+        LOBBY: "lobbyBGM",
         ROOM: "roomBGM",
         BATTLE: "battleBGM",
     },
