@@ -29,7 +29,6 @@ cc.Class({
             )
             .start();
     },
-
     onDie() {
         this.dieTween = cc.tween(this.node)
             .to(0.8, { opacity: 0 })
@@ -40,11 +39,19 @@ cc.Class({
         this.moveTween.stop();
         this.node.destroy();
     },
-
     stopAllTween() {
-        this.moveTween.stop();
-        this.floatTween.stop();
-        this.dieTween.stop();
+        this.stopTween(
+            this.moveTween,
+            this.floatTween,
+            this.dieTween
+        )
+    },
+    stopTween(...tweens) {
+        tweens.forEach(tween => {
+            if (tween) {
+                tween.stop();
+            }
+        });
     },
    
 

@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Bullet",
+    "_name": "BulletNomal",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -134,7 +134,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "atom<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 2
@@ -172,7 +172,7 @@
     "asset": {
       "__uuid__": "4bb042cc-17e8-45ec-be7e-93dcf025b72e"
     },
-    "fileId": "d23zk0vqVMEa4sQQpHqSks",
+    "fileId": "66tr0qkw9BgKHhxsyx8Bs2",
     "sync": false
   },
   {
@@ -221,7 +221,7 @@
       "__type__": "cc.Vec3",
       "x": 3.477,
       "y": 2.359,
-      "z": 1
+      "z": 3.477
     },
     "_eulerAngles": {
       "__type__": "cc.Vec3",
@@ -237,7 +237,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "sprite<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 5
@@ -275,7 +275,7 @@
     "asset": {
       "__uuid__": "4bb042cc-17e8-45ec-be7e-93dcf025b72e"
     },
-    "fileId": "2b8uAe+ghKa4B52q23RLB6",
+    "fileId": "068IbX1epEkaRlSnt7hpv6",
     "sync": false
   },
   {

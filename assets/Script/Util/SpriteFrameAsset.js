@@ -22,13 +22,13 @@ cc.Class({
     },
     getSpriteFramByType(type){
         switch(type){
-            case GameConfig.MONSTER.TYPE.DOG.TYPE:
+            case GameConfig.MONSTER.TYPE.DOG.NAME:
                 return this.dogSpriteFrame;
-            case GameConfig.MONSTER.TYPE.INFERNO_DOG.TYPE:
+            case GameConfig.MONSTER.TYPE.INFERNO_DOG.NAME:
                 return this.infernoDogSpriteFrame;
-            case GameConfig.MONSTER.TYPE.DRAGON.TYPE:
+            case GameConfig.MONSTER.TYPE.DRAGON.NAME:
                 return this.dragonSpriteFrame;
-            case GameConfig.MONSTER.TYPE.BOSS.TYPE:
+            case GameConfig.MONSTER.TYPE.BOSS.NAME:
                 return this.bossSpriteFrame;
         }
     }

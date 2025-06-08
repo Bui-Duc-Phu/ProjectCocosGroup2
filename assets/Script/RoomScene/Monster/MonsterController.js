@@ -143,7 +143,7 @@ cc.Class({
         const damage = baseStats.damage * type.COEFFICIENT_DAMAGE;
         const durationMove = this.calculateMoveDuration(type, this.currentLevel);
         const gold = baseStats.gold * type.COEFFICIENT_GOLD;
-        const spriteFrame = this.getSpriteFrameByType(type.TYPE); 
+        const spriteFrame = this.getSpriteFrameByType(type.NAME); 
         const monster = cc.instantiate(this.prefabMonster);
         const monsterItem = monster.getComponent(require('Monster'));
         monsterItem.init({
