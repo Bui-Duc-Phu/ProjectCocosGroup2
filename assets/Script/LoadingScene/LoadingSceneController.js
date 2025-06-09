@@ -24,35 +24,31 @@ cc.Class({
     },
 
     onLoad() {
+        this.doLoadingScene();
+        this.onProgressStart();
+    },
+    onProgressStart() {
         this.dotStates = ["Loading", "Loading.", "Loading..", "Loading..."];
         this.currentDotStateIndex = 0;
-        this.doLoadingScene();
-    },
-
-    doLoadingScene() {
-
         this.loadingBar.progress = 0;
         this.fillLight.width = this.loadingBar.totalLength;
         this.loadingLabel.string = `${this.dotStates[this.currentDotStateIndex]} 0%`;
         this.spineSkeleton.setAnimation(0, SpineAnimation.ANIM_LIST.HOVERBOARD, true);
-
+    },
+    onProgressUpdate(progress) {
+        this.loadingBar.progress = progress > this.loadingBar.progress ? progress : this.loadingBar.progress;
+        this.fillLight.width = this.loadingBar.totalLength;
+        this.spineSkeleton.node.setPosition(this.fillLight.width - this.loadingBar.totalLength / 2, 20);
+        let loadingPrefix = this.dotStates[this.currentDotStateIndex];
+        this.loadingLabel.string = `${loadingPrefix} ${Math.floor(progress * 100)}%`;
+        this.currentDotStateIndex = (this.currentDotStateIndex + 1) % this.dotStates.length;
+    },
+    doLoadingScene() {
         cc.director.preloadScene('Lobby', (completedCount, totalCount, item) => {
-            console.log(`Preloading scene: ${item.url}`);
-            console.log(this.loadingBar.progress);
             let progress = totalCount > 0 ? completedCount / totalCount : 0;
-            this.loadingBar.progress = progress > this.loadingBar.progress ? progress : this.loadingBar.progress;
-            this.fillLight.width = this.loadingBar.totalLength;
-            this.spineSkeleton.node.setPosition(this.fillLight.width - this.loadingBar.totalLength / 2, 20);
-
-            let loadingPrefix = this.dotStates[this.currentDotStateIndex];
-            this.loadingLabel.string = `${loadingPrefix} ${Math.floor(progress * 100)}%`;
-
-            this.currentDotStateIndex = (this.currentDotStateIndex + 1) % this.dotStates.length;
+            this.onProgressUpdate(progress);
         }, () => {
-            cc.log("Scene preloaded successfully.");
             cc.director.loadScene('Lobby');
-            this.node.destroy();
-
         });
     },
 
