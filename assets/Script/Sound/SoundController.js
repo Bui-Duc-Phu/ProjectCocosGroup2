@@ -33,12 +33,17 @@ cc.Class({
     },
 
     onLoad() {
+        if (cc.game['SOUND_CONTROLLER_EXIST']) {
+            this.node.destroy();
+            return;
+        }
+        cc.game['SOUND_CONTROLLER_EXIST'] = true;
         this.getBGMVolumes();
         this.getSFXVolume();
         this.registerEvents();
         cc.game.addPersistRootNode(this.node);
+        console.log("SoundController initialized with BGM volume:", this.bgmVolume, "and SFX volume:", this.sfxVolume);
     },
-
     registerEvents() {
         this.eventHandlers = {
             [EventKey.SOUND.ENABLE_BGM]: this.onEnableBGM.bind(this),
@@ -47,6 +52,7 @@ cc.Class({
             [EventKey.SOUND.PLAY_SFX]: this.playSFX.bind(this),
             [EventKey.SOUND.PLAY_BGM]: this.playBGM.bind(this),
             [EventKey.SOUND.STOP_BGM]: this.stopBGM.bind(this),
+            [EventKey.GAME.PREPARE_FOR_EXIT]: this.onDestroy.bind(this),
         };
         for (const event in this.eventHandlers) {
             Emitter.registerEvent(event, this.eventHandlers[event]);
@@ -57,6 +63,7 @@ cc.Class({
             Emitter.removeEvent(event, this.eventHandlers[event]);
         }
         cc.audioEngine.stop(this.currentBgmAudioId);
+        cc.game['SOUND_CONTROLLER_EXIST'] = false;
     },
     getBGMVolumes() {
         let storedBgmVolume = cc.sys.localStorage.getItem(LocalStorageKey.SOUND.BGM_VOLUME_KEY);
@@ -87,9 +94,7 @@ cc.Class({
         cc.sys.localStorage.setItem(LocalStorageKey.SOUND.SFX_VOLUME_KEY, this.sfxVolume.toString());
     },
     onEnableBGM(isEnabled, bgmName) {
-        console.log("vo ham enabel bgm")
         if (isEnabled) {
-            console.log("nhan su kien phat bgm");
             this.playBGM(bgmName);
         } else {
             this.stopBGM();

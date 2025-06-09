@@ -15,6 +15,16 @@ const EventKey = {
     },
     MONSTER: {
         ON_DIE: 'ON_DIE',
+    },
+    SCENE: {
+        LOAD_LOBBY: 'LOAD_LOBBY', 
+        LOAD_ROOM: 'LOAD_ROOM',   
+    },
+
+    GAME: {
+        STATE_CHANGED: 'STATE_CHANGED',    
+        REQUEST_EXIT: 'REQUEST_EXIT',            
+        PREPARE_FOR_EXIT: 'PREPARE_FOR_EXIT', 
     }
 };
 
