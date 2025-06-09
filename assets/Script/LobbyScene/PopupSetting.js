@@ -39,10 +39,7 @@ cc.Class({
     },
     onLoad() {
         this.init();
-<<<<<<< Updated upstream
-=======
         
->>>>>>> Stashed changes
     },
     init() {
         const volumeBGM = cc.sys.localStorage.getItem(LocalStorageKey.SOUND.BGM_VOLUME_KEY);
