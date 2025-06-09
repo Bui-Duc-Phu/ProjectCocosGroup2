@@ -29,7 +29,7 @@ cc.Class({
             type:cc.String,
             visible:false,
         },
-        target:{
+        currentTarget:{
             default:[],
             type:[cc.Node],
             visible:false,
@@ -41,13 +41,22 @@ cc.Class({
         this.durationMove = data.durationMove
         this.damage = data.damage
         this.countTarget = data.countTarget
-        this.type = data.type
     },
     onMove() {
        
     },
-    onCollide(target){
+    onClear(){
+    },
 
+    onCollide(){
+
+    },
+    stopTween(...tweens) {
+        tweens.forEach(tween => {
+            if (tween) {
+                tween.stop();
+            }
+        });
     },
  
    

@@ -79,10 +79,10 @@ cc.Class({
     },
 
     onMove() {
-        
+
     },
     onDie() {
-        
+
     },
 
 

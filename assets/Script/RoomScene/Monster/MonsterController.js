@@ -57,7 +57,7 @@ cc.Class({
 
     startWave() {
         this.spawnedCount = 0;
-        this.totalMonstersThisWave = this.calculateMonstersForLevel(this.currentLevel); 
+        this.totalMonstersThisWave = this.calculateMonstersForLevel(this.currentLevel);
         this.calculateMonsterTypeCounts();
         this.spawnNextMonster();
     },
@@ -68,7 +68,7 @@ cc.Class({
         for (const [type, probability] of Object.entries(probabilities)) {
             this.monsterTypeCounts[type] = Math.round(this.totalMonstersThisWave * probability);
         }
-        
+
         const total = Object.values(this.monsterTypeCounts).reduce((sum, count) => sum + count, 0);
         if (total !== this.totalMonstersThisWave) {
             const diff = this.totalMonstersThisWave - total;
@@ -88,7 +88,7 @@ cc.Class({
             }, this.spawnInterval);
         }
     },
-    calculateMonstersForLevel(level) {  
+    calculateMonstersForLevel(level) {
         return Math.min(5 + level, 50);
     },
     spawnMonster() {
@@ -104,7 +104,7 @@ cc.Class({
                 this.monsterTypeCounts[type]--;
                 return GameConfig.MONSTER.TYPE[type];
             }
-        }   
+        }
         return GameConfig.MONSTER.TYPE.DOG;
     },
     shouldSpawnBoss(spawnIndex) {
@@ -114,12 +114,12 @@ cc.Class({
     },
     calculateTypeProbabilities(level) {
         const probabilities = {};
-        let dogProb = Math.max(0.4, 0.8 - (level * 0.008)); 
-        let infernoDogProb = Math.min(0.4, 0.15 + (level * 0.005)); 
+        let dogProb = Math.max(0.4, 0.8 - (level * 0.008));
+        let infernoDogProb = Math.min(0.4, 0.15 + (level * 0.005));
         let dragonProb = 0;
-        
+
         if (level >= 10) {
-            dragonProb = Math.min(0.2, (level - 10) * 0.004 + 0.05); 
+            dragonProb = Math.min(0.2, (level - 10) * 0.004 + 0.05);
             const totalOthers = dogProb + infernoDogProb;
             const adjustment = dragonProb / totalOthers;
             dogProb *= (1 - adjustment);
@@ -143,15 +143,15 @@ cc.Class({
         const damage = baseStats.damage * type.COEFFICIENT_DAMAGE;
         const durationMove = this.calculateMoveDuration(type, this.currentLevel);
         const gold = baseStats.gold * type.COEFFICIENT_GOLD;
-        const spriteFrame = this.getSpriteFrameByType(type.NAME); 
+        const spriteFrame = this.getSpriteFrameByType(type.NAME);
         const monster = cc.instantiate(this.prefabMonster);
         const monsterItem = monster.getComponent(require('Monster'));
         monsterItem.init({
-            id, 
-            type, 
-            hp, 
-            damage, 
-            durationMove, 
+            id,
+            type,
+            hp,
+            damage,
+            durationMove,
             gold,
             level: this.currentLevel,
             spriteFrame
@@ -159,13 +159,13 @@ cc.Class({
         this.node.addChild(monster);
         this.positionInit(monster, position);
         monsterItem.onMove();
-        this.listChar.push(monsterItem);        
+        this.listChar.push(monsterItem);
     },
     getSpriteFrameByType(type) {
         return this.spriteFrameAsset.getSpriteFramByType(type);
     },
     calculateBaseStats(level) {
-        const levelMultiplier = 1 + (level - 1) * 0.15 + Math.pow(level - 1, 1.2) * 0.02;       
+        const levelMultiplier = 1 + (level - 1) * 0.15 + Math.pow(level - 1, 1.2) * 0.02;
         return {
             hp: GameConfig.MONSTER.HP_BASE * levelMultiplier,
             damage: GameConfig.MONSTER.DAMAGE_BASE * levelMultiplier,
@@ -173,7 +173,7 @@ cc.Class({
         };
     },
     calculateMoveDuration(type, level) {
-        const speedBonus = Math.min(2, level * 0.05); 
+        const speedBonus = Math.min(2, level * 0.05);
         const adjustedDuration = Math.max(3, type.DURATION_MOVE - speedBonus);
         return adjustedDuration;
     },

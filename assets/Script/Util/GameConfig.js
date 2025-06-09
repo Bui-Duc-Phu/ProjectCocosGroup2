@@ -44,14 +44,14 @@ const GameConfig = {
             NOMAL:{
                 NAME:"NOMAL",
                 COEFFICIENT_DAMAGE:1,
-                DURATION_MOVE:10,
+                DURATION_MOVE:1.5,
                 COUNT_TARGET:1,
                 MOVE_BY_X:3000,
             },
             ULTIMATE:{
                 NAME:"ULTIMATE",    
                 COEFFICIENT_DAMAGE:2,
-                DURATION_MOVE:10,
+                DURATION_MOVE:1.5,
                 COUNT_TARGET:5,
                 MOVE_BY_X:3000,
             },

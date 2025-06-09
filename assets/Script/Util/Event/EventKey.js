@@ -14,7 +14,13 @@ const EventKey = {
         // SHOW_SKILL: 'showPopupSkill',
     },
     MONSTER: {
+        ON_HIT  : 'ON_HIT',
         ON_DIE: 'ON_DIE',
+    },
+    PLAYER: {
+        ON_HIT: 'ON_HIT',
+        SHOOT_NOMAL: 'SHOOT_NOMAL_BULLET',
+        SHOOT_ULTIMATE: 'SHOOT_ULTIMATE_BULLET',
     }
 };
 

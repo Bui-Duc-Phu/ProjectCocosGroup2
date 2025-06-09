@@ -26,9 +26,16 @@
     ],
     "_active": true,
     "_level": 1,
-    "_components": [],
+    "_components": [
+      {
+        "__id__": 8
+      },
+      {
+        "__id__": 9
+      }
+    ],
     "_prefab": {
-      "__id__": 8
+      "__id__": 10
     },
     "_opacity": 255,
     "_color": {
@@ -110,15 +117,15 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 7.452,
-      "y": 0.354,
+      "x": -32.345,
+      "y": 2.047,
       "z": 0
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
-      "z": 1
+      "x": 3.73,
+      "y": 3.73,
+      "z": 3.73
     },
     "_eulerAngles": {
       "__type__": "cc.Vec3",
@@ -196,15 +203,15 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 210,
+      "g": 40,
+      "b": 218,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 31,
-      "height": 31
+      "width": 37.9,
+      "height": 35.7
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -213,15 +220,15 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 24.062,
-      "y": -0.707,
+      "x": 31.231,
+      "y": -1.175,
       "z": 0
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 3.477,
-      "y": 2.359,
-      "z": 3.477
+      "x": 15.613,
+      "y": 10.592,
+      "z": 15.613
     },
     "_eulerAngles": {
       "__type__": "cc.Vec3",
@@ -254,7 +261,7 @@
       "__uuid__": "472df5d3-35e7-4184-9e6c-7f41bee65ee3"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -277,6 +284,41 @@
     },
     "fileId": "068IbX1epEkaRlSnt7hpv6",
     "sync": false
+  },
+  {
+    "__type__": "4e952hH979FgrSsFp9I166w",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "id": 0,
+    "durationMove": 0,
+    "damage": 0,
+    "countTarget": 0,
+    "type": "",
+    "currentTarget": [],
+    "maxCollisions": 5,
+    "collidedObjects": [],
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CircleCollider",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 0,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 28,
+      "y": 8
+    },
+    "_radius": 50,
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",

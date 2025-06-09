@@ -19,6 +19,16 @@ cc.Class({
             default:null,
             type:cc.SpriteFrame
         },
+        nomalBulletPrefab:{
+            default:null,
+            type:cc.Prefab
+        },
+        ultiBulletPrefab:{
+            default:null,
+            type:cc.Prefab
+        },
+     
+        
     },
     getSpriteFramByType(type){
         switch(type){
@@ -30,6 +40,14 @@ cc.Class({
                 return this.dragonSpriteFrame;
             case GameConfig.MONSTER.TYPE.BOSS.NAME:
                 return this.bossSpriteFrame;
+        }
+    },
+    getBulletPrefabByType(type){
+        switch(type){
+            case GameConfig.BULLET.TYPE.NOMAL.NAME:
+                return this.nomalBulletPrefab;
+            case GameConfig.BULLET.TYPE.ULTIMATE.NAME:
+                return this.ultiBulletPrefab;
         }
     }
 
