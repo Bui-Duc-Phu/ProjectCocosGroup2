@@ -32,6 +32,11 @@ cc.Class({
     },
 
     onLoad() {
+        if (cc.game['GAME_CONTROLLER_EXIST']) {
+            this.node.destroy();
+            return;
+        }
+        cc.game['GAME_CONTROLLER_EXIST'] = true;
         cc.game.addPersistRootNode(this.node);
         this.isSceneLoading = false;
         this.initializeStateMachine();

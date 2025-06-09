@@ -33,12 +33,17 @@ cc.Class({
     },
 
     onLoad() {
+        if (cc.game['SOUND_CONTROLLER_EXIST']) {
+            this.node.destroy();
+            return;
+        }
+        cc.game['SOUND_CONTROLLER_EXIST'] = true;
         this.getBGMVolumes();
         this.getSFXVolume();
         this.registerEvents();
         cc.game.addPersistRootNode(this.node);
+        console.log("SoundController initialized with BGM volume:", this.bgmVolume, "and SFX volume:", this.sfxVolume);
     },
-
     registerEvents() {
         this.eventHandlers = {
             [EventKey.SOUND.ENABLE_BGM]: this.onEnableBGM.bind(this),
@@ -58,6 +63,7 @@ cc.Class({
             Emitter.removeEvent(event, this.eventHandlers[event]);
         }
         cc.audioEngine.stop(this.currentBgmAudioId);
+        cc.game['SOUND_CONTROLLER_EXIST'] = false;
     },
     getBGMVolumes() {
         let storedBgmVolume = cc.sys.localStorage.getItem(LocalStorageKey.SOUND.BGM_VOLUME_KEY);
