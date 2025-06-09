@@ -19,17 +19,35 @@ cc.Class({
             default:null,
             type:cc.SpriteFrame
         },
+        nomalBulletPrefab:{
+            default:null,
+            type:cc.Prefab
+        },
+        ultiBulletPrefab:{
+            default:null,
+            type:cc.Prefab
+        },
+     
+        
     },
     getSpriteFramByType(type){
         switch(type){
-            case GameConfig.MONSTER.TYPE.DOG.TYPE:
+            case GameConfig.MONSTER.TYPE.DOG.NAME:
                 return this.dogSpriteFrame;
-            case GameConfig.MONSTER.TYPE.INFERNO_DOG.TYPE:
+            case GameConfig.MONSTER.TYPE.INFERNO_DOG.NAME:
                 return this.infernoDogSpriteFrame;
-            case GameConfig.MONSTER.TYPE.DRAGON.TYPE:
+            case GameConfig.MONSTER.TYPE.DRAGON.NAME:
                 return this.dragonSpriteFrame;
-            case GameConfig.MONSTER.TYPE.BOSS.TYPE:
+            case GameConfig.MONSTER.TYPE.BOSS.NAME:
                 return this.bossSpriteFrame;
+        }
+    },
+    getBulletPrefabByType(type){
+        switch(type){
+            case GameConfig.BULLET.TYPE.NOMAL.NAME:
+                return this.nomalBulletPrefab;
+            case GameConfig.BULLET.TYPE.ULTIMATE.NAME:
+                return this.ultiBulletPrefab;
         }
     }
 
