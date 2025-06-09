@@ -54,6 +54,9 @@ cc.Class({
         this.registerEvent();
         this.startWave();
     },
+    onDestroy(){
+        this.unregisterEvent();
+    },
 
     startWave() {
         this.spawnedCount = 0;
@@ -190,12 +193,6 @@ cc.Class({
     genIDMonster() {
         return Date.now() + Math.random();
     },
-    registerEvent() {
-        Emitter.registerEvent(EventKey.MONSTER.ON_DIE, this.onMonsterDie.bind(this));
-    },
-    unregisterEvent() {
-        Emitter.removeEvent(EventKey.MONSTER.ON_DIE, this.onMonsterDie.bind(this));
-    },
     onMonsterDie(monster) {
         monster.onDie();
         const index = this.listChar.indexOf(monster);
@@ -233,5 +230,36 @@ cc.Class({
         });
         this.listChar = [];
         this.startWave();
-    }
+    },
+    registerEvent() {
+        this.eventMap = new Map([
+            [EventKey.MONSTER.ON_HIT, this.onMonsterHit.bind(this)],
+            [EventKey.MONSTER.ON_ULTIMATE_HIT, this.onUltimateHit.bind(this)],
+            [EventKey.MONSTER.ON_DIE, this.onMonsterDie.bind(this)],
+        ]);
+        this.eventMap.forEach((handler, key) => {
+            Emitter.registerEvent(key, handler);
+        });
+    },
+    
+    unregisterEvent() {
+        if (!this.eventMap) return;
+        this.eventMap.forEach((handler, key) => {
+            Emitter.removeEvent(key, handler);
+        });
+        this.eventMap.clear();
+    },
+    
+    onMonsterHit(monster, bullet) {
+        this.takeDamage(monster, bullet);
+    },
+    onUltimateHit(monsters, bullet) {
+        monsters.forEach((monster,index) => {
+            this.takeDamage(monster, bullet);
+        });
+    },
+    takeDamage(monster, bullet) {
+        monster.hp -= bullet.damage;
+    },
+    
 });

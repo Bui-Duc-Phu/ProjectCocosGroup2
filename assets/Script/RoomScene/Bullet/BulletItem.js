@@ -31,7 +31,7 @@ cc.Class({
         },
         currentTarget:{
             default:[],
-            type:[cc.Node],
+            type:[require('MonsterItem')],
             visible:false,
         },
     },

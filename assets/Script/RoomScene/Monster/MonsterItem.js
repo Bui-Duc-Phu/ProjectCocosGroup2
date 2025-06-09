@@ -1,4 +1,5 @@
-
+const EventKey = require('EventKey');
+const Emitter = require('Emitter');
 
 
 const MonterState = {
@@ -37,7 +38,12 @@ cc.Class({
             type: cc.String,
             visible: false
         },
-        HP: {
+        hp: {
+            default: 0,
+            type: cc.Integer,
+            visible: false
+        },
+        maxHP: {
             default: 0,
             type: cc.Integer,
             visible: false
@@ -67,15 +73,28 @@ cc.Class({
         },
     },
 
+    update(dt){
+        if(this.hp < this.maxHP){
+            this.updateHP();
+        }
+    },
+
     init(data) {
         this.id = data.id;
         this.type = data.type;
-        this.HP = data.HP;
+        this.hp = data.hp;
+        this.maxHP = data.hp;
         this.damage = data.damage;
         this.durationMove = data.durationMove;
         this.gold = data.gold;
         this.hpBar.progress = 1;
         this.sprite.spriteFrame = data.spriteFrame;
+    },
+    updateHP(){
+        this.hpBar.progress = this.hp / this.maxHP;
+        if(this.hp <= 0){
+            Emitter.emit(EventKey.MONSTER.ON_DIE, this);
+        }
     },
 
     onMove() {
@@ -84,6 +103,8 @@ cc.Class({
     onDie() {
 
     },
+
+
 
 
 

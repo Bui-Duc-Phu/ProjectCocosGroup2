@@ -56,6 +56,29 @@ const GameConfig = {
                 MOVE_BY_X:3000,
             },
         }
-    }
+    },
+    SHOP:{
+        ITEM:{
+            BOMB:{
+                NAME:"BOMB",
+                COST:200,
+                COUNT:1000,
+                COEFFICIENT_DAMAGE:1.25,
+                COUNT_TARGET:1000,
+                DURATION_MOVE:1.5,
+                MOVE_BY_X:1000,
+                POSITION:{
+                    INIT:{
+                        X:600,
+                        Y:713,
+                    },
+                    MOVE_TO:{
+                        X:800,
+                        Y:337,
+                    }
+                }
+            }
+        }
+    }   
 }
 module.exports = GameConfig;

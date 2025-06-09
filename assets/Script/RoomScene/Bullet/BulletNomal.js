@@ -19,7 +19,7 @@ cc.Class({
             .start();
     },
     onCollide(target, self) {
-        Emitter.emit(EventKey.MONSTER.ON_HIT, target, self)
+        Emitter.emit(EventKey.MONSTER.ON_HIT, target.getComponent('MonsterItem'), this)
         this.onClear()
     },
     onClear() {

@@ -13,8 +13,19 @@ cc.Class({
 
     },
 
-
-
+    onLoad(){
+        this.colisionManager()
+    },
+    colisionManager(){
+        let manager = cc.director.getCollisionManager();
+        manager.enabled = true
+    },
+    shootUltimateBullet(worldPos){
+        this.onShootUltimateBullet(cc.v2(155,355))
+    },
+    shootNomalBullet(worldPos){
+        this.onShootNomalBullet(cc.v2(155,355))
+    },
 
     initBulletByType(type, worldPos) {
         const prefab = this.gameAsset.getBulletPrefabByType(type.NAME);
@@ -36,7 +47,7 @@ cc.Class({
             id: this.genID(),
             type: type.NAME,
             durationMove: type.DURATION_MOVE,
-            damage: type.DAMAGE,
+            damage: GameConfig.BULLET.DAMAGE_BASE * type.COEFFICIENT_DAMAGE,
             countTarget: type.COUNT_TARGET,
         }
     },

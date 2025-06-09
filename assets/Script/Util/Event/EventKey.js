@@ -16,6 +16,7 @@ const EventKey = {
     MONSTER: {
         ON_HIT  : 'ON_HIT',
         ON_DIE: 'ON_DIE',
+        ON_ULTIMATE_HIT: 'ON_ULTIMATE_HIT',
     },
     PLAYER: {
         ON_HIT: 'ON_HIT',
