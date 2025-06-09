@@ -6,7 +6,7 @@ const LocalStorageKey = require('LocalStorageKey')
 
 cc.Class({
     extends: require('PopupItem'),
-    
+
     properties: {
         volumeDefault: {
             type: cc.Float,
@@ -37,15 +37,16 @@ cc.Class({
             default: null
         }
     },
-    onLoad(){
+    onLoad() {
         this.init();
+        this.node.parent = null;
     },
     init() {
         const volumeBGM = cc.sys.localStorage.getItem(LocalStorageKey.SOUND.BGM_VOLUME_KEY);
         const volumeSFX = cc.sys.localStorage.getItem(LocalStorageKey.SOUND.SFX_VOLUME_KEY);
-        console.log("volume df",this.volumeDefault)
+        console.log("volume df", this.volumeDefault)
         this.enableBGM = true;
-        Emitter.emit(EventKey.SOUND.ENABLE_BGM,this.enableBGM ,AudioName.BGM.LOBBY);
+        Emitter.emit(EventKey.SOUND.ENABLE_BGM, this.enableBGM, AudioName.BGM.LOBBY);
 
         this.sliderSoundBGM.progress = volumeBGM;
         this.toggleBGM.target.active = false;
@@ -55,25 +56,24 @@ cc.Class({
         this.toggleSFX.target.active = false;
         this.backGroundSliderSFX.width = volumeSFX * this.sliderSoundSFX.node.width;
 
-        const handleNode = this.sliderSoundSFX.handle;
-        handleNode.node.on(cc.Node.EventType.TOUCH_END, this.onSliderSFXEnd, this);
-        handleNode.node.on(cc.Node.EventType.TOUCH_CANCEL, this.onSliderSFXEnd, this);
+        const sliderNode = this.sliderSoundSFX.node;
+        sliderNode.on(cc.Node.EventType.TOUCH_END, this.onSliderSFXEnd, this);
+        sliderNode.on(cc.Node.EventType.TOUCH_CANCEL, this.onSliderSFXEnd, this);
     },
     onToggleBGMChanged() {
         if (this.toggleBGM.isChecked) {
+            this.sliderSoundBGM.progress = this.sliderSoundBGM.progress || 0.1;
             this.toggleBGM.target.active = false;
             this.toggleBGM.checkMark.node.active = true;
 
-            Emitter.emit(EventKey.SOUND.SET_BGM_VOLUME, this.volumeDefault);
-            Emitter.emit(EventKey.SOUND.ENABLE_BGM,this.enableBGM,AudioName.BGM.LOBBY);
-            this.backGroundSliderBGM.width = this.volumeDefault * this.sliderSoundBGM.node.width;
-            this.sliderSoundBGM.progress = this.volumeDefault;
+            Emitter.emit(EventKey.SOUND.SET_BGM_VOLUME, this.sliderSoundBGM.progress);
+            Emitter.emit(EventKey.SOUND.ENABLE_BGM, this.enableBGM, AudioName.BGM.LOBBY);
+            this.backGroundSliderBGM.width = this.sliderSoundBGM.progress * this.sliderSoundBGM.node.width;
         } else {
-            console.log("ssss")
             this.toggleBGM.target.active = true;
             this.toggleBGM.checkMark.node.active = false;
 
-            Emitter.emit(EventKey.SOUND.ENABLE_BGM,!this.enableBGM,AudioName.BGM.LOBBY);
+            Emitter.emit(EventKey.SOUND.ENABLE_BGM, !this.enableBGM, AudioName.BGM.LOBBY);
             this.backGroundSliderBGM.width = 0;
             this.sliderSoundBGM.progress = 0;
         }
@@ -82,7 +82,7 @@ cc.Class({
     onSliderBGMChange() {
         let volume = this.sliderSoundBGM.progress;
         this.backGroundSliderBGM.width = volume * this.sliderSoundBGM.node.width;
-
+        console.log(volume);
         Emitter.emit(EventKey.SOUND.SET_BGM_VOLUME, volume);
 
         if (volume === 0) {
@@ -99,13 +99,22 @@ cc.Class({
     onSliderSFXChange() {
         let volume = this.sliderSoundSFX.progress;
         this.backGroundSliderSFX.width = volume * this.sliderSoundSFX.node.width;
+        if (volume === 0) {
+            this.toggleSFX.target.active = true;
+            this.toggleSFX.checkMark.node.active = false;
+            this.toggleSFX.isChecked = false;
+        } else {
+            this.toggleSFX.target.active = false;
+            this.toggleSFX.checkMark.node.active = true;
+            this.toggleSFX.isChecked = true;
+        }
     },
 
     onSliderSFXEnd() {
         let volume = this.sliderSoundSFX.progress;
 
         Emitter.emit(EventKey.SOUND.SET_SFX_VOLUME, volume);
-        Emitter.emit(EventKey.SOUND.PLAY_SFX,AudioName.SFX.CLICK);
+        Emitter.emit(EventKey.SOUND.PLAY_SFX, AudioName.SFX.CLICK);
 
         if (volume === 0) {
             this.toggleSFX.target.active = true;
@@ -120,13 +129,14 @@ cc.Class({
 
     onToggleSFXChanged() {
         if (this.toggleSFX.isChecked) {
+
+            this.sliderSoundSFX.progress = this.sliderSoundSFX.progress || 0.1;
             this.toggleSFX.target.active = false;
             this.toggleSFX.checkMark.node.active = true;
 
-            Emitter.emit(EventKey.SOUND.SET_SFX_VOLUME, this.volumeDefault);
+            Emitter.emit(EventKey.SOUND.SET_SFX_VOLUME, this.sliderSoundSFX.progress);
             Emitter.emit(EventKey.SOUND.PLAY_SFX);
-            this.backGroundSliderSFX.width = this.volumeDefault * this.sliderSoundSFX.node.width;
-            this.sliderSoundSFX.progress = this.volumeDefault;
+            this.backGroundSliderSFX.width = this.sliderSoundSFX.progress * this.sliderSoundSFX.node.width;
         } else {
             this.toggleSFX.target.active = true;
             this.toggleSFX.checkMark.node.active = false;
@@ -136,5 +146,5 @@ cc.Class({
             this.sliderSoundSFX.progress = 0;
         }
     },
-    
+
 });
