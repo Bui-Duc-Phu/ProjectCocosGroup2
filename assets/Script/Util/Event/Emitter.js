@@ -3,7 +3,6 @@ const EventEmitter = require('events');
 class Emitter {
     constructor() {
         this.emitter = new EventEmitter();
-        this.emitter.setMaxListeners(100);
     }
 
     emit(...args) {
@@ -24,14 +23,6 @@ class Emitter {
         }
     }
 
-    registerEventMap(eventMap) {
-        if (this.emitter) {
-            for (const [event, listener] of Object.entries(eventMap)) {
-                this.emitter.on(event, listener);
-            }
-        }
-    }
-
     removeEvent(event, listener) {
         if (this.emitter) {
             this.emitter.removeListener(event, listener);
@@ -41,6 +32,7 @@ class Emitter {
     destroy() {
         if (this.emitter) {
             this.emitter.removeAllListeners();
+            this.emitter = null;
         }
     }
 }

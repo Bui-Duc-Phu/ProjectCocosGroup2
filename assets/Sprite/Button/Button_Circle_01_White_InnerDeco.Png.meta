@@ -1,6 +1,6 @@
 {
   "ver": "2.3.3",
-  "uuid": "291ed760-d2e0-48c3-8bab-d87fa8f440ca",
+  "uuid": "d143bdc1-771e-4fb4-8f6c-fe014c5f66bb",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -9,10 +9,10 @@
   "packable": true,
   "platformSettings": {},
   "subMetas": {
-    "Popup_02_Single": {
+    "Button_Circle_01_White_InnerDeco": {
       "ver": "1.0.4",
-      "uuid": "3b66e245-89d3-477e-a496-780ccbea09ec",
-      "rawTextureUuid": "291ed760-d2e0-48c3-8bab-d87fa8f440ca",
+      "uuid": "0a797d09-3cf2-4784-ab22-06c2b764ffdd",
+      "rawTextureUuid": "d143bdc1-771e-4fb4-8f6c-fe014c5f66bb",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -20,14 +20,14 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 90,
-      "height": 90,
-      "rawWidth": 90,
-      "rawHeight": 90,
-      "borderTop": 43,
-      "borderBottom": 42,
-      "borderLeft": 44,
-      "borderRight": 43,
+      "width": 132,
+      "height": 132,
+      "rawWidth": 132,
+      "rawHeight": 132,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
       "subMetas": {}
     }
   }
