@@ -36,6 +36,7 @@ cc.Class({
         this.isSceneLoading = false;
         this.initializeStateMachine();
         this.registerEventListeners();
+        this.addSingletonToList();
         cc.director.on(cc.Director.EVENT_AFTER_SCENE_LAUNCH, this.onSceneLaunched, this);
     },
 
@@ -109,7 +110,7 @@ cc.Class({
             this.eventHandlers = null;
         }
     },
-    cleanupSingletons() {
+    cleanupSingletonList() {
         for (let i = this.singletonList.length - 1; i >= 0; i--) {
             this.singletonList[i].destroy();
         };
@@ -143,7 +144,7 @@ cc.Class({
     },
 
     executeExitSteps() {
-        this.cleanupSingletons();
+        this.cleanupSingletonList();
         Emitter.emit(EventKey.GAME.PREPARE_FOR_EXIT);
         this.node.destroy();
         cc.game.end();
