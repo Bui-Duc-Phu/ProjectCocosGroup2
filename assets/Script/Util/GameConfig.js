@@ -75,8 +75,8 @@ const GameConfig = {
                         Y:713,
                     },
                     MOVE_TO:{
-                        X:800,
-                        Y:337,
+                        X:780,
+                        Y:360,
                     }
                 }
             }

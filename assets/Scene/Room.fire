@@ -159,7 +159,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 514.4190898479566
+      "z": 264.09530205092574
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -320,6 +320,9 @@
     },
     "ultiBulletPrefab": {
       "__uuid__": "4bb042cc-17e8-45ec-be7e-93dcf025b72e"
+    },
+    "bombBulletPrefab": {
+      "__uuid__": "5166f396-2ae1-43bd-b133-a09095d1812b"
     },
     "_id": "fe0wBiKDpFhIX428P9mt64"
   },

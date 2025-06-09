@@ -17,7 +17,6 @@ cc.Class({
         },
         isWinLevel: {
             default: true,
-            type: cc.Boolean,
             visible: false,
         },
         currentLevel: {
@@ -49,7 +48,6 @@ cc.Class({
             type: require('GameAsset')
         }
     },
-
     onLoad() {
         this.registerEvent();
         this.startWave();
@@ -57,21 +55,18 @@ cc.Class({
     onDestroy(){
         this.unregisterEvent();
     },
-
     startWave() {
         this.spawnedCount = 0;
         this.totalMonstersThisWave = this.calculateMonstersForLevel(this.currentLevel);
         this.calculateMonsterTypeCounts();
         this.spawnNextMonster();
     },
-
     calculateMonsterTypeCounts() {
         const probabilities = this.calculateTypeProbabilities(this.currentLevel);
         this.monsterTypeCounts = {};
         for (const [type, probability] of Object.entries(probabilities)) {
             this.monsterTypeCounts[type] = Math.round(this.totalMonstersThisWave * probability);
         }
-
         const total = Object.values(this.monsterTypeCounts).reduce((sum, count) => sum + count, 0);
         if (total !== this.totalMonstersThisWave) {
             const diff = this.totalMonstersThisWave - total;
@@ -120,7 +115,6 @@ cc.Class({
         let dogProb = Math.max(0.4, 0.8 - (level * 0.008));
         let infernoDogProb = Math.min(0.4, 0.15 + (level * 0.005));
         let dragonProb = 0;
-
         if (level >= 10) {
             dragonProb = Math.min(0.2, (level - 10) * 0.004 + 0.05);
             const totalOthers = dogProb + infernoDogProb;
@@ -128,7 +122,6 @@ cc.Class({
             dogProb *= (1 - adjustment);
             infernoDogProb *= (1 - adjustment);
         }
-
         const total = dogProb + infernoDogProb + dragonProb;
         probabilities.DOG = dogProb / total;
         probabilities.INFERNO_DOG = infernoDogProb / total;

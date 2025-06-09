@@ -27,8 +27,10 @@ cc.Class({
             default:null,
             type:cc.Prefab
         },
-     
-        
+        bombBulletPrefab:{
+            default:null,
+            type:cc.Prefab
+        },
     },
     getSpriteFramByType(type){
         switch(type){
@@ -48,6 +50,8 @@ cc.Class({
                 return this.nomalBulletPrefab;
             case GameConfig.BULLET.TYPE.ULTIMATE.NAME:
                 return this.ultiBulletPrefab;
+            case GameConfig.SHOP.ITEM.BOMB.NAME:
+                return this.bombBulletPrefab;
         }
     }
 

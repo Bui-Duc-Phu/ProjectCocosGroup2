@@ -1,23 +1,21 @@
+const EventKey = require('EventKey');
+const Emitter = require('Emitter');
+const GameConfig = require('GameConfig');
 cc.Class({
     extends: require('BulletItem'),
 
     properties: {
-  
     },
     init(data) {
         this._super(data);
         this.enableCollider(false);
     },
-
     onCollisionEnter(other, self) {
         this.onCollide(other, self)
     },
-
-    
-
-    onMove(toPos) {
+    onMove() {
         this.moveTween = cc.tween(this.node)
-        this.moveTween.to(this.durationMove, { x: toPos.x, y: toPos.y })
+        this.moveTween.by(this.durationMove, { y: -400 })
             .call(() => {
                 this.onExplode();
             })
@@ -40,13 +38,14 @@ cc.Class({
         Emitter.emit(EventKey.MONSTER.ON_BOMB_HIT, this.currentTarget, this);
         this.onClear();
     },
-
-    onExplode() {
+    activateTriggerState() {
         this.enableCollider(true);
         this.node.opacity = 0;
-        this.scheduleOnce(() => { this.onClear() }, 0.2);
     },
-
+    onExplode() {
+        this.activateTriggerState();
+        this.scheduleOnce(() => { this.emitAndClear() }, 0.2);
+    },
     enableCollider(enable) {
         const collider = this.getComponent(cc.Collider);
         collider.enabled = enable;

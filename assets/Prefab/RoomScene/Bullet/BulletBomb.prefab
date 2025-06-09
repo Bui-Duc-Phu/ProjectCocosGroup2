@@ -26,10 +26,13 @@
     "_components": [
       {
         "__id__": 5
+      },
+      {
+        "__id__": 6
       }
     ],
     "_prefab": {
-      "__id__": 6
+      "__id__": 7
     },
     "_opacity": 255,
     "_color": {
@@ -195,6 +198,22 @@
       "width": 2000,
       "height": 2000
     },
+    "_id": ""
+  },
+  {
+    "__type__": "5a17bSVZf9Kib+uNX4MLMO0",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "id": 0,
+    "durationMove": 0,
+    "damage": 0,
+    "countTarget": 0,
+    "type": "",
+    "currentTarget": [],
     "_id": ""
   },
   {

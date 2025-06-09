@@ -5,7 +5,7 @@ cc.Class({
 
     properties: {
         id:{
-            default:0,
+            default:"", 
             type:cc.String,
             visible:false,
         },
