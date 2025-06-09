@@ -15,9 +15,6 @@
     "_children": [
       {
         "__id__": 2
-      },
-      {
-        "__id__": 10
       }
     ],
     "_active": false,
@@ -69,13 +66,16 @@
       },
       {
         "__id__": 8
+      },
+      {
+        "__id__": 9
       }
     ],
     "_active": true,
     "_level": 1,
     "_components": [
       {
-        "__id__": 9
+        "__id__": 11
       }
     ],
     "_prefab": null,
@@ -159,7 +159,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 263.1644777755344
+      "z": 514.4190898479566
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -315,11 +315,17 @@
     "bossSpriteFrame": {
       "__uuid__": "020f5c23-6bd4-4afd-a93e-523070164ee3"
     },
+    "nomalBulletPrefab": {
+      "__uuid__": "424b4df2-b5a7-4773-987c-1f2cf0f8cb85"
+    },
+    "ultiBulletPrefab": {
+      "__uuid__": "4bb042cc-17e8-45ec-be7e-93dcf025b72e"
+    },
     "_id": "fe0wBiKDpFhIX428P9mt64"
   },
   {
     "__type__": "cc.Node",
-    "_name": "SpriteFrameAsset",
+    "_name": "GameAsset",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -376,36 +382,21 @@
     "_id": "0dvEExTDhJx7aR7xSCFFYf"
   },
   {
-    "__type__": "cc.Canvas",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
-    },
-    "_enabled": true,
-    "_designResolution": {
-      "__type__": "cc.Size",
-      "width": 1560,
-      "height": 720
-    },
-    "_fitWidth": true,
-    "_fitHeight": true,
-    "_id": "81VEAghKVKVqizBD2dfYtq"
-  },
-  {
     "__type__": "cc.Node",
-    "_name": "Bullet",
+    "_name": "BulletController",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 1
+      "__id__": 2
     },
     "_children": [],
     "_active": true,
-    "_level": 1,
-    "_components": [],
-    "_prefab": {
-      "__id__": 11
-    },
+    "_level": 2,
+    "_components": [
+      {
+        "__id__": 10
+      }
+    ],
+    "_prefab": null,
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -446,17 +437,36 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_id": "46QHch+ndFAYvBZqGpjM22"
+    "_id": "a5/2ONJe9GQapVtod9gDfn"
   },
   {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 10
+    "__type__": "74c61hS0aRAyK8BNFRTux9y",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 9
     },
-    "asset": {
-      "__uuid__": "4bb042cc-17e8-45ec-be7e-93dcf025b72e"
+    "_enabled": true,
+    "gameAsset": {
+      "__id__": 7
     },
-    "fileId": "46QHch+ndFAYvBZqGpjM22",
-    "sync": false
+    "_id": "db0WD7A9dFQ6PFLIDSTGDt"
+  },
+  {
+    "__type__": "cc.Canvas",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "_designResolution": {
+      "__type__": "cc.Size",
+      "width": 1560,
+      "height": 720
+    },
+    "_fitWidth": true,
+    "_fitHeight": true,
+    "_id": "81VEAghKVKVqizBD2dfYtq"
   }
 ]
