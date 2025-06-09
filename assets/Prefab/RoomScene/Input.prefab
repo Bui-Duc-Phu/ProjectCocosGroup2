@@ -1886,8 +1886,9 @@
     "bombButton": {
       "__id__": 44
     },
-    "cooldownPrefab": null,
-    "cooldowns": [],
+    "cooldownPrefab": {
+      "__uuid__": "8212c452-9c22-4e56-8451-114e155510a3"
+    },
     "_id": ""
   },
   {
