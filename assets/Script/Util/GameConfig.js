@@ -68,6 +68,7 @@ const GameConfig = {
                 COEFFICIENT_DAMAGE:1.25,
                 COUNT_TARGET:1000,
                 DURATION_MOVE:1.5,
+                MOVE_BY_X:1000,
                 COOLDOWN:1,
                 POSITION:{
                     INIT:{
@@ -75,8 +76,8 @@ const GameConfig = {
                         Y:713,
                     },
                     MOVE_TO:{
-                        X:780,
-                        Y:360,
+                        X:800,
+                        Y:337,
                     }
                 }
             }
