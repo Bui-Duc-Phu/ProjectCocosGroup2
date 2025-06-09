@@ -8,10 +8,10 @@ const EventKey = {
         STOP_BGM: 'STOP_BGM',
     },
     POPUP: {
-        SHOW: 'SHOW',
-    },
-    GOLD:{
-        CHANGE_GOLD: 'CHANGE_GOLD'
+        SHOW: 'showPopup',
+        // SHOW_SHOP: 'showPopupShop',
+        // SHOW_HERO: 'showPopupHero',
+        // SHOW_SKILL: 'showPopupSkill',
     },
     MONSTER: {
         ON_HIT  : 'ON_HIT',

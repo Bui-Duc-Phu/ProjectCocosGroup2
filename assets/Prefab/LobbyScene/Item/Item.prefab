@@ -32,13 +32,10 @@
     "_components": [
       {
         "__id__": 19
-      },
-      {
-        "__id__": 20
       }
     ],
     "_prefab": {
-      "__id__": 21
+      "__id__": 20
     },
     "_opacity": 255,
     "_color": {
@@ -684,9 +681,7 @@
     "_enabled": true,
     "duration": 0.1,
     "zoomScale": 1.2,
-    "clickEvents": [
-      null
-    ],
+    "clickEvents": [],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$transition": 0,
@@ -742,17 +737,6 @@
     "_N$target": {
       "__id__": 1
     },
-    "_id": ""
-  },
-  {
-    "__type__": "9e4d1gp08BFQ6i1R52bC/rV",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "price": 200,
     "_id": ""
   },
   {
