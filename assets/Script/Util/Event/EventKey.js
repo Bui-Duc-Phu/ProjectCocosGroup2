@@ -33,12 +33,6 @@ const EventKey = {
         STATE_CHANGED: 'STATE_CHANGED',    
         REQUEST_EXIT: 'REQUEST_EXIT',            
         PREPARE_FOR_EXIT: 'PREPARE_FOR_EXIT', 
-    },
-    INPUT: {
-        MOVE_UP: 'MOVE_UP',
-        MOVE_DOWN: 'MOVE_DOWN',
-        SHOOT_ULTIMATE: 'SHOOT_ULTIMATE',
-        USE_BOMB: 'USE_BOMB',
     }
 };
 
