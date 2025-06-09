@@ -39,7 +39,6 @@ cc.Class({
     },
     onLoad() {
         this.init();
-        this.node.parent = null;
     },
     init() {
         const volumeBGM = cc.sys.localStorage.getItem(LocalStorageKey.SOUND.BGM_VOLUME_KEY);
