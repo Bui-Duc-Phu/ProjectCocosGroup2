@@ -25,6 +25,10 @@ cc.Class({
             default: null,
             type: cc.Prefab,
         },
+        isMoveButtonEnabled: {
+            default: true,
+            visible: false,
+        },
     },
     onLoad() {
         this.setCooldown();
@@ -35,6 +39,28 @@ cc.Class({
         this.moveDownButton.node.on('click', this.onMoveDown, this);
         this.skillButton.node.on('click', this.onUseSkill, this);
         this.bombButton.node.on('click', this.onUseBomb, this);
+    },
+    registerKeyboardEvents() {
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+    },
+
+    onKeyDown(event) {
+        switch (event.keyCode) {
+            case cc.macro.KEY.w:
+            case cc.macro.KEY.up:
+                this.onMoveUp();
+                break;
+            case cc.macro.KEY.s:
+            case cc.macro.KEY.down:
+                this.onMoveDown();
+                break;
+            case cc.macro.KEY.space:
+                this.onUseSkill();
+                break;
+            case cc.macro.KEY.f:
+                this.onUseBomb();
+                break;
+        }
     },
     setCooldown() {
         this.skillCooldown = cc.instantiate(this.cooldownPrefab);
@@ -62,5 +88,6 @@ cc.Class({
         this.moveDownButton.node.off('click', this.onMoveDown, this);
         this.skillButton.node.off('click', this.onUseSkill, this);
         this.bombButton.node.off('click', this.onUseBomb, this);
+        cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
     },
 });
