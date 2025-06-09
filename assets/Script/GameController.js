@@ -59,7 +59,7 @@ cc.Class({
 
     initializeStateMachine() {
         this.fsm = new StateMachine({
-            init: FSM_STATES.LOADING,
+            init: FSM_STATES.LOBBY,
             transitions: [
                 { name: 'finishLoading', from: FSM_STATES.LOADING, to: FSM_STATES.LOBBY },
                 { name: 'enterRoom', from: FSM_STATES.LOBBY, to: FSM_STATES.ROOM },
