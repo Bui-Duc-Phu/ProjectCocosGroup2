@@ -9,6 +9,19 @@ const typePopup ={
 }
 cc.Class({
     extends: cc.Component,
+    properties:{
+        popupNode:{
+            type:cc.Node,
+            default:null
+        }
+    },
+    start() {
+        if (!cc.game.isPersistRootNode(this.popupNode)) {
+            cc.game.addPersistRootNode(this.popupNode);
+        } else {
+            this.popupNode.destroy(); 
+        }
+    },
     showSetting(){
         Emitter.emit(EventKey.POPUP.SHOW,typePopup.Setting);
     },
