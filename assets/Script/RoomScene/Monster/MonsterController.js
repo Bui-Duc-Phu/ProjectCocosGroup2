@@ -44,9 +44,9 @@ cc.Class({
             type: cc.Float,
             tooltip: "Time between monster spawns in seconds"
         },
-        spriteFrameAsset: {
+        gameAsset: {
             default: null,
-            type: require('SpriteFrameAsset')
+            type: require('GameAsset')
         }
     },
 
@@ -165,7 +165,7 @@ cc.Class({
         this.listChar.push(monsterItem);
     },
     getSpriteFrameByType(type) {
-        return this.spriteFrameAsset.getSpriteFramByType(type);
+        return this.gameAsset.getSpriteFramByType(type);
     },
     calculateBaseStats(level) {
         const levelMultiplier = 1 + (level - 1) * 0.15 + Math.pow(level - 1, 1.2) * 0.02;
@@ -235,6 +235,7 @@ cc.Class({
         this.eventMap = new Map([
             [EventKey.MONSTER.ON_HIT, this.onMonsterHit.bind(this)],
             [EventKey.MONSTER.ON_ULTIMATE_HIT, this.onUltimateHit.bind(this)],
+            [EventKey.MONSTER.ON_BOMB_HIT, this.onBombHit.bind(this)],
             [EventKey.MONSTER.ON_DIE, this.onMonsterDie.bind(this)],
         ]);
         this.eventMap.forEach((handler, key) => {
@@ -254,6 +255,11 @@ cc.Class({
         this.takeDamage(monster, bullet);
     },
     onUltimateHit(monsters, bullet) {
+        monsters.forEach((monster,index) => {
+            this.takeDamage(monster, bullet);
+        });
+    },
+    onBombHit(monsters, bullet) {
         monsters.forEach((monster,index) => {
             this.takeDamage(monster, bullet);
         });

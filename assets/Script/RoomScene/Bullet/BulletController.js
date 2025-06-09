@@ -60,6 +60,9 @@ cc.Class({
     onShootUltimateBullet(worldPos) {
         this.initBulletByType(GameConfig.BULLET.TYPE.ULTIMATE, worldPos);
     },
+    onShootBombBullet(worldPos) {
+        this.initBulletByType(GameConfig.SHOP.ITEM.BOMB, worldPos);
+    },
     registerEvent() {
         this.registerEventFunction();
         Emitter.emit(EventKey.PLAYER.SHOOT_NOMAL, this.onShootNomal);

@@ -47,6 +47,7 @@ const GameConfig = {
                 DURATION_MOVE:1.5,
                 COUNT_TARGET:1,
                 MOVE_BY_X:3000,
+                COOLDOWN:0.5,
             },
             ULTIMATE:{
                 NAME:"ULTIMATE",    
@@ -54,6 +55,7 @@ const GameConfig = {
                 DURATION_MOVE:1.5,
                 COUNT_TARGET:5,
                 MOVE_BY_X:3000,
+                COOLDOWN:5,
             },
         }
     },
@@ -66,7 +68,7 @@ const GameConfig = {
                 COEFFICIENT_DAMAGE:1.25,
                 COUNT_TARGET:1000,
                 DURATION_MOVE:1.5,
-                MOVE_BY_X:1000,
+                COOLDOWN:1,
                 POSITION:{
                     INIT:{
                         X:600,

@@ -290,7 +290,7 @@
     "totalMonstersThisWave": 0,
     "monsterTypeCounts": {},
     "spawnInterval": 1.5,
-    "spriteFrameAsset": {
+    "gameAsset": {
       "__id__": 7
     },
     "_id": "35bwBqvKlMPaUAl/F1JUmR"
