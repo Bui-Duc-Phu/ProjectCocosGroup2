@@ -33,5 +33,7 @@ class GoldController {
         cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.GOLD, currentGold.toString());
         return true;
     }
-}
-module.exports = GoldController;
+};
+const instance = new GoldController();
+
+module.exports = instance;
