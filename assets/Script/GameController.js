@@ -43,6 +43,9 @@ cc.Class({
     onDestroy() {
         this.unregisterEventListeners();
         cc.director.off(cc.Director.EVENT_AFTER_SCENE_LAUNCH, this.onSceneLaunched, this);
+        cc.director.preloadScene('Portal', () => {
+            cc.director.loadScene('Portal');
+        });
     },
 
     addSingletonToList() {
@@ -147,6 +150,6 @@ cc.Class({
         this.cleanupSingletonList();
         Emitter.emit(EventKey.GAME.PREPARE_FOR_EXIT);
         this.node.destroy();
-        cc.game.end();
+        
     },
 });

@@ -47,6 +47,7 @@ cc.Class({
             [EventKey.SOUND.PLAY_SFX]: this.playSFX.bind(this),
             [EventKey.SOUND.PLAY_BGM]: this.playBGM.bind(this),
             [EventKey.SOUND.STOP_BGM]: this.stopBGM.bind(this),
+            [EventKey.GAME.PREPARE_FOR_EXIT]: this.onDestroy.bind(this),
         };
         for (const event in this.eventHandlers) {
             Emitter.registerEvent(event, this.eventHandlers[event]);
@@ -87,9 +88,7 @@ cc.Class({
         cc.sys.localStorage.setItem(LocalStorageKey.SOUND.SFX_VOLUME_KEY, this.sfxVolume.toString());
     },
     onEnableBGM(isEnabled, bgmName) {
-        console.log("vo ham enabel bgm")
         if (isEnabled) {
-            console.log("nhan su kien phat bgm");
             this.playBGM(bgmName);
         } else {
             this.stopBGM();
