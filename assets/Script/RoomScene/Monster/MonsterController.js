@@ -46,7 +46,7 @@ cc.Class({
         },
         spriteFrameAsset: {
             default: null,
-            type: require('SpriteFrameAsset')
+            type: require('GameAsset')
         }
     },
 
