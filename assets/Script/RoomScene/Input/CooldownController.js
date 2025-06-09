@@ -10,7 +10,7 @@ cc.Class({
             default: 0,
             visible: false,
         },
-        isCooling: {
+        isOnCooldown: {
             default: false,
             visible: false,
         },
@@ -37,12 +37,12 @@ cc.Class({
     onEnable() {
         this.totalDuration = durationSeconds;
         this.remainingTime = durationSeconds;
-        this.isCooling = true;
+        this.isOnCooldown = true;
         this.progressBarComponent.progress = 1;
     },
 
     update(dt) {
-        if (!this.isCooling) {
+        if (!this.isOnCooldown) {
             return;
         }
 
@@ -55,7 +55,7 @@ cc.Class({
         }
     },
     onDisable() {
-        this.isCooling = false;
+        this.isOnCooldown = false;
         this.progressBarComponent.progress = 0;
     },
 });
