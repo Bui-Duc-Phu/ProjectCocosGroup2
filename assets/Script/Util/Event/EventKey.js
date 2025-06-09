@@ -24,8 +24,7 @@ const EventKey = {
     GAME: {
         STATE_CHANGED: 'STATE_CHANGED',    
         REQUEST_EXIT: 'REQUEST_EXIT',            
-        PREPARE_FOR_EXIT: 'PREPARE_FOR_EXIT',       
-        CLEANUP_SINGLETONS: 'CLEANUP_SINGLETONS',   
+        PREPARE_FOR_EXIT: 'PREPARE_FOR_EXIT', 
     }
 };
 
