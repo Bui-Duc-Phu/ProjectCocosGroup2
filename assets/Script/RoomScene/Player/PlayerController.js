@@ -16,6 +16,7 @@ cc.Class({
     },
     init() {
         this.registerEventListener();
+        this.playerScript = this.player.getComponent('Player');
     },
     registerEventListener() {
         const eventHandlers = {
@@ -26,36 +27,52 @@ cc.Class({
             [EventKey.ROOM.PAUSE]: this.onPause.bind(this),
             [EventKey.ROOM.RESUME]: this.onResume.bind(this),
             [EventKey.ROOM.RESTART]: this.onRestart.bind(this),
+            [EventKey.PLAYER.ON_HIT]: this.onHit.bind(this),
         };
         for (const event in eventHandlers) {
             Emitter.registerEvent(event, eventHandlers[event]);
         }
     },
     onMoveUp() {
-        this.player.getComponent('Player').fsm.toMoveUp();
+        if (!this.playerScript.fsm.can('toMoveUp')) {
+            return;
+        }
+        this.playerScript.fsm.toMoveUp();
     },
     onMoveDown() {
-        this.player.getComponent('Player').fsm.toMoveDown();
+        if (!this.playerScript.fsm.can('toMoveDown')) {
+            return;
+        }
+        this.playerScript.fsm.toMoveDown();
     },
     onShootUltimate() {
-        this.player.getComponent('Player').fsm.toShootUltimate();
+        if (!this.playerScript.fsm.can('toShootUltimate')) {
+            return;
+        }
+        this.playerScript.fsm.toShootUltimate();
     },
     onUseBomb() {
-        this.player.getComponent('Player').fsm.toUseBomb();
+        if (!this.playerScript.fsm.can('toUseBomb')) {
+            return;
+        }
+        this.playerScript.fsm.toUseBomb();
     },
     onPause() {
-        this.player.getComponent('Player').fsm.toPortal();
+        this.playerScript.fsm.toPortal();
     },
     onResume() {
-        this.player.getComponent('Player').fsm.toShoot();
+        this.playerScript.fsm.toShoot();
     },
     onRestart() {
-        this.player.getComponent('Player').init();
-        this.player.getComponent('Player').fsm.toShoot();
+        this.playerScript.init();
+        this.playerScript.fsm.toShoot();
     },
     onDestroy() {
         for (const event in this.eventHandlers) {
             Emitter.unregisterEvent(event, this.eventHandlers[event]);
         }
+    },
+    onHit(damage) {
+        this.playerScript.takeDamage(damage);
     },
 });

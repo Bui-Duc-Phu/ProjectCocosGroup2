@@ -1939,7 +1939,7 @@
       "__id__": 37
     },
     "cooldownPrefab": {
-      "__uuid__": "9eed59d4-4995-4dda-b8ff-52ea3e22efa6"
+      "__uuid__": "74788430-a5da-4c45-b231-fb687ad6009d"
     },
     "isMoveButtonEnabled": true,
     "_id": "62XH9KDuZJVowKZzwy/Hjo"
@@ -2264,7 +2264,7 @@
     "_enabled": true,
     "maxHP": 1500,
     "currentHP": 1500,
-    "PlayerSpine": null,
+    "playerSpine": null,
     "hpProgressBar": {
       "__id__": 44
     },

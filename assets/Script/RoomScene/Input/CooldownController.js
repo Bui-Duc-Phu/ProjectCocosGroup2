@@ -21,26 +21,24 @@ cc.Class({
         durationSeconds: {
             default: 0,
             type: cc.Integer,
+            visible: false,
         },
     },
 
     onLoad() {
         this.init();
     },
-
     init() {
         this.progressBarComponent = this.node.getComponent(cc.ProgressBar);
         this.node.active = false;
         this.progressBarComponent.progress = 0;
     },
-
     onEnable() {
-        this.totalDuration = durationSeconds;
-        this.remainingTime = durationSeconds;
+        this.totalDuration = this.durationSeconds;
+        this.remainingTime = this.durationSeconds;
         this.isOnCooldown = true;
         this.progressBarComponent.progress = 1;
     },
-
     update(dt) {
         if (!this.isOnCooldown) {
             return;
