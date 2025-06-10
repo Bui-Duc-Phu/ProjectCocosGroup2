@@ -5,7 +5,10 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-
+        gameAsset: {
+            default: null,
+            type: require('GameAsset')
+        },
     },
 
     onLoad(){
@@ -18,12 +21,18 @@ cc.Class({
      spawnHitEffect(type,worldPos){
         const prefab = this.gameAsset.getHitEffectPrefabByType(type);
         const hitEffect = cc.instantiate(prefab);
-        hitEffect.setPosition(worldPos);
+        const component = hitEffect.getComponent('HitEffectItem');
+        component.init({id:this.genID(),type:type});
+        this.setPositionHitEffect(hitEffect,worldPos);
         this.node.addChild(hitEffect);
+        component.playHitEffect();
      },
      setPositionHitEffect(hitEffect,worldPos){
         const localPos = this.node.convertToNodeSpaceAR(worldPos);
         hitEffect.setPosition(localPos);
+     },
+     genID(){
+        return Date.now();   
      },
      registerEvent(){
         this.eventMap = new Map([
@@ -41,7 +50,7 @@ cc.Class({
     },
     onMonsterHit(monster, bullet){
         console.log('onHitEffect',bullet.type);
-        this.spawnHitEffect(bullet.type, monster.node.position);
+        this.spawnHitEffect(bullet.type, bullet.node.position);
     }
 
 
