@@ -23,7 +23,7 @@ const EventKey = {
         ON_HIT: 'ON_HIT',
         SHOOT_NOMAL: 'SHOOT_NOMAL_BULLET',
         SHOOT_ULTIMATE: 'SHOOT_ULTIMATE_BULLET',
-
+        ON_DIE: 'ON_DIE',
     },
     SCENE: {
         LOAD_LOBBY: 'LOAD_LOBBY', 
