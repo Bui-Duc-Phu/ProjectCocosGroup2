@@ -10,7 +10,7 @@ cc.Class({
             default: 0,
             visible: false,
         },
-        isCooling: {
+        isOnCooldown: {
             default: false,
             visible: false,
         },
@@ -21,28 +21,26 @@ cc.Class({
         durationSeconds: {
             default: 0,
             type: cc.Integer,
+            visible: false,
         },
     },
 
     onLoad() {
         this.init();
     },
-
     init() {
         this.progressBarComponent = this.node.getComponent(cc.ProgressBar);
         this.node.active = false;
         this.progressBarComponent.progress = 0;
     },
-
     onEnable() {
-        this.totalDuration = durationSeconds;
-        this.remainingTime = durationSeconds;
-        this.isCooling = true;
+        this.totalDuration = this.durationSeconds;
+        this.remainingTime = this.durationSeconds;
+        this.isOnCooldown = true;
         this.progressBarComponent.progress = 1;
     },
-
     update(dt) {
-        if (!this.isCooling) {
+        if (!this.isOnCooldown) {
             return;
         }
 
@@ -55,7 +53,7 @@ cc.Class({
         }
     },
     onDisable() {
-        this.isCooling = false;
+        this.isOnCooldown = false;
         this.progressBarComponent.progress = 0;
     },
 });
