@@ -20,6 +20,7 @@ cc.Class({
         maxHP: {
             default: 1500,
             type: cc.Integer,
+            visible: false,
         },
         currentHP: {
             default: 1500,
@@ -29,10 +30,12 @@ cc.Class({
         fsm: {
             default: null,
             serializable: false,
+            visible: false,
         },
-        UserSpine: {
+        PlayerSpine: {
             default: null,
             type: sp.Skeleton,
+            visible: false,
         },
         hpProgressBar: {
             default: null,
@@ -44,9 +47,10 @@ cc.Class({
     },
     init() {
         this.currentHP = this.maxHP;
-        this.UserSpine = this.node.getChildByName('UserSpine').getComponent(sp.Skeleton);
+        this.PlayerSpine = this.node.getChildByName('PlayerSpine').getComponent(sp.Skeleton);
+        this.hpProgressBar.progress = this.currentHP / this.maxHP;
         this.initStateMachine();
-        this.UserSpine.setAnimation(0, SpineAnimation.ANIM_LIST.IDLE, true);
+        this.PlayerSpine.setAnimation(0, SpineAnimation.ANIM_LIST.IDLE, true);
     },
     initStateMachine() {
         this.fsm = new StateMachine({
@@ -70,55 +74,55 @@ cc.Class({
                 onEnterHit: () => this.handleEnterHit(),
                 onEnterDie: () => this.handleEnterDie(),
 
-                onLeavePortal: () => this.UserSpine.setCompleteListener(null),
-                onLeaveMoveUp: () => this.UserSpine.setCompleteListener(null),
-                onLeaveMoveDown: () => this.UserSpine.setCompleteListener(null),
-                onLeaveShootUltimate: () => this.UserSpine.setCompleteListener(null),
-                onLeaveHit: () => this.UserSpine.setCompleteListener(null),
+                onLeavePortal: () => this.PlayerSpine.setCompleteListener(null),
+                onLeaveMoveUp: () => this.PlayerSpine.setCompleteListener(null),
+                onLeaveMoveDown: () => this.PlayerSpine.setCompleteListener(null),
+                onLeaveShootUltimate: () => this.PlayerSpine.setCompleteListener(null),
+                onLeaveHit: () => this.PlayerSpine.setCompleteListener(null),
             },
         });
     },
     handleEnterPortal() {
-        this.UserSpine.setAnimation(1, SpineAnimation.ANIM_LIST.PORTAL, false);
-        this.UserSpine.setCompleteListener((trackEntry) => {
+        this.PlayerSpine.setAnimation(1, SpineAnimation.ANIM_LIST.PORTAL, false);
+        this.PlayerSpine.setCompleteListener((trackEntry) => {
             this.fsm.toShoot();
         });
     },
     handleEnterShoot() {
-        this.UserSpine.setAnimation(2, SpineAnimation.ANIM_LIST.SHOOT, true);
+        this.PlayerSpine.setAnimation(2, SpineAnimation.ANIM_LIST.SHOOT, true);
     },
     handleLeaveShoot() {
-        this.UserSpine.clearTrack(2);
+        this.PlayerSpine.clearTrack(2);
     },
     handleEnterMoveUp() {
-        this.UserSpine.setAnimation(1, SpineAnimation.ANIM_LIST.RUN, false);
-        this.UserSpine.setCompleteListener((trackEntry) => {
+        this.PlayerSpine.setAnimation(1, SpineAnimation.ANIM_LIST.RUN, false);
+        this.PlayerSpine.setCompleteListener((trackEntry) => {
             this.fsm.toShoot();
         });
     },
     handleEnterMoveDown() {
         Emitter.emit(EventKey.PLAYER.STATE_CHANGED, FSM_STATE.MOVE_DOWN);
-        this.UserSpine.setAnimation(1, SpineAnimation.ANIM_LIST.RUN, false);
-        this.UserSpine.setCompleteListener(() => {
+        this.PlayerSpine.setAnimation(1, SpineAnimation.ANIM_LIST.RUN, false);
+        this.PlayerSpine.setCompleteListener(() => {
             this.fsm.toShoot();
         });
     },
     handleEnterShootUltimate() {
-        this.UserSpine.setAnimation(1, SpineAnimation.ANIM_LIST.SHOOT, false);
-        this.UserSpine.setCompleteListener(() => {
+        this.PlayerSpine.setAnimation(1, SpineAnimation.ANIM_LIST.SHOOT, false);
+        this.PlayerSpine.setCompleteListener(() => {
             Emitter.emit(EventKey.PLAYER.SHOOT_ULTIMATE);
             this.fsm.toShoot();
         });
     },
     handleEnterHit() {
-        this.UserSpine.setAnimation(1, SpineAnimation.ANIM_LIST.IDLE_TURNS, false);
-        this.UserSpine.setCompleteListener(() => {
+        this.PlayerSpine.setAnimation(1, SpineAnimation.ANIM_LIST.IDLE_TURNS, false);
+        this.PlayerSpine.setCompleteListener(() => {
             this.fsm.toShoot();
         });
     },
     handleEnterDie() {
-        this.UserSpine.setAnimation(1, SpineAnimation.ANIM_LIST.DEATH, false);
-        this.UserSpine.setCompleteListener(() => {
+        this.PlayerSpine.setAnimation(1, SpineAnimation.ANIM_LIST.DEATH, false);
+        this.PlayerSpine.setCompleteListener(() => {
             this.node.active = false;
             Emitter.emit(EventKey.PLAYER.ON_DIE, this.node);
         });
@@ -127,6 +131,7 @@ cc.Class({
         if (this.fsm.is(FSM_STATE.DIE)) return;
 
         this.currentHP -= amount;
+        this.hpProgressBar.progress = this.currentHP / this.maxHP;
         Emitter.emit(EventKey.PLAYER.ON_HIT, this.currentHP, this.maxHP);
 
         if (this.currentHP <= 0) {
@@ -137,6 +142,6 @@ cc.Class({
         }
     },
     onDisable() {
-        this.UserSpine.setCompleteListener(null);
+        this.PlayerSpine.setCompleteListener(null);
     }
 });
