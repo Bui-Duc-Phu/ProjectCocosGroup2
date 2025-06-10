@@ -33,6 +33,7 @@ cc.Class({
     onLoad() {
         this.setCooldown();
         this.registerButtonEvents();
+        this.registerKeyboardEvents();
     },
     registerButtonEvents() {
         this.moveUpButton.node.on('click', this.onMoveUp, this);
@@ -64,12 +65,12 @@ cc.Class({
     },
     setCooldown() {
         this.skillCooldown = cc.instantiate(this.cooldownPrefab);
-        skillCooldown.getComponent('CooldownController').durationSeconds = GameConfig.BULLET.TYPE.ULTIMATE.COOLDOWN;
-        skillCooldown.parent = this.node.getChildByName('SkillInput');
+        this.skillCooldown.getComponent('CooldownController').durationSeconds = GameConfig.BULLET.TYPE.ULTIMATE.COOLDOWN;
+        this.skillCooldown.parent = this.node.getChildByName('SkillInput');
 
         this.bombCooldown = cc.instantiate(this.cooldownPrefab);
-        bombCooldown.getComponent('CooldownController').durationSeconds = GameConfig.SHOP.ITEM.BOMB.COOLDOWN;
-        bombCooldown.parent = this.node.getChildByName('BombInput');    
+        this.bombCooldown.getComponent('CooldownController').durationSeconds = GameConfig.SHOP.ITEM.BOMB.COOLDOWN;
+        this.bombCooldown.parent = this.node.getChildByName('BombInput');    
     },
     onMoveUp() {
         Emitter.emit(EventKey.INPUT.MOVE_UP);
@@ -79,9 +80,11 @@ cc.Class({
     },
     onUseSkill() {
         Emitter.emit(EventKey.INPUT.SHOOT_ULTIMATE);
+        this.skillCooldown.active = true;
     },  
     onUseBomb() {
         Emitter.emit(EventKey.INPUT.USE_BOMB);
+        this.bombCooldown.active = true;
     },
     onDestroy() {
         this.moveUpButton.node.off('click', this.onMoveUp, this);

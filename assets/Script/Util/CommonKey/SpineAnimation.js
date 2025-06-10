@@ -1,4 +1,4 @@
-const ANIM_LIST = {
+const SpineAnimation = {
     AIM : 'aim',
     DEATH : 'death',
     HOVERBOARD : 'hoverboard',
@@ -12,6 +12,4 @@ const ANIM_LIST = {
     WALK : 'walk',
 };
 
-module.exports = {
-    ANIM_LIST: ANIM_LIST,
-};
+module.exports = SpineAnimation;
