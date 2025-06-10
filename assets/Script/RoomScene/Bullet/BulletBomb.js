@@ -21,9 +21,9 @@ cc.Class({
             })
             .start();
     },
-    onCollide(target, self){
-       if(!this.canAddTarget()){ return }
-       this.addTargetIfValid(target);
+    onCollide(target, self) {
+        if (!this.canAddTarget()) { return }
+        this.addTargetIfValid(target);
     },
     canAddTarget() {
         return this.currentTarget.length < this.countTarget;
@@ -56,5 +56,5 @@ cc.Class({
         this.node.destroy();
     },
 
- 
+
 });

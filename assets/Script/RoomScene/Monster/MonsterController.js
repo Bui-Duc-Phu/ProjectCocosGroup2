@@ -92,7 +92,7 @@ cc.Class({
         const durationMove = this.calculateMoveDuration(type, level);
         const gold = baseStats.gold * type.COEFFICIENT_GOLD;
         const spriteFrame = this.getSpriteFrameByType(type.NAME);
-        
+
         const monster = cc.instantiate(this.prefabMonster);
         const monsterItem = monster.getComponent(require('Monster'));
         monsterItem.init({
@@ -105,7 +105,7 @@ cc.Class({
             level: level,
             spriteFrame
         });
-        
+
         this.node.addChild(monster);
         this.positionInit(monster, position);
         monsterItem.onMove();

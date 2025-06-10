@@ -4,35 +4,35 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        id:{
-            default:"", 
-            type:cc.String,
-            visible:false,
+        id: {
+            default: "",
+            type: cc.String,
+            visible: false,
         },
-        durationMove:{
-            default:0,
-            type:cc.Float,
-            visible:false,
+        durationMove: {
+            default: 0,
+            type: cc.Float,
+            visible: false,
         },
-        damage:{
-            default:0,
-            type:cc.Float,
-            visible:false,
+        damage: {
+            default: 0,
+            type: cc.Float,
+            visible: false,
         },
-        countTarget:{
-            default:0,
-            type:cc.Integer,
-            visible:false,
+        countTarget: {
+            default: 0,
+            type: cc.Integer,
+            visible: false,
         },
-        type:{
-            default:"",
-            type:cc.String,
-            visible:false,
+        type: {
+            default: "",
+            type: cc.String,
+            visible: false,
         },
-        currentTarget:{
-            default:[],
-            type:[require('MonsterItem')],
-            visible:false,
+        currentTarget: {
+            default: [],
+            type: [require('MonsterItem')],
+            visible: false,
         },
     },
     init(data) {
@@ -43,12 +43,12 @@ cc.Class({
         this.countTarget = data.countTarget
     },
     onMove() {
-       
+
     },
-    onClear(){
+    onClear() {
     },
 
-    onCollide(){
+    onCollide() {
 
     },
     stopTween(...tweens) {
@@ -58,8 +58,8 @@ cc.Class({
             }
         });
     },
- 
-   
+
+
 
 
 
