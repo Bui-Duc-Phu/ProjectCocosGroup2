@@ -127,13 +127,13 @@ cc.Class({
         this.playerSpine.setCompleteListener(null);
     },
     handleUseBomb() {
+        this.unschedule(this.boundOnShootBullet);
+        this.boundOnShootBullet = null;
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
         this.playerSpine.setCompleteListener(() => {
             Emitter.emit(EventKey.PLAYER.USE_BOMB);
             this.fsm.toShoot();
         });
-        this.unschedule(this.boundOnShootBullet);
-        this.boundOnShootBullet = null;
     },
     handleEnterMoveUp() {
         this.targetY = this.playerFrame.position.y;
@@ -164,13 +164,13 @@ cc.Class({
             .start();
     },
     handleEnterShootUltimate() {
+        this.unschedule(this.boundOnShootBullet);
+        this.boundOnShootBullet = null;
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
         this.playerSpine.setCompleteListener(() => {
             Emitter.emit(EventKey.PLAYER.SHOOT_ULTIMATE);
             this.fsm.toShoot();
         });
-        this.unschedule(this.boundOnShootBullet);
-        this.boundOnShootBullet = null;
     },
     handleEnterHit() {
         this.playerSpine.setAnimation(1, SpineAnimation.IDLE_TURNS, false);
@@ -179,12 +179,13 @@ cc.Class({
         });
     },
     handleEnterDie() {
+        this.unschedule(this.boundOnShootBullet);
+        this.boundOnShootBullet = null;
         this.playerSpine.setAnimation(1, SpineAnimation.DEATH, false);
         this.playerSpine.setCompleteListener(() => {
             this.node.active = false;
             Emitter.emit(EventKey.PLAYER.ON_DIE, this.node);
         });
-        this.unschedule(this.boundOnShootBullet);
     },
     takeDamage(amount) {
         if (this.fsm.is(FSM_STATE.DIE)) return;
