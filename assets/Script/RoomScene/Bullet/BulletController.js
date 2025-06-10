@@ -13,20 +13,29 @@ cc.Class({
 
     },
 
-    onLoad(){
-        this.colisionManager()
+    onLoad() {
+        this.registerEvent();
     },
-    colisionManager(){
-        let manager = cc.director.getCollisionManager();
-        manager.enabled = true
+    onDestroy() {
+        this.unregisterEvent();
     },
-    shootUltimateBullet(worldPos){
-        this.onShootUltimateBullet(cc.v2(155,355))
+    registerEvent() {
+        this.eventMap = new Map([
+            [EventKey.PLAYER.SHOOT_NOMAL, this.onShootNomalBullet.bind(this)],
+            [EventKey.PLAYER.SHOOT_ULTIMATE, this.onShootUltimateBullet.bind(this)],
+            [EventKey.PLAYER.SHOOT_BOMB, this.onShootBombBullet.bind(this)],
+        ]);
+        this.eventMap.forEach((handler, key) => {
+            Emitter.registerEvent(key, handler);
+        });
     },
-    shootNomalBullet(worldPos){
-        this.onShootNomalBullet(cc.v2(155,355))
+    unregisterEvent() {
+        if (!this.eventMap) return;
+        this.eventMap.forEach((handler, key) => {
+            Emitter.removeEvent(key, handler);
+        });
+        this.eventMap.clear();
     },
-
     initBulletByType(type, worldPos) {
         const prefab = this.gameAsset.getBulletPrefabByType(type.NAME);
         const bullet = cc.instantiate(prefab);
@@ -60,19 +69,19 @@ cc.Class({
     onShootUltimateBullet(worldPos) {
         this.initBulletByType(GameConfig.BULLET.TYPE.ULTIMATE, worldPos);
     },
-    registerEvent() {
-        this.registerEventFunction();
-        Emitter.emit(EventKey.PLAYER.SHOOT_NOMAL, this.onShootNomal);
-        Emitter.emit(EventKey.PLAYER.SHOOT_ULTIMATE, this.onShootUltimate);
+    onShootBombBullet() {
+        console.log('onShootBombBullet');
+        const BomDType = GameConfig.SHOP.ITEM.BOMB;
+        const worldPos = cc.v2(BomDType.POSITION.INIT.X, BomDType.POSITION.INIT.Y)
+        this.initBulletByType(BomDType, worldPos);
     },
-    registerEventFunction() {
-        this.onShootNomal = this.onShootNomalBullet.bind(this);
-        this.onShootUltimate = this.onShootUltimateBullet.bind(this);
+    shootUltimateBullet(worldPos) {
+        this.onShootUltimateBullet(cc.v2(155, 355))
     },
-    unregisterEvent() {
-        Emitter.removeEvent(EventKey.PLAYER.SHOOT_NOMAL, this.onShootNomal);
-        Emitter.removeEvent(EventKey.PLAYER.SHOOT_ULTIMATE, this.onShootUltimate);
+    shootNomalBullet(worldPos) {
+        this.onShootNomalBullet(cc.v2(155, 355))
     },
+
 
 
 
