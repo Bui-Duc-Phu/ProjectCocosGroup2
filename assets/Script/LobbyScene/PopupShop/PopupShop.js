@@ -1,4 +1,3 @@
-const ItemName = require('ItemName');
 const GoldController = require('GoldController');
 const Emitter = require('Emitter');
 const EventKey = require('EventKey');
@@ -47,8 +46,6 @@ cc.Class({
             if (!this.isGoldEnough(priceItem)) {
                 console.log(this.isGoldEnough(priceItem));
                 item.getComponent("Item").price.node.color = cc.Color.RED;
-            } else {
-                item.getComponent("Item").price.node.color = cc.Color.WHITE;
             }
         });
 

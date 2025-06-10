@@ -9,9 +9,9 @@ const EventKey = {
     },
     POPUP: {
         SHOW: 'showPopup',
-        // SHOW_SHOP: 'showPopupShop',
-        // SHOW_HERO: 'showPopupHero',
-        // SHOW_SKILL: 'showPopupSkill',
+    },
+    GOLD:{
+        CHANGE_GOLD: 'CHANGE_GOLD'
     },
     MONSTER: {
         ON_HIT  : 'ON_HIT',
