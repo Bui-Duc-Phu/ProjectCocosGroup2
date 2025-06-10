@@ -5,7 +5,6 @@ cc.Class({
 
     properties: {
     },
-
     onMove() {
         this.moveTween = cc.tween(this.node)
             .by(this.durationMove, { x: -1560 })
@@ -53,6 +52,4 @@ cc.Class({
             }
         });
     },
-
-
 });

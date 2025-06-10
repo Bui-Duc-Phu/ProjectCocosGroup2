@@ -91,12 +91,17 @@ cc.Class({
         this.sprite.spriteFrame = data.spriteFrame;
     },
     updateHP(){
-        this.hpBar.progress = this.hp / this.maxHP;
-        if(this.hp <= 0){
+        this.updateHPBar();
+        if(this.shouldDie()){
             Emitter.emit(EventKey.MONSTER.ON_DIE, this);
         }
     },
-
+    updateHPBar(){
+        this.hpBar.progress = this.hp / this.maxHP;
+    },
+    shouldDie(){
+        return this.hp <= 0;
+    },
     onMove() {
 
     },
