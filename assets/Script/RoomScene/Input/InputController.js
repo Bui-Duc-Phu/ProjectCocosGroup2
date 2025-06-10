@@ -33,6 +33,7 @@ cc.Class({
     onLoad() {
         this.setCooldown();
         this.registerButtonEvents();
+        this.registerKeyboardEvents();
     },
     registerButtonEvents() {
         this.moveUpButton.node.on('click', this.onMoveUp, this);
