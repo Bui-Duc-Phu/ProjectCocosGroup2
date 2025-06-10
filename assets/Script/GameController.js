@@ -1,6 +1,8 @@
 const Emitter = require('Emitter');
 const EventKey = require('EventKey');
 const StateMachine = require('javascript-state-machine');
+const GoldController = require('GoldController');
+const UpgradeController = require('UpgradeController');
 
 const FSM_STATES = {
     LOADING: 'Loading',
@@ -32,6 +34,17 @@ cc.Class({
     },
 
     onLoad() {
+        this.init();
+    },
+
+    onDestroy() {
+        this.unregisterEventListeners();
+        cc.director.off(cc.Director.EVENT_AFTER_SCENE_LAUNCH, this.onSceneLaunched, this);
+        cc.director.preloadScene('Portal', () => {
+            cc.director.loadScene('Portal');
+        });
+    },
+    init() {
         if (cc.game['GAME_CONTROLLER_EXIST']) {
             this.node.destroy();
             return;
@@ -43,16 +56,12 @@ cc.Class({
         this.registerEventListeners();
         this.addSingletonToList();
         cc.director.on(cc.Director.EVENT_AFTER_SCENE_LAUNCH, this.onSceneLaunched, this);
+        let amount = cc.sys.localStorage.getItem(LocalStorageKey.PLAYER.BOMB_AMOUNT);
+        if (amount === null) {
+            amount = 0;
+            cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.BOMB_AMOUNT, amount.toString());
+        };
     },
-
-    onDestroy() {
-        this.unregisterEventListeners();
-        cc.director.off(cc.Director.EVENT_AFTER_SCENE_LAUNCH, this.onSceneLaunched, this);
-        cc.director.preloadScene('Portal', () => {
-            cc.director.loadScene('Portal');
-        });
-    },
-
     addSingletonToList() {
         this.singletonList.push(Emitter);
     },
@@ -155,6 +164,6 @@ cc.Class({
         this.cleanupSingletonList();
         Emitter.emit(EventKey.GAME.PREPARE_FOR_EXIT);
         this.node.destroy();
-        
+
     },
 });
