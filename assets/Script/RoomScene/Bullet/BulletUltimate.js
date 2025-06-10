@@ -4,9 +4,6 @@ cc.Class({
     extends: require('BulletItem'),
 
     properties: {
-        durationMove: 1.0,
-        countTarget: 5,
-        currentTarget: [],
     },
 
     init(data) {
