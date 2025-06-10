@@ -16,14 +16,14 @@ const EventKey = {
     MONSTER: {
         ON_HIT  : 'ON_HIT',
         ON_DIE: 'ON_DIE',
-
+        ON_BOMB_HIT: 'ON_BOMB_HIT',
         ON_ULTIMATE_HIT: 'ON_ULTIMATE_HIT',
     },
     PLAYER: {
         ON_HIT: 'ON_HIT',
         SHOOT_NOMAL: 'SHOOT_NOMAL_BULLET',
         SHOOT_ULTIMATE: 'SHOOT_ULTIMATE_BULLET',
-
+        SHOOT_BOMB: 'SHOOT_BOMB_BULLET',
     },
     SCENE: {
         LOAD_LOBBY: 'LOAD_LOBBY', 
@@ -39,7 +39,11 @@ const EventKey = {
         MOVE_DOWN: 'MOVE_DOWN',
         SHOOT_ULTIMATE: 'SHOOT_ULTIMATE',
         USE_BOMB: 'USE_BOMB',
-    }
+    },
+    WAVE: {
+        WAVE_COMPLETE: 'WAVE_COMPLETE',
+        START_SPECIFIC_WAVE: 'START_SPECIFIC_WAVE',
+    },
 };
 
 module.exports = EventKey;

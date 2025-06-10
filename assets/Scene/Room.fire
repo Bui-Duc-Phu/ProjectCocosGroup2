@@ -69,13 +69,22 @@
       },
       {
         "__id__": 9
+      },
+      {
+        "__id__": 11
+      },
+      {
+        "__id__": 13
+      },
+      {
+        "__id__": 15
       }
     ],
     "_active": true,
     "_level": 1,
     "_components": [
       {
-        "__id__": 11
+        "__id__": 17
       }
     ],
     "_prefab": null,
@@ -285,12 +294,9 @@
     },
     "listChar": [],
     "isWinLevel": true,
-    "currentLevel": 1,
     "spawnedCount": 0,
-    "totalMonstersThisWave": 0,
-    "monsterTypeCounts": {},
-    "spawnInterval": 1.5,
-    "spriteFrameAsset": {
+    "currentWaveData": null,
+    "gameAsset": {
       "__id__": 7
     },
     "_id": "35bwBqvKlMPaUAl/F1JUmR"
@@ -321,6 +327,14 @@
     "ultiBulletPrefab": {
       "__uuid__": "4bb042cc-17e8-45ec-be7e-93dcf025b72e"
     },
+    "bombBulletPrefab": {
+      "__uuid__": "5166f396-2ae1-43bd-b133-a09095d1812b"
+    },
+    "hitNomalEffectPrefab": {
+      "__uuid__": "d340e412-bac8-4653-9cfa-3dd389a0b3e9"
+    },
+    "hitUltimateEffectPrefab": null,
+    "hitBombEffectPrefab": null,
     "_id": "fe0wBiKDpFhIX428P9mt64"
   },
   {
@@ -383,7 +397,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "BulletController",
+    "_name": "WaveController",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -437,20 +451,231 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_id": "a5/2ONJe9GQapVtod9gDfn"
+    "_id": "ebgOtrkC5PXJ4kcdM+lA/V"
   },
   {
-    "__type__": "74c61hS0aRAyK8BNFRTux9y",
+    "__type__": "92bcb6ZoaVMx6D0G1X1pr7q",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 9
     },
     "_enabled": true,
+    "currentLevel": 1,
+    "totalMonstersThisWave": 0,
+    "monsterTypeCounts": {},
+    "spawnInterval": 1.5,
+    "_id": "1dBEkFa3dNjKqRN6gaBSjR"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "CloneRoomController",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 2,
+    "_components": [
+      {
+        "__id__": 12
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "groupIndex": 0,
+    "_id": "3d62oWPU1D1JCZwQSbc3qi"
+  },
+  {
+    "__type__": "5a7298T/2VCEotiAmmGXyms",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 11
+    },
+    "_enabled": true,
+    "_id": "dbjAg0lsdBNbtOqu7hwZX1"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "BulletController",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 2,
+    "_components": [
+      {
+        "__id__": 14
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "groupIndex": 0,
+    "_id": "a7B0cEmpZGcoQsJ6enDr0s"
+  },
+  {
+    "__type__": "74c61hS0aRAyK8BNFRTux9y",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 13
+    },
+    "_enabled": true,
     "gameAsset": {
       "__id__": 7
     },
-    "_id": "db0WD7A9dFQ6PFLIDSTGDt"
+    "_id": "32Q2YHiONAnIAtFbGeOWS7"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "HitEffectController",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 2,
+    "_components": [
+      {
+        "__id__": 16
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "groupIndex": 0,
+    "_id": "d96kKK2adNeLwQoQzggHxT"
+  },
+  {
+    "__type__": "b3bc0HSGhRJKqwAdzflZl2N",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 15
+    },
+    "_enabled": true,
+    "gameAsset": {
+      "__id__": 7
+    },
+    "_id": "b5b0CUAbdIxaCJQGvQ2CuE"
   },
   {
     "__type__": "cc.Canvas",
