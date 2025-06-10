@@ -70,7 +70,6 @@ cc.Class({
         this.initBulletByType(GameConfig.BULLET.TYPE.ULTIMATE, worldPos);
     },
     onShootBombBullet() {
-        console.log('onShootBombBullet');
         const BomDType = GameConfig.SHOP.ITEM.BOMB;
         const worldPos = cc.v2(BomDType.POSITION.INIT.X, BomDType.POSITION.INIT.Y)
         this.initBulletByType(BomDType, worldPos);
@@ -80,6 +79,9 @@ cc.Class({
     },
     shootNomalBullet(worldPos) {
         this.onShootNomalBullet(cc.v2(155, 355))
+    },
+    shootBombBullet(worldPos) {
+        this.onShootBombBullet(cc.v2(155, 355))
     },
 
 
