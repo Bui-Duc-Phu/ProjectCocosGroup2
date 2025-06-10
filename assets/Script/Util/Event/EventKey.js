@@ -16,7 +16,7 @@ const EventKey = {
     MONSTER: {
         ON_HIT  : 'ON_HIT',
         ON_DIE: 'ON_DIE',
-
+        ON_BOMB_HIT: 'ON_BOMB_HIT',
         ON_ULTIMATE_HIT: 'ON_ULTIMATE_HIT',
     },
     PLAYER: {
@@ -25,6 +25,7 @@ const EventKey = {
         SHOOT_ULTIMATE: 'SHOOT_ULTIMATE_BULLET',
         ON_DIE: 'ON_DIE',
         USE_BOMB: 'PLAYER_USE_BOMB',
+        SHOOT_BOMB: 'SHOOT_BOMB_BULLET',
     },
     SCENE: {
         LOAD_LOBBY: 'LOAD_LOBBY', 
@@ -45,6 +46,12 @@ const EventKey = {
         PAUSE: 'ROOM_PAUSE',
         RESUME: 'ROOM_RESUME',
         RESTART: 'ROOM_RESTART',
+        SHOOT_ULTIMATE: 'SHOOT_ULTIMATE',
+        USE_BOMB: 'USE_BOMB',
+    },
+    WAVE: {
+        WAVE_COMPLETE: 'WAVE_COMPLETE',
+        START_SPECIFIC_WAVE: 'START_SPECIFIC_WAVE',
     },
 };
 

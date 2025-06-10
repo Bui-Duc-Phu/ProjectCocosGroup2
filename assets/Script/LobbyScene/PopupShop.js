@@ -14,8 +14,20 @@ cc.Class({
             type: cc.Node,
             default: null
         },
-        iconItemDetail:{
+        iconItemDetail: {
             type: cc.Node,
+            default: null
+        },
+        spriteBackgroundBuy: {
+            type: cc.Sprite,
+            default: null
+        },
+        enoughGoldSpriteFrame: {
+            type: cc.SpriteFrame,
+            default: null
+        },
+        notEnoughGoldSpriteFrame: {
+            type: cc.SpriteFrame,
             default: null
         }
     },
@@ -32,17 +44,16 @@ cc.Class({
         console.log(this.itemList);
         this.itemList.forEach(item => {
             let priceItem = Number(item.getComponent("Item").price.string);
-            let priceColor = item.getComponent("Item").price.node.color;
-            if(!this.isGoldEnough(priceItem)){
+            if (!this.isGoldEnough(priceItem)) {
                 console.log(this.isGoldEnough(priceItem));
-                priceColor = cc.Color.RED;
-            }else{
-                priceColor = cc.Color.WHITE;
+                item.getComponent("Item").price.node.color = cc.Color.RED;
+            } else {
+                item.getComponent("Item").price.node.color = cc.Color.WHITE;
             }
         });
 
     },
-    isGoldEnough(priceItem){
+    isGoldEnough(priceItem) {
         return this.currentGold >= priceItem;
     },
 
@@ -57,11 +68,16 @@ cc.Class({
     initItemDetail(spriteFrame) {
         this.itemDetail.active = true;
         this.iconItemDetail.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+        this.spriteBackgroundBuy.spriteFrame = this.enoughGoldSpriteFrame;
+        if (!this.isGoldEnough(this.priceItem)) {
+            console.log(this.isGoldEnough(this.priceItem));
+            this.spriteBackgroundBuy.spriteFrame = this.notEnoughGoldSpriteFrame;
+        }
     },
-    onClickBuy(){
-        if(this.currentGold<this.priceItem){
+    onClickBuy() {
+        if (this.currentGold < this.priceItem) {
             return
-        }else{
+        } else {
             GoldController.subtractGold(this.priceItem);
             Emitter.emit(EventKey.GOLD.CHANGE_GOLD);
         }

@@ -17,12 +17,6 @@ cc.Class({
         },
         isWinLevel: {
             default: true,
-            type: cc.Boolean,
-            visible: false,
-        },
-        currentLevel: {
-            default: 1,
-            type: cc.Integer,
             visible: false,
         },
         spawnedCount: {
@@ -30,21 +24,11 @@ cc.Class({
             type: cc.Integer,
             visible: false,
         },
-        totalMonstersThisWave: {
-            default: 0,
-            type: cc.Integer,
+        currentWaveData: {
+            default: null,
             visible: false,
         },
-        monsterTypeCounts: {
-            default: {},
-            visible: false,
-        },
-        spawnInterval: {
-            default: 1.5,
-            type: cc.Float,
-            tooltip: "Time between monster spawns in seconds"
-        },
-        spriteFrameAsset: {
+        gameAsset: {
             default: null,
             type: require('GameAsset')
         }
@@ -52,101 +36,63 @@ cc.Class({
 
     onLoad() {
         this.registerEvent();
-        this.startWave();
     },
-    onDestroy(){
+
+    onDestroy() {
         this.unregisterEvent();
     },
 
-    startWave() {
+    onStartWave(data) {
         this.spawnedCount = 0;
-        this.totalMonstersThisWave = this.calculateMonstersForLevel(this.currentLevel);
-        this.calculateMonsterTypeCounts();
-        this.spawnNextMonster();
+        this.currentWaveData = data;
+        this.spawnNextMonster(data);
     },
 
-    calculateMonsterTypeCounts() {
-        const probabilities = this.calculateTypeProbabilities(this.currentLevel);
-        this.monsterTypeCounts = {};
-        for (const [type, probability] of Object.entries(probabilities)) {
-            this.monsterTypeCounts[type] = Math.round(this.totalMonstersThisWave * probability);
-        }
-
-        const total = Object.values(this.monsterTypeCounts).reduce((sum, count) => sum + count, 0);
-        if (total !== this.totalMonstersThisWave) {
-            const diff = this.totalMonstersThisWave - total;
-            const mostCommonType = Object.entries(probabilities).reduce((a, b) => a[1] > b[1] ? a : b)[0];
-            this.monsterTypeCounts[mostCommonType] += diff;
-        }
-    },
-    spawnNextMonster() {
-        if (this.spawnedCount >= this.totalMonstersThisWave) {
+    spawnNextMonster(waveData) {
+        if (this.spawnedCount >= waveData.totalMonsters) {
             return;
         }
-        this.spawnMonster();
+
+        const monsterType = this.selectMonsterTypeForSpawn(waveData);
+        this.spawnMonster(monsterType, waveData.level);
         this.spawnedCount++;
-        if (this.spawnedCount < this.totalMonstersThisWave) {
+
+        if (this.spawnedCount < waveData.totalMonsters) {
             this.scheduleOnce(() => {
-                this.spawnNextMonster();
-            }, this.spawnInterval);
+                this.spawnNextMonster(waveData);
+            }, waveData.spawnInterval);
         }
     },
-    calculateMonstersForLevel(level) {
-        return Math.min(5 + level, 50);
-    },
-    spawnMonster() {
-        const monsterType = this.selectMonsterTypeForSpawn();
-        this.initMonsterByType(monsterType);
-    },
-    selectMonsterTypeForSpawn() {
-        if (this.currentLevel % 5 === 0 && this.shouldSpawnBoss(this.spawnedCount)) {
+
+    selectMonsterTypeForSpawn(waveData) {
+        if (waveData.level % 5 === 0 && this.shouldSpawnBoss(this.spawnedCount, waveData.totalMonsters)) {
             return GameConfig.MONSTER.TYPE.BOSS;
         }
-        for (const [type, count] of Object.entries(this.monsterTypeCounts)) {
+
+        for (const [type, count] of Object.entries(waveData.monsterTypeCounts)) {
             if (count > 0) {
-                this.monsterTypeCounts[type]--;
+                waveData.monsterTypeCounts[type]--;
                 return GameConfig.MONSTER.TYPE[type];
             }
         }
         return GameConfig.MONSTER.TYPE.DOG;
     },
-    shouldSpawnBoss(spawnIndex) {
-        const totalMonsters = this.totalMonstersThisWave;
+
+    shouldSpawnBoss(spawnIndex, totalMonsters) {
         const bossPosition = Math.floor(Math.random() * totalMonsters);
         return spawnIndex === bossPosition;
     },
-    calculateTypeProbabilities(level) {
-        const probabilities = {};
-        let dogProb = Math.max(0.4, 0.8 - (level * 0.008));
-        let infernoDogProb = Math.min(0.4, 0.15 + (level * 0.005));
-        let dragonProb = 0;
 
-        if (level >= 10) {
-            dragonProb = Math.min(0.2, (level - 10) * 0.004 + 0.05);
-            const totalOthers = dogProb + infernoDogProb;
-            const adjustment = dragonProb / totalOthers;
-            dogProb *= (1 - adjustment);
-            infernoDogProb *= (1 - adjustment);
-        }
-
-        const total = dogProb + infernoDogProb + dragonProb;
-        probabilities.DOG = dogProb / total;
-        probabilities.INFERNO_DOG = infernoDogProb / total;
-        if (level >= 10) {
-            probabilities.DRAGON = dragonProb / total;
-        }
-        return probabilities;
-    },
-
-    initMonsterByType(type) {
+    spawnMonster(type, level) {
         const position = this.genInitPosison();
         const id = this.genIDMonster();
-        const baseStats = this.calculateBaseStats(this.currentLevel);
+        const baseStats = this.calculateBaseStats(level);
         const hp = baseStats.hp * type.COEFFICIENT_HP;
         const damage = baseStats.damage * type.COEFFICIENT_DAMAGE;
-        const durationMove = this.calculateMoveDuration(type, this.currentLevel);
+        const durationMove = this.calculateMoveDuration(type, level);
         const gold = baseStats.gold * type.COEFFICIENT_GOLD;
         const spriteFrame = this.getSpriteFrameByType(type.NAME);
+
         const monster = cc.instantiate(this.prefabMonster);
         const monsterItem = monster.getComponent(require('Monster'));
         monsterItem.init({
@@ -156,17 +102,20 @@ cc.Class({
             damage,
             durationMove,
             gold,
-            level: this.currentLevel,
+            level: level,
             spriteFrame
         });
+
         this.node.addChild(monster);
         this.positionInit(monster, position);
         monsterItem.onMove();
         this.listChar.push(monsterItem);
     },
+
     getSpriteFrameByType(type) {
-        return this.spriteFrameAsset.getSpriteFramByType(type);
+        return this.gameAsset.getSpriteFramByType(type);
     },
+
     calculateBaseStats(level) {
         const levelMultiplier = 1 + (level - 1) * 0.15 + Math.pow(level - 1, 1.2) * 0.02;
         return {
@@ -175,73 +124,53 @@ cc.Class({
             gold: GameConfig.MONSTER.GOLD_BASE * levelMultiplier
         };
     },
+
     calculateMoveDuration(type, level) {
         const speedBonus = Math.min(2, level * 0.05);
         const adjustedDuration = Math.max(3, type.DURATION_MOVE - speedBonus);
         return adjustedDuration;
     },
+
     positionInit(monster, worldPos) {
         const localPos = this.node.convertToNodeSpaceAR(worldPos);
         monster.setPosition(localPos);
     },
+
     genInitPosison() {
         const x = GameConfig.MONSTER.INIT_LOCATION.X;
         const listY = GameConfig.MONSTER.INIT_LOCATION.Y;
         const y = listY[Math.floor(Math.random() * listY.length)];
         return new cc.Vec2(x, y);
     },
+
     genIDMonster() {
         return Date.now() + Math.random();
     },
+
     onMonsterDie(monster) {
         monster.onDie();
         const index = this.listChar.indexOf(monster);
         if (index !== -1) {
             this.listChar.splice(index, 1);
         }
-        if (this.listChar.length === 0 && this.spawnedCount >= this.totalMonstersThisWave) {
-            this.onWaveComplete();
+        if (this.listChar.length === 0) {
+            Emitter.emit(EventKey.WAVE.WAVE_COMPLETE);
         }
     },
-    onWaveComplete() {
-        this.scheduleOnce(() => {
-            this.onNextWave();
-        }, 3);
-    },
-    onNextWave() {
-        this.currentLevel++;
-        this.startWave();
-    },
-    getWaveStatus() {
-        return {
-            currentLevel: this.currentLevel,
-            spawnedCount: this.spawnedCount,
-            totalMonstersThisWave: this.totalMonstersThisWave,
-            aliveMonsters: this.listChar.length,
-            probabilities: this.calculateTypeProbabilities(this.currentLevel)
-        };
-    },
-    startSpecificWave(level) {
-        this.currentLevel = level;
-        this.listChar.forEach(monster => {
-            if (monster.node && cc.isValid(monster.node)) {
-                monster.onDie();
-            }
-        });
-        this.listChar = [];
-        this.startWave();
-    },
+
     registerEvent() {
         this.eventMap = new Map([
+            [EventKey.WAVE.START_WAVE, this.onStartWave.bind(this)],
             [EventKey.MONSTER.ON_HIT, this.onMonsterHit.bind(this)],
             [EventKey.MONSTER.ON_ULTIMATE_HIT, this.onUltimateHit.bind(this)],
+            [EventKey.MONSTER.ON_BOMB_HIT, this.onBombHit.bind(this)],
             [EventKey.MONSTER.ON_DIE, this.onMonsterDie.bind(this)],
         ]);
         this.eventMap.forEach((handler, key) => {
             Emitter.registerEvent(key, handler);
         });
     },
-    
+
     unregisterEvent() {
         if (!this.eventMap) return;
         this.eventMap.forEach((handler, key) => {
@@ -249,17 +178,24 @@ cc.Class({
         });
         this.eventMap.clear();
     },
-    
+
     onMonsterHit(monster, bullet) {
         this.takeDamage(monster, bullet);
     },
+
     onUltimateHit(monsters, bullet) {
-        monsters.forEach((monster,index) => {
+        monsters.forEach((monster) => {
             this.takeDamage(monster, bullet);
         });
     },
+
+    onBombHit(monsters, bullet) {
+        monsters.forEach((monster) => {
+            this.takeDamage(monster, bullet);
+        });
+    },
+
     takeDamage(monster, bullet) {
         monster.hp -= bullet.damage;
-    },
-    
+    }
 });

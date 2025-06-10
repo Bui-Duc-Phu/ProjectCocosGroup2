@@ -1,4 +1,14 @@
 const GameConfig = {
+    PLAYER:{
+        POSITION:{
+            HP: 1400,
+            INIT:{
+                X:1560,
+                Y:713,
+            }
+
+        }
+    },
     MONSTER:{
         INIT_LOCATION :{
             X:1560,
@@ -48,6 +58,22 @@ const GameConfig = {
                 COUNT_TARGET:1,
                 MOVE_BY_X:3000,
                 COOLDOWN:0.5,
+                UPGRADE:{
+                    PERCENT_DAMAGE_ADD:0.1,
+                    COST_BASE:300,
+                    LEVER:{
+                        '1': 1,
+                        '2': 1.5,
+                        '3': 2,
+                        '4': 3,
+                        '5': 5,
+                        '6': 7,
+                        '7': 8,
+                        '8': 10,
+                        '9': 12,
+                        '10': 15,
+                    }
+                } 
             },
             ULTIMATE:{
                 NAME:"ULTIMATE",    
@@ -56,6 +82,22 @@ const GameConfig = {
                 COUNT_TARGET:5,
                 MOVE_BY_X:3000,
                 COOLDOWN:5,
+                UPGRADE:{
+                    PERCENT_DAMAGE_ADD:0.1,
+                    COST_BASE:500,
+                    LEVER:{
+                        '1': 1,
+                        '2': 1.5,
+                        '3': 2,
+                        '4': 3,
+                        '5': 5,
+                        '6': 7,
+                        '7': 8,
+                        '8': 10,
+                        '9': 12,
+                        '10': 15,
+                    }
+                }
             },
         }
     },

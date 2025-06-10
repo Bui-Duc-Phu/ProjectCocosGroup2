@@ -19,7 +19,8 @@ cc.Class({
             .start();
     },
     onCollide(target, self) {
-        Emitter.emit(EventKey.MONSTER.ON_HIT, target.getComponent('MonsterItem'), this)
+        const worldPos = self.node.convertToWorldSpaceAR(cc.v2(0, 0));
+        Emitter.emit(EventKey.MONSTER.ON_HIT, target.getComponent('MonsterItem'), this, worldPos)
         this.onClear()
     },
     onClear() {

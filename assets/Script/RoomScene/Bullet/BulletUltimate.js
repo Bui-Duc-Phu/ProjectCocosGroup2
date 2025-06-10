@@ -4,9 +4,6 @@ cc.Class({
     extends: require('BulletItem'),
 
     properties: {
-        durationMove: 1.0,
-        countTarget: 5,
-        currentTarget: [],
     },
 
     init(data) {
@@ -55,7 +52,8 @@ cc.Class({
     },
     emitAndClear() {
         if (this.currentTarget.length <= 0) { return }
-        Emitter.emit(EventKey.MONSTER.ON_ULTIMATE_HIT, this.currentTarget, this);
+        const worldPos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
+        Emitter.emit(EventKey.MONSTER.ON_ULTIMATE_HIT, this.currentTarget, this, worldPos);
         this.onClear();
     },
     handleDamageCollision(other, self) {
