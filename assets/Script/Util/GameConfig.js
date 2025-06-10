@@ -13,7 +13,7 @@ const GameConfig = {
     MONSTER:{
         INIT_LOCATION :{
             X:1560,
-            Y:[200,400,600],
+            Y:[100,300,500],
         },
         HP_BASE:100,
         DAMAGE_BASE:25,
