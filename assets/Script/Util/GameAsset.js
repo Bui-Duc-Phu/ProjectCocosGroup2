@@ -31,6 +31,18 @@ cc.Class({
             default:null,
             type:cc.Prefab
         },
+        hitNomalEffectPrefab:{
+            default:null,
+            type:cc.Prefab
+        },
+        hitUltimateEffectPrefab:{
+            default:null,
+            type:cc.Prefab
+        },
+        hitBombEffectPrefab:{
+            default:null,
+            type:cc.Prefab
+        },
     },
     getSpriteFramByType(type){
         switch(type){
@@ -52,6 +64,16 @@ cc.Class({
                 return this.ultiBulletPrefab;
             case GameConfig.SHOP.ITEM.BOMB.NAME:
                 return this.bombBulletPrefab;
+        }
+    },
+    getHitEffectPrefabByType(type){
+        switch(type){
+            case GameConfig.BULLET.TYPE.NOMAL.NAME:
+                return this.hitNomalEffectPrefab;
+            case GameConfig.BULLET.TYPE.ULTIMATE.NAME:
+                return this.hitUltimateEffectPrefab;
+            case GameConfig.SHOP.ITEM.BOMB.NAME:
+                return this.hitBombEffectPrefab;
         }
     }
 

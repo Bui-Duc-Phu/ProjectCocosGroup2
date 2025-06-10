@@ -36,17 +36,6 @@ cc.Class({
         });
         this.eventMap.clear();
     },
- 
-    // shootUltimateBullet(worldPos){
-    //     this.onShootUltimateBullet(cc.v2(155,355))
-    // },
-    // shootNomalBullet(worldPos){
-    //     this.onShootNomalBullet(cc.v2(155,355))
-    // },
-    // shootBombBullet(){
-    //     this.onShootBombBullet();
-    // },
-
     initBulletByType(type, worldPos) {
         const prefab = this.gameAsset.getBulletPrefabByType(type.NAME);
         const bullet = cc.instantiate(prefab);
@@ -81,6 +70,7 @@ cc.Class({
         this.initBulletByType(GameConfig.BULLET.TYPE.ULTIMATE, worldPos);
     },
     onShootBombBullet() {
+        console.log('onShootBombBullet');
         const BomDType = GameConfig.SHOP.ITEM.BOMB;
         const worldPos = cc.v2(BomDType.POSITION.INIT.X,BomDType.POSITION.INIT.Y)
         this.initBulletByType( BomDType, worldPos);
