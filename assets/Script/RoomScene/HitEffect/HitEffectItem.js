@@ -4,12 +4,14 @@ cc.Class({
 
     properties: {
         id: {
-            default: 0,
-            type: cc.Integer,
+            default: '',
+            type: cc.String,
+            visible: false,
         },
         type: { 
-            default: null,
-            type: require('BulletType'),
+            default: '',
+            type: cc.String,
+            visible: false,
         },
     },
  
