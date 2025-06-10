@@ -1,6 +1,9 @@
 const LocalStorageKey = require('LocalStorageKey');
 
 class GoldController {
+    constructor() {
+        this.getGoldValue();
+    }
     getGoldValue() {
         const goldString = cc.sys.localStorage.getItem(LocalStorageKey.PLAYER.GOLD);
         if (!goldString) {

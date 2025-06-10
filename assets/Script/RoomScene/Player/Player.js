@@ -91,7 +91,6 @@ cc.Class({
                 onEnterHit: () => this.handleEnterHit(),
                 onEnterDie: () => this.handleEnterDie(),
                 onUseBomb: () => this.handleUseBomb(),
-                onLeaveShoot:() => this.handleLeaveShoot(),
 
                 onLeavePortal: () => this.playerSpine.setCompleteListener(null),
                 onLeaveMoveUp: () => this.playerSpine.setCompleteListener(null),
@@ -111,27 +110,27 @@ cc.Class({
         });
     },
     handleEnterShoot() {
-        if (!this.boundOnShootBullet){
+        if (!this.boundOnShootBullet) {
             this.boundOnShootBullet = this.onShootBullet.bind(this);
-            this.schedule(this.boundOnShootBullet, 0.5);
+            this.schedule(this.boundOnShootBullet, 0.4);
         }
     },
     onShootBullet() {
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
-        this.playerSpine.setCompleteListener(() => {
-            let bulletPosition = this.node.convertToWorldSpaceAR(cc.v2(this.playerFrame.position.x + 100, this.playerFrame.position.y));
-            Emitter.emit(EventKey.PLAYER.SHOOT_NORMAL, bulletPosition);
-        });
-    },
-    handleLeaveShoot() {
-        this.playerSpine.setCompleteListener(null);
+        let bulletPositionX = this.node.position.x + this.node.width * this.node.scale;
+        let bulletPositionY = this.node.position.y + this.node.height * this.node.scale;
+        let bulletPosition = this.node.convertToWorldSpaceAR(cc.v2(bulletPositionX, bulletPositionY));
+        Emitter.emit(EventKey.PLAYER.SHOOT_NORMAL, bulletPosition);
     },
     handleUseBomb() {
         this.unschedule(this.boundOnShootBullet);
         this.boundOnShootBullet = null;
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
         this.playerSpine.setCompleteListener(() => {
-            Emitter.emit(EventKey.PLAYER.USE_BOMB);
+            let bulletPositionX = this.node.position.x + this.node.width * this.node.scale;
+            let bulletPositionY = this.node.position.y + this.node.height * this.node.scale;
+            let bulletPosition = this.node.convertToWorldSpaceAR(cc.v2(bulletPositionX, bulletPositionY));
+            Emitter.emit(EventKey.PLAYER.USE_BOMB, bulletPosition);
             this.fsm.toShoot();
         });
     },
@@ -168,8 +167,12 @@ cc.Class({
         this.boundOnShootBullet = null;
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
         this.playerSpine.setCompleteListener(() => {
-            Emitter.emit(EventKey.PLAYER.SHOOT_ULTIMATE);
+            let bulletPositionX = this.node.position.x + this.node.width * this.node.scale;
+            let bulletPositionY = this.node.position.y + this.node.height * this.node.scale;
+            let bulletPosition = this.node.convertToWorldSpaceAR(cc.v2(bulletPositionX, bulletPositionY));
+            Emitter.emit(EventKey.PLAYER.SHOOT_ULTIMATE, bulletPosition);
             this.fsm.toShoot();
+            console.log(bulletPosition);
         });
     },
     handleEnterHit() {
