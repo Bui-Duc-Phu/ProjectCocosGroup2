@@ -5,18 +5,15 @@ cc.Class({
 
     properties: {
     },
-
     init(data) {
         this._super(data);
         this.resetState();
         this.enableColliderByTag(2, false);
     },
-
     resetState() {
         this.hasTriggered = false;
         this.currentTarget = [];
     },
-
     onCollisionEnter(other, self) {
         const collisionHandler = this.getCollisionHandler(self.tag);
         if (collisionHandler) {
@@ -43,7 +40,6 @@ cc.Class({
             this.emitAndClear();
         }, 0.1);
     },
-
     activateTriggerState() {
         this.hasTriggered = true;
         this.stopTween(this.moveTween);

@@ -4,7 +4,6 @@ const EventKey = require('EventKey');
 
 cc.Class({
     extends: cc.Component,
-
     properties: {
         gameAsset: {
             default: null,
@@ -12,7 +11,6 @@ cc.Class({
         },
 
     },
-
     onLoad() {
         this.registerEvent();
     },
@@ -21,7 +19,7 @@ cc.Class({
     },
     registerEvent() {
         this.eventMap = new Map([
-            [EventKey.PLAYER.SHOOT_NOMAL, this.onShootNomalBullet.bind(this)],
+            [EventKey.PLAYER.SHOOT_NORMAL, this.onShootNomalBullet.bind(this)],
             [EventKey.PLAYER.SHOOT_ULTIMATE, this.onShootUltimateBullet.bind(this)],
             [EventKey.PLAYER.SHOOT_BOMB, this.onShootBombBullet.bind(this)],
         ]);
@@ -46,7 +44,6 @@ cc.Class({
         this.initPositionBullet(bullet, worldPos);
         component.onMove();
     },
-
     initPositionBullet(bullet, worldPos) {
         const nodePos = this.node.convertToNodeSpaceAR(worldPos);
         bullet.setPosition(nodePos.x, nodePos.y);
@@ -83,10 +80,4 @@ cc.Class({
     shootBombBullet(worldPos) {
         this.onShootBombBullet(cc.v2(155, 355))
     },
-
-
-
-
-
-
 });

@@ -21,7 +21,7 @@ const EventKey = {
     },
     PLAYER: {
         ON_HIT: 'ON_HIT',
-        SHOOT_NOMAL: 'SHOOT_NOMAL_BULLET',
+        SHOOT_NORMAL: 'SHOOT_NORMAL_BULLET',
         SHOOT_ULTIMATE: 'SHOOT_ULTIMATE_BULLET',
         SHOOT_BOMB: 'SHOOT_BOMB_BULLET',
     },
