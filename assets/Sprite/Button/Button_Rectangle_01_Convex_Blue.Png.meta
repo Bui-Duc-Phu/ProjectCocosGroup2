@@ -1,6 +1,6 @@
 {
   "ver": "2.3.3",
-  "uuid": "e03c818c-b71a-41ad-9eed-b5e193e07a37",
+  "uuid": "5ac46db4-6fa5-4839-b734-0654ad56eae5",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -9,10 +9,10 @@
   "packable": true,
   "platformSettings": {},
   "subMetas": {
-    "Joystick_Action_Icon_Bomb": {
+    "Button_Rectangle_01_Convex_Blue": {
       "ver": "1.0.4",
-      "uuid": "898a9bba-54f0-4e1b-bdf3-df01a98e2364",
-      "rawTextureUuid": "e03c818c-b71a-41ad-9eed-b5e193e07a37",
+      "uuid": "7890f228-b8a5-4a0f-9aba-d5de4863c2a7",
+      "rawTextureUuid": "5ac46db4-6fa5-4839-b734-0654ad56eae5",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -20,10 +20,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 77,
-      "height": 64,
-      "rawWidth": 77,
-      "rawHeight": 64,
+      "width": 159,
+      "height": 104,
+      "rawWidth": 159,
+      "rawHeight": 104,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,
