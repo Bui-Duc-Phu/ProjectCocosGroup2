@@ -1,7 +1,8 @@
 const GameConfig = {
     PLAYER:{
+        HP_BASE: 1400,
         POSITION:{
-            HP: 1400,
+            
             INIT:{
                 X:1560,
                 Y:713,
