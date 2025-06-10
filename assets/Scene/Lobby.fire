@@ -7278,7 +7278,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "FocusYellow",
+    "_name": "Sprite",
     "_objFlags": 0,
     "_parent": {
       "__id__": 160
@@ -8390,7 +8390,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "FocusYellow",
+    "_name": "Sprite",
     "_objFlags": 0,
     "_parent": {
       "__id__": 183
@@ -11682,8 +11682,12 @@
     "unActiveSpriteFrame": {
       "__uuid__": "61bc0b59-aa46-475b-addb-94343fd33a22"
     },
-    "statsButton": null,
-    "skillButton": null,
+    "statsButton": {
+      "__id__": 160
+    },
+    "skillButton": {
+      "__id__": 183
+    },
     "stats": {
       "__id__": 167
     },

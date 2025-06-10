@@ -39,6 +39,7 @@ cc.Class({
     },
     onButtonClick(event,data){
         this.activeNode(data);
+        this.activeButton(data);
     },
     activeNode(name){
         this.stats.opacity = 0;
@@ -63,9 +64,24 @@ cc.Class({
         }
     },
     activeButton(name){
+        let labelStats = this.statsButton.getChildByName("Label");
+        let spriteStats = this.statsButton.getChildByName("Sprite");
+
+        let labelSkill = this.skillButton.getChildByName("Label");
+        let spriteSkill = this.skillButton.getChildByName("Sprite");
         if (name === ButtonName.STATS && !this.stats.active) {
-            let label = this.start.getComponent(cc.Label);
-            label.sp
+            labelSkill.color = cc.Color.GRAY;
+            spriteSkill.getComponent(cc.Sprite).spriteFrame = this.unActiveSpriteFrame;
+
+            labelStats.color = cc.Color.WHITE;
+            spriteStats.getComponent(cc.Sprite).spriteFrame = this.activeSpriteFrame;   
+        }
+        if (name === ButtonName.SKILL && !this.skill.active) {
+            labelStats.color = cc.Color.GRAY;
+            spriteStats.getComponent(cc.Sprite).spriteFrame = this.unActiveSpriteFrame;
+
+            labelSkill.color = cc.Color.WHITE;
+            spriteSkill.getComponent(cc.Sprite).spriteFrame = this.activeSpriteFrame;   
         }
     }
 });
