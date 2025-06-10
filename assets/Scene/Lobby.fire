@@ -7753,7 +7753,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Dame",
+    "_name": "Damage",
     "_objFlags": 0,
     "_parent": {
       "__id__": 167
@@ -7994,7 +7994,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "AttackSpell",
+    "_name": "AttackSpeed",
     "_objFlags": 0,
     "_parent": {
       "__id__": 167
@@ -9418,7 +9418,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Label",
+    "_name": "Price",
     "_objFlags": 0,
     "_parent": {
       "__id__": 202
@@ -10935,7 +10935,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Label",
+    "_name": "Price",
     "_objFlags": 0,
     "_parent": {
       "__id__": 235
@@ -11693,6 +11693,33 @@
     },
     "skill": {
       "__id__": 190
+    },
+    "hpBase": {
+      "__id__": 172
+    },
+    "damageBase": {
+      "__id__": 177
+    },
+    "attackSpeed": {
+      "__id__": 182
+    },
+    "leverNomalAttack": {
+      "__id__": 218
+    },
+    "leverUltimate": {
+      "__id__": 251
+    },
+    "damageNomalAttack": {
+      "__id__": 223
+    },
+    "damageUltimate": {
+      "__id__": 256
+    },
+    "priceUpgradeNomalAttack": {
+      "__id__": 209
+    },
+    "priceUpgradeUltimate": {
+      "__id__": 242
     },
     "_id": "2djgXK1JBBo4keWb1dtBxA"
   },
