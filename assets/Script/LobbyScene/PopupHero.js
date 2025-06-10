@@ -1,4 +1,5 @@
 const ButtonName = require('ButtonName');
+const SkillName = require('SkillName');
 const GameConfig = require('GameConfig');
 const UpgradeController = require('UpgradeController');
 cc.Class({
@@ -79,11 +80,18 @@ cc.Class({
         this.damageBase.string = GameConfig.BULLET.DAMAGE_BASE.toString();
         this.attackSpeed.string = GameConfig.BULLET.TYPE.NOMAL.COOLDOWN.toString();
 
+       this.initLever();
+       this.initDame();
+
+        
+    },
+    initLever(){
         this.currentLeverNomalAttack = UpgradeController.getLeverNomalAttack();
         this.currentLeverUltimate = UpgradeController.getLeverUltimate();
         this.leverNomalAttack.string = this.currentLeverNomalAttack.toString();
         this.leverUltimate.string = this.currentLeverUltimate.toString();
-
+    },
+    initDame(){
         let dameBase = GameConfig.BULLET.DAMAGE_BASE;
         let coefficientNomalDame = GameConfig.BULLET.TYPE.NOMAL.COEFFICIENT_DAMAGE;
         let coefficientUltimateDame = GameConfig.BULLET.TYPE.ULTIMATE.COEFFICIENT_DAMAGE;
@@ -92,10 +100,6 @@ cc.Class({
 
         this.damageNomalAttack.string = Math.floor((dameBase*coefficientNomalDame*(1 + this.currentLeverNomalAttack*percentNomalDameAdd))).toString();
         this.damageUltimate.string = Math.floor((dameBase*coefficientUltimateDame*(1 + this.currentLeverUltimate*percentUltimateDameAdd))).toString();
-
-
-
-
 
     },
     onButtonClick(event, data) {
@@ -131,9 +135,9 @@ cc.Class({
         };
 
         for (let key in buttons) {
-            const btn = buttons[key];
-            const label = btn.getChildByName("Label");
-            const sprite = btn.getChildByName("Sprite").getComponent(cc.Sprite);
+            const button = buttons[key];
+            const label = button.getChildByName("Label");
+            const sprite = button.getChildByName("Sprite").getComponent(cc.Sprite);
 
             const isActive = key === name;
             label.color = isActive ? cc.Color.WHITE : cc.Color.GRAY;
@@ -142,6 +146,16 @@ cc.Class({
     },
 
     onUpgradeButtonClick(event,typeSkill) {
-
+        if(typeSkill === SkillName.NOMAL){
+            if(UpgradeController.upgradeLeverNomalAttack()){
+                // ban sfx
+            }
+            
+        }
+        if (typeSkill === SkillName.ULTIMATE) {
+            UpgradeController.upgradeLeverUltimate();
+        }
+        this.initLever();
+        this.initDame();
     }
 });
