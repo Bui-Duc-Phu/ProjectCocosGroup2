@@ -14,7 +14,6 @@ cc.Class({
     },
 
     onLoad(){
-        this.colisionManager();
         this.registerEvent();
     },
     onDestroy(){
@@ -37,10 +36,7 @@ cc.Class({
         });
         this.eventMap.clear();
     },
-    colisionManager(){
-        let manager = cc.director.getCollisionManager();
-        manager.enabled = true
-    },
+ 
     // shootUltimateBullet(worldPos){
     //     this.onShootUltimateBullet(cc.v2(155,355))
     // },

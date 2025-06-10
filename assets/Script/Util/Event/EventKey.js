@@ -39,7 +39,7 @@ const EventKey = {
         MOVE_DOWN: 'MOVE_DOWN',
         SHOOT_ULTIMATE: 'SHOOT_ULTIMATE',
         USE_BOMB: 'USE_BOMB',
-    }
+    },
 };
 
 module.exports = EventKey;

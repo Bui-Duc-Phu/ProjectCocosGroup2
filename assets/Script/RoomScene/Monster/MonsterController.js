@@ -61,6 +61,15 @@ cc.Class({
         this.calculateMonsterTypeCounts();
         this.spawnNextMonster();
     },
+    onWaveComplete() {
+        this.scheduleOnce(() => {
+            this.onNextWave();
+        }, 3);
+    },
+    onNextWave() {
+        this.currentLevel++;
+        this.startWave();
+    },
     calculateMonsterTypeCounts() {
         const probabilities = this.calculateTypeProbabilities(this.currentLevel);
         this.monsterTypeCounts = {};
@@ -196,15 +205,7 @@ cc.Class({
             this.onWaveComplete();
         }
     },
-    onWaveComplete() {
-        this.scheduleOnce(() => {
-            this.onNextWave();
-        }, 3);
-    },
-    onNextWave() {
-        this.currentLevel++;
-        this.startWave();
-    },
+
     getWaveStatus() {
         return {
             currentLevel: this.currentLevel,
