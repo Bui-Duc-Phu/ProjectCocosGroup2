@@ -15,12 +15,6 @@
     "_children": [
       {
         "__id__": 2
-      },
-      {
-        "__id__": 23
-      },
-      {
-        "__id__": 25
       }
     ],
     "_active": true,
@@ -159,7 +153,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 380.1851522613686
+      "z": 340.9252412252065
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -743,7 +737,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 70.06,
+      "width": 67,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -989,144 +983,5 @@
     "_fitWidth": true,
     "_fitHeight": true,
     "_id": "6db4rbzVJH4Z9fTqbgap7J"
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "SoundController",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 1
-    },
-    "_children": [],
-    "_active": true,
-    "_level": 1,
-    "_components": [
-      {
-        "__id__": 24
-      }
-    ],
-    "_prefab": null,
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_position": {
-      "__type__": "cc.Vec3",
-      "x": 780,
-      "y": 360,
-      "z": 0
-    },
-    "_scale": {
-      "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
-      "z": 1
-    },
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_is3DNode": false,
-    "groupIndex": 0,
-    "_id": "0emITREhlJAItdeWk8WKwQ"
-  },
-  {
-    "__type__": "8cd68gUx1FGYo3AJZfR/nlo",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 23
-    },
-    "_enabled": true,
-    "bgmList": [
-      {
-        "__uuid__": "81ab88be-9d50-4129-862c-7e0223dcc9bc"
-      },
-      {
-        "__uuid__": "8d6bb95b-07a0-4992-a489-550ceaf319d4"
-      }
-    ],
-    "sfxList": [
-      {
-        "__uuid__": "1aad367f-0cf8-4733-ba9f-49f4179ba0ff"
-      }
-    ],
-    "bgmVolume": 1,
-    "sfxVolume": 0,
-    "currentBgmAudioId": null,
-    "currentClickAudioId": null,
-    "_id": "bbxz4+VABK3ZkZ4QskmcD/"
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "GameController",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 1
-    },
-    "_children": [],
-    "_active": true,
-    "_level": 1,
-    "_components": [],
-    "_prefab": null,
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_position": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_scale": {
-      "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
-      "z": 1
-    },
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_is3DNode": false,
-    "groupIndex": 0,
-    "_id": "b16HKsITJC4LmNL+gVCoGL"
   }
 ]
