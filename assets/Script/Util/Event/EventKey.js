@@ -24,6 +24,7 @@ const EventKey = {
         SHOOT_NOMAL: 'SHOOT_NOMAL_BULLET',
         SHOOT_ULTIMATE: 'SHOOT_ULTIMATE_BULLET',
         ON_DIE: 'ON_DIE',
+        USE_BOMB: 'PLAYER_USE_BOMB',
     },
     SCENE: {
         LOAD_LOBBY: 'LOAD_LOBBY', 
@@ -37,9 +38,14 @@ const EventKey = {
     INPUT: {
         MOVE_UP: 'MOVE_UP',
         MOVE_DOWN: 'MOVE_DOWN',
-        SHOOT_ULTIMATE: 'SHOOT_ULTIMATE',
-        USE_BOMB: 'USE_BOMB',
-    }
+        SHOOT_ULTIMATE: 'INPUT_SHOOT_ULTIMATE',
+        USE_BOMB: 'INPUT_USE_BOMB',
+    },
+    ROOM: {
+        PAUSE: 'ROOM_PAUSE',
+        RESUME: 'ROOM_RESUME',
+        RESTART: 'ROOM_RESTART',
+    },
 };
 
 module.exports = EventKey;

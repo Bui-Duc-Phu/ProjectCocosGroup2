@@ -12,6 +12,7 @@ const FSM_STATE = {
     SHOOT_ULTIMATE: 'shootUltimate',
     HIT: 'hit',
     DIE: 'die',
+    USE_BOMB: 'useBomb',
 };
 
 cc.Class({
@@ -60,8 +61,9 @@ cc.Class({
                 { name: 'toShoot', from: '*', to: FSM_STATE.SHOOT },
                 { name: 'toMoveUp', from: [FSM_STATE.SHOOT, FSM_STATE.HIT, FSM_STATE.PORTAL, FSM_STATE.MOVE_DOWN], to: FSM_STATE.MOVE_UP },
                 { name: 'toMoveDown', from: [FSM_STATE.SHOOT, FSM_STATE.HIT, FSM_STATE.PORTAL, FSM_STATE.MOVE_UP], to: FSM_STATE.MOVE_DOWN },
+                { name: 'toUseBomb', from: [FSM_STATE.SHOOT, FSM_STATE.MOVE_UP, FSM_STATE.MOVE_DOWN], to: FSM_STATE.USE_BOMB },
                 { name: 'toShootUltimate', from: [FSM_STATE.SHOOT, FSM_STATE.MOVE_UP, FSM_STATE.MOVE_DOWN], to: FSM_STATE.SHOOT_ULTIMATE },
-                { name: 'toHit', from: [FSM_STATE.SHOOT, FSM_STATE.MOVE_UP, FSM_STATE.MOVE_DOWN, FSM_STATE.SHOOT_ULTIMATE, FSM_STATE.PORTAL], to: FSM_STATE.HIT },
+                { name: 'toHit', from: [FSM_STATE.SHOOT, FSM_STATE.MOVE_UP, FSM_STATE.MOVE_DOWN, FSM_STATE.SHOOT_ULTIMATE], to: FSM_STATE.HIT },
                 { name: 'toDie', from: '*', to: FSM_STATE.DIE },
             ],
             methods: {
@@ -73,6 +75,7 @@ cc.Class({
                 onEnterShootUltimate: () => this.handleEnterShootUltimate(),
                 onEnterHit: () => this.handleEnterHit(),
                 onEnterDie: () => this.handleEnterDie(),
+                onUseBomb: () => this.handleUseBomb(),
 
                 onLeavePortal: () => this.PlayerSpine.setCompleteListener(null),
                 onLeaveMoveUp: () => this.PlayerSpine.setCompleteListener(null),
@@ -93,6 +96,13 @@ cc.Class({
     },
     handleLeaveShoot() {
         this.PlayerSpine.clearTrack(2);
+    },
+    handleUseBomb() {
+        this.PlayerSpine.setAnimation(1, SpineAnimation.ANIM_LIST.SHOOT, false);
+        this.PlayerSpine.setCompleteListener(() => {
+            Emitter.emit(EventKey.PLAYER.USE_BOMB);
+            this.fsm.toShoot();
+        });
     },
     handleEnterMoveUp() {
         this.PlayerSpine.setAnimation(1, SpineAnimation.ANIM_LIST.RUN, false);
