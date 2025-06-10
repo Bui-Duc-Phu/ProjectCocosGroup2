@@ -1,6 +1,7 @@
 const GoldController = require('GoldController') 
 const Emitter = require('Emitter');
 const EventKey = require('EventKey');
+const AudioName = require('AudioName');
 const typePopup = {
     Setting: 'Setting',
     Shop: 'Shop',
@@ -56,7 +57,11 @@ cc.Class({
     showSkill() {
         Emitter.emit(EventKey.POPUP.SHOW, typePopup.Skill);
     },
+    onClickButton(){
+         Emitter.emit(EventKey.SOUND.PLAY_SFX,AudioName.SFX.CLICK);
+    },
     onDestroy() {
         Emitter.removeEvent(EventKey.GOLD.CHANGE_GOLD, this._onChangeGold);
-    }
+    },
+    
 });
