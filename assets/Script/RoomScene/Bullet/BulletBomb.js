@@ -35,7 +35,8 @@ cc.Class({
     },
     emitAndClear() {
         if (this.currentTarget.length <= 0) { return }
-        Emitter.emit(EventKey.MONSTER.ON_BOMB_HIT, this.currentTarget, this);
+        const worldPos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
+        Emitter.emit(EventKey.MONSTER.ON_BOMB_HIT, this.currentTarget, this, worldPos);
         this.onClear();
     },
     activateTriggerState() {
