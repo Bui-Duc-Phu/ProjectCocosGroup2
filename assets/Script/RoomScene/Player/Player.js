@@ -116,10 +116,13 @@ cc.Class({
         });
     },
     handleEnterPortal() {
+        this.playerSpine.timeScale = 2;
         this.playerSpine.setAnimation(1, SpineAnimation.PORTAL, false);
         this.playerSpine.setCompleteListener(() => {
             this.playerSpine.setAnimation(0, SpineAnimation.IDLE, true);
             this.node.angle = 5;
+            Emitter.emit(EventKey.PLAYER.READY);
+            this.playerSpine.timeScale = 1;
             this.fsm.toShoot();
         });
     },
@@ -140,7 +143,7 @@ cc.Class({
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
         this.playerSpine.setCompleteListener(() => {
             let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
-            Emitter.emit(EventKey.PLAYER.USE_BOMB, bulletPosition);
+            Emitter.emit(EventKey.PLAYER.SHOOT_BOMB, bulletPosition);
             this.fsm.toShoot();
         });
     },
