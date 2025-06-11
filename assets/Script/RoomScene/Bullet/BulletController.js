@@ -21,7 +21,7 @@ cc.Class({
     },
     registerEvent() {
         this.eventMap = new Map([
-            [EventKey.PLAYER.SHOOT_NOMAL, this.onShootNomalBullet.bind(this)],
+            [EventKey.PLAYER.SHOOT_NORMAL, this.onShootNormalBullet.bind(this)],
             [EventKey.PLAYER.SHOOT_ULTIMATE, this.onShootUltimateBullet.bind(this)],
             [EventKey.PLAYER.SHOOT_BOMB, this.onShootBombBullet.bind(this)],
         ]);
@@ -63,7 +63,7 @@ cc.Class({
     genID() {
         return Date.now() + Math.random();
     },
-    onShootNomalBullet(worldPos) {
+    onShootNormalBullet(worldPos) {
         this.initBulletByType(GameConfig.BULLET.TYPE.NOMAL, worldPos);
     },
     onShootUltimateBullet(worldPos) {

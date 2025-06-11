@@ -38,7 +38,6 @@ cc.Class({
             [EventKey.ROOM.PAUSE]: this.onPause.bind(this),
             [EventKey.ROOM.RESUME]: this.onResume.bind(this),
             [EventKey.ROOM.RESTART]: this.onRestart.bind(this),
-            [EventKey.PLAYER.ON_HIT]: this.onHit.bind(this),
         };
         for (const event in eventHandlers) {
             Emitter.registerEvent(event, eventHandlers[event]);
@@ -82,8 +81,5 @@ cc.Class({
         for (const event in this.eventHandlers) {
             Emitter.unregisterEvent(event, this.eventHandlers[event]);
         }
-    },
-    onHit(damage) {
-        this.playerScript.takeDamage(damage);
     },
 });
