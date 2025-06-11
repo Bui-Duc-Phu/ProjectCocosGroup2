@@ -119,7 +119,6 @@ cc.Class({
             this.playerSpine.setAnimation(0, SpineAnimation.IDLE, true);
             this.node.angle = 5;
             Emitter.emit(EventKey.PLAYER.READY);
-            Emitter.emit(EventKey.SOUND.PLAY_BGM, AudioName.BGM.ROOM);
             this.playerSpine.timeScale = 1;
             this.fsm.toShoot();
         });
@@ -190,7 +189,7 @@ cc.Class({
             this.playerSpine.timeScale = 0;
             this.node.parent.destroy();
         });
-        
+
     },
     takeDamage(amount) {
         if (this.fsm.is(FSM_STATE.DIE)) return;
@@ -207,12 +206,32 @@ cc.Class({
             this.playerSpine.clearTrack(1);
             this.fsm.toDie();
         } else {
-            cc.tween(this.node)
+            this.moveTween = cc.tween(this.node)
                 .to(0.1, { opacity: 80 }, { easing: 'sineInOut' })
                 .to(0.1, { opacity: 255 }, { easing: 'sineInOut' })
                 .to(0.1, { opacity: 80 }, { easing: 'sineInOut' })
                 .to(0.1, { opacity: 255 }, { easing: 'sineInOut' })
                 .start();
+        }
+    },
+    onPause() {
+        this.playerSpine.timeScale = 0;
+        if (this.fsm.is(FSM_STATE.SHOOT)) {
+            this.unschedule(this.boundOnShootBullet);
+            this.boundOnShootBullet = null;
+        }
+        if (this.moveTween) {
+            this.moveTween.pause();
+        }
+    },
+    onResume() {
+        this.playerSpine.timeScale = 1;
+        if (this.fsm.is(FSM_STATE.SHOOT) && !this.boundOnShootBullet) {
+            this.boundOnShootBullet = this.onShootBullet.bind(this);
+            this.schedule(this.boundOnShootBullet, 0.4);
+        }
+        if (this.moveTween) {
+            this.moveTween.resume();
         }
     },
 });

@@ -1,5 +1,4 @@
 const Emitter = require('Emitter');
-const GameConfig = require('GameConfig');
 const EventKey = require('EventKey');
 cc.Class({
     extends: cc.Component,
@@ -12,6 +11,11 @@ cc.Class({
         playerList: {
             default: [],
             type: [cc.Node],
+            visible: false,
+        },
+        playerScriptList: {
+            default: [],
+            type: [require('Player')],
             visible: false,
         },
 
@@ -28,6 +32,7 @@ cc.Class({
         this.node.addChild(this.playerNode);
         this.playerScript = this.playerNode.getChildByName('PlayerSpine').getComponent('Player');
         this.playerList.push(this.playerNode);
+        this.playerScriptList.push(this.playerScript);
     },
     registerEventListener() {
         const eventHandlers = {
@@ -70,10 +75,22 @@ cc.Class({
         this.playerScript.fsm.toUseBomb();
     },
     onPause() {
+        this.playerScriptList.forEach(player => {
+            player.onPause();
+        });
     },
     onResume() {
+        this.playerScriptList.forEach(player => {
+            player.onResume();
+        });
     },
     onRestart() {
+        this.playerList.forEach(player => {
+            player.destroy();
+        })
+        this.playerList = [];
+        this.playerScriptList = [];
+        this.createPlayer();
     },
     onDestroy() {
         for (const event in this.eventHandlers) {

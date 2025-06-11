@@ -35,7 +35,11 @@ cc.Class({
         backGroundSliderSFX: {
             type: cc.Node,
             default: null
-        }
+        },
+        quitButton: {
+            type: cc.Button,
+            default: null
+        },
     },
     onLoad() {
         this.init();
@@ -146,6 +150,13 @@ cc.Class({
             Emitter.emit(EventKey.SOUND.SET_SFX_VOLUME, 0);
             this.backGroundSliderSFX.width = 0;
             this.sliderSoundSFX.progress = 0;
+        }
+    },
+    onQuitButtonClicked() {
+        if (cc.director.getScene().name === 'Lobby') {
+            Emitter.emit(EventKey.GAME.REQUEST_EXIT);
+        } else {
+            Emitter.emit(EventKey.SCENE.LOAD_LOBBY);
         }
     },
 
