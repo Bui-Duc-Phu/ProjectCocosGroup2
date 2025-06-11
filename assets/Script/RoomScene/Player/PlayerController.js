@@ -5,9 +5,14 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        player: {
+        playerPrefab: {
             default: null,
-            type: cc.Node,
+            type: cc.Prefab,
+        },
+        playerList: {
+            default: [],
+            type: [cc.Node],
+            visible: false,
         },
 
     },
@@ -16,7 +21,13 @@ cc.Class({
     },
     init() {
         this.registerEventListener();
-        this.playerScript = this.player.getComponent('Player');
+        this.createPlayer();
+    },
+    createPlayer() {
+        this.playerNode = cc.instantiate(this.playerPrefab);
+        this.node.addChild(this.playerNode);
+        this.playerScript = this.playerNode.getChildByName('PlayerSpine').getComponent('Player');
+        this.playerList.push(this.playerNode);
     },
     registerEventListener() {
         const eventHandlers = {
