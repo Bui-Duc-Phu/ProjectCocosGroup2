@@ -221,7 +221,7 @@
       "__id__": 1
     },
     "playerPositionY": [],
-    "moveDuration": 0.03,
+    "moveDuration": 0.3,
     "bulletPointer": {
       "__id__": 13
     },

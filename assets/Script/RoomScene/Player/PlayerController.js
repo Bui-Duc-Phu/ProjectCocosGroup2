@@ -48,12 +48,14 @@ cc.Class({
             return;
         }
         this.playerScript.fsm.toMoveUp();
+        console.log('PlayerController onMoveUp');
     },
     onMoveDown() {
         if (!this.playerScript.fsm.can('toMoveDown')) {
             return;
         }
         this.playerScript.fsm.toMoveDown();
+        console.log('PlayerController onMoveDown');
     },
     onShootUltimate() {
         if (!this.playerScript.fsm.can('toShootUltimate')) {
@@ -68,14 +70,10 @@ cc.Class({
         this.playerScript.fsm.toUseBomb();
     },
     onPause() {
-        this.playerScript.fsm.toPortal();
     },
     onResume() {
-        this.playerScript.fsm.toShoot();
     },
     onRestart() {
-        this.playerScript.init();
-        this.playerScript.fsm.toShoot();
     },
     onDestroy() {
         for (const event in this.eventHandlers) {
