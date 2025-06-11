@@ -1,7 +1,10 @@
 const ButtonName = require('ButtonName');
 const SkillName = require('SkillName');
 const GameConfig = require('GameConfig');
+const GoldController = require('GoldController');
 const UpgradeController = require('UpgradeController');
+const Emitter = require('Emitter');
+const EventKey = require('EventKey');
 cc.Class({
     extends: require('PopupItem'),
 
@@ -58,14 +61,34 @@ cc.Class({
             type: cc.Label,
             default: null
         },
-        priceUpgradeNomalAttack:{
+        priceUpgradeNomalAttack: {
             type: cc.Label,
             default: null
         },
-        priceUpgradeUltimate:{
+        priceUpgradeUltimate: {
             type: cc.Label,
             default: null
         },
+        progressbarNomalAttack: {
+            type: cc.ProgressBar,
+            default: null
+        },
+        progressbarUltimate: {
+            type: cc.ProgressBar,
+            default: null
+        },
+        upgradeButtons:{
+            type:[cc.Node],
+            default:[]
+        },
+        enoughGoldSpriteFrame: {
+            type: cc.SpriteFrame,
+            default: null
+        },
+        notEnoughGoldSpriteFrame: {
+            type: cc.SpriteFrame,
+            default: null
+        }
 
     },
     onLoad() {
@@ -74,34 +97,65 @@ cc.Class({
     init() {
         this.stats.active = false;
         this.skill.active = false;
+        this.currentGold = GoldController.getGoldValue();
         this.activeNode(ButtonName.STATS);
-
+        this.initStats();
+        this.initSkill();
+        this.initButtonUpgrade();
+    },
+    initStats() {
         this.hpBase.string = GameConfig.PLAYER.HP_BASE.toString();
         this.damageBase.string = GameConfig.BULLET.DAMAGE_BASE.toString();
         this.attackSpeed.string = GameConfig.BULLET.TYPE.NOMAL.COOLDOWN.toString();
 
-       this.initLever();
-       this.initDame();
+    },
+    initSkill() {
+        let currentLeverNomalAttack = UpgradeController.getLeverNomalAttack();
+        let currentLeverUltimate = UpgradeController.getLeverUltimate();
 
-        
-    },
-    initLever(){
-        this.currentLeverNomalAttack = UpgradeController.getLeverNomalAttack();
-        this.currentLeverUltimate = UpgradeController.getLeverUltimate();
-        this.leverNomalAttack.string = this.currentLeverNomalAttack.toString();
-        this.leverUltimate.string = this.currentLeverUltimate.toString();
-    },
-    initDame(){
+        this.leverNomalAttack.string = currentLeverNomalAttack.toString();
+        this.leverUltimate.string = currentLeverUltimate.toString();
+
         let dameBase = GameConfig.BULLET.DAMAGE_BASE;
         let coefficientNomalDame = GameConfig.BULLET.TYPE.NOMAL.COEFFICIENT_DAMAGE;
         let coefficientUltimateDame = GameConfig.BULLET.TYPE.ULTIMATE.COEFFICIENT_DAMAGE;
         let percentNomalDameAdd = GameConfig.BULLET.TYPE.NOMAL.UPGRADE.PERCENT_DAMAGE_ADD;
         let percentUltimateDameAdd = GameConfig.BULLET.TYPE.ULTIMATE.UPGRADE.PERCENT_DAMAGE_ADD;
 
-        this.damageNomalAttack.string = Math.floor((dameBase*coefficientNomalDame*(1 + this.currentLeverNomalAttack*percentNomalDameAdd))).toString();
-        this.damageUltimate.string = Math.floor((dameBase*coefficientUltimateDame*(1 + this.currentLeverUltimate*percentUltimateDameAdd))).toString();
+        this.damageNomalAttack.string = Math.floor((dameBase * coefficientNomalDame * (1 + currentLeverNomalAttack * percentNomalDameAdd))).toString();
+        this.damageUltimate.string = Math.floor((dameBase * coefficientUltimateDame * (1 + currentLeverUltimate * percentUltimateDameAdd))).toString();
+
+        this.progressbarNomalAttack.progress = currentLeverNomalAttack * 0.1;
+        this.progressbarUltimate.progress = currentLeverUltimate * 0.1;
+
+        const priceBaseUpgradeNomal = GameConfig.BULLET.TYPE.NOMAL.UPGRADE.COST_BASE;
+        const priceBaseUpgradeUltimate = GameConfig.BULLET.TYPE.ULTIMATE.UPGRADE.COST_BASE;
+        const levelMultiplierNomal = GameConfig.BULLET.TYPE.NOMAL.UPGRADE.LEVER[currentLeverNomalAttack];
+        const levelMultiplierUltimate = GameConfig.BULLET.TYPE.ULTIMATE.UPGRADE.LEVER[currentLeverUltimate];
+
+        this.upgradeButtons.forEach(button => {
+            let labelPriceUpgrade = button.getChildByName('Price').getComponent(cc.Label);
+            if(button.parent.name === "Attack"){
+                if(currentLeverNomalAttack === 10){
+                    labelPriceUpgrade.string = "MAX";
+                }else{
+                    labelPriceUpgrade.string = Math.floor(priceBaseUpgradeNomal*levelMultiplierNomal).toString();
+
+                }
+            }
+            if(button.parent.name === "Ultimate"){
+                if(currentLeverUltimate === 10){
+                    labelPriceUpgrade.string = "MAX";
+                }else{
+                    labelPriceUpgrade.string = Math.floor(priceBaseUpgradeUltimate*levelMultiplierUltimate).toString();
+
+                }
+            }
+
+        });
 
     },
+
     onButtonClick(event, data) {
         this.activeNode(data);
         this.activeButton(data);
@@ -144,18 +198,38 @@ cc.Class({
             sprite.spriteFrame = isActive ? this.activeSpriteFrame : this.unActiveSpriteFrame;
         }
     },
-
-    onUpgradeButtonClick(event,typeSkill) {
-        if(typeSkill === SkillName.NOMAL){
-            if(UpgradeController.upgradeLeverNomalAttack()){
-                // ban sfx
-            }
+    isGoldEnough(priceUpgrade){
+        return this.currentGold >= priceUpgrade;
+    },
+    initButtonUpgrade(){
+        this.upgradeButtons.forEach(button => {
+            let spriteBackgroundUpgrade = button.getChildByName('Background').getComponent(cc.Sprite);
+            let labelPriceUpgrade = button.getChildByName('Price').getComponent(cc.Label);
+            const priceUpgrade = Number(labelPriceUpgrade.string);
+            let buttonComponent = button.getComponent(cc.Button);
             
+            if(!this.isGoldEnough(priceUpgrade)){
+                spriteBackgroundUpgrade.spriteFrame = this.notEnoughGoldSpriteFrame;
+                labelPriceUpgrade.node.color = cc.Color.RED;
+                buttonComponent.interactable = false;
+            }else{
+                spriteBackgroundUpgrade.spriteFrame = this.enoughGoldSpriteFrame;
+                labelPriceUpgrade.node.color = cc.Color.WHITE;
+                buttonComponent.interactable = true;
+            }
+        });
+    },
+    onUpgradeButtonClick(event, typeSkill) {
+        if (typeSkill === SkillName.NOMAL) {
+            UpgradeController.upgradeLeverNomalAttack()
         }
         if (typeSkill === SkillName.ULTIMATE) {
             UpgradeController.upgradeLeverUltimate();
         }
-        this.initLever();
-        this.initDame();
+        GoldController.subtractGold();
+        Emitter.emit(EventKey.SOUND.PLAY_SFX_UPGRADE, "name");
+
+        this.initSkill();
+        this.initButtonUpgrade();
     }
 });
