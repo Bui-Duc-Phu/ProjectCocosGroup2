@@ -4,13 +4,11 @@ cc.Class({
 
     properties: {
         id: {
-            default: '',
-            type: cc.String,
+            default: "",
             visible: false,
         },
         type: { 
             default: '',
-            type: cc.String,
             visible: false,
         },
     },

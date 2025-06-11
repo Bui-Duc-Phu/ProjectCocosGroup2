@@ -88,13 +88,14 @@ cc.Class({
         const id = this.genIDMonster();
         const baseStats = this.calculateBaseStats(level);
         const hp = baseStats.hp * type.COEFFICIENT_HP;
+        console.log('hp', hp);
         const damage = baseStats.damage * type.COEFFICIENT_DAMAGE;
         const durationMove = this.calculateMoveDuration(type, level);
         const gold = baseStats.gold * type.COEFFICIENT_GOLD;
         const spriteFrame = this.getSpriteFrameByType(type.NAME);
 
         const monster = cc.instantiate(this.prefabMonster);
-        const monsterItem = monster.getComponent(require('Monster'));
+        const monsterItem = monster.getComponent(require('MonsterItem'));
         monsterItem.init({
             id,
             type,
@@ -179,23 +180,26 @@ cc.Class({
         this.eventMap.clear();
     },
 
-    onMonsterHit(monster, bullet) {
-        this.takeDamage(monster, bullet);
+    onMonsterHit(monsterID, bullet) {
+        this.takeDamage(monsterID, bullet);
     },
 
-    onUltimateHit(monsters, bullet) {
+    onUltimateHit(monsterIDs, bullet) {
         monsters.forEach((monster) => {
             this.takeDamage(monster, bullet);
         });
     },
 
-    onBombHit(monsters, bullet) {
+    onBombHit(monsterIDs, bullet) {
         monsters.forEach((monster) => {
             this.takeDamage(monster, bullet);
         });
     },
 
-    takeDamage(monster, bullet) {
-        monster.hp -= bullet.damage;
+    takeDamage(monsterID, bullet) {
+        const monster = this.listChar.find(monster => monster.id === monsterID);
+        monster.takeDamage(bullet.damage);
+        console.log('monster.hp', monster.hp);
+        console.log('bullet.damage', bullet.damage);
     }
 });

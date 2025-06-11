@@ -50,7 +50,7 @@ const GameConfig = {
         }
     },
     BULLET:{
-        DAMAGE_BASE:50,
+        DAMAGE_BASE:20,
         TYPE:{
             NOMAL:{
                 NAME:"NOMAL",

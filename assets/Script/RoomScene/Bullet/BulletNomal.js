@@ -20,7 +20,11 @@ cc.Class({
     },
     onCollide(target, self) {
         const worldPos = self.node.convertToWorldSpaceAR(cc.v2(0, 0));
-        Emitter.emit(EventKey.MONSTER.ON_HIT, target.getComponent('MonsterItem'), this, worldPos)
+        const monsterId = target.getComponent('MonsterItem').id;
+        const hp = target.getComponent('MonsterItem').hp;
+        if (hp > 0) {
+            Emitter.emit(EventKey.MONSTER.ON_HIT, monsterId, this, worldPos)
+        }
         this.onClear()
     },
     onClear() {

@@ -21,7 +21,7 @@ cc.Class({
     },
     registerEvent() {
         this.eventMap = new Map([
-            [EventKey.PLAYER.SHOOT_NOMAL, this.onShootNomalBullet.bind(this)],
+            [EventKey.PLAYER.SHOOT_NORMAL, this.onShootNomalBullet.bind(this)],
             [EventKey.PLAYER.SHOOT_ULTIMATE, this.onShootUltimateBullet.bind(this)],
             [EventKey.PLAYER.SHOOT_BOMB, this.onShootBombBullet.bind(this)],
         ]);
@@ -78,6 +78,7 @@ cc.Class({
         this.onShootUltimateBullet(cc.v2(155, 355))
     },
     shootNomalBullet(worldPos) {
+        console.log('shootNomalBullet');
         this.onShootNomalBullet(cc.v2(155, 355))
     },
     shootBombBullet(worldPos) {

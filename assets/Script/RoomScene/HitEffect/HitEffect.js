@@ -20,5 +20,4 @@ cc.Class({
         this.stopTween(this.tween);
     },
 
-
 });

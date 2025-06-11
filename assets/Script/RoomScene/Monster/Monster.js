@@ -52,4 +52,9 @@ cc.Class({
             }
         });
     },
+    takeDamage(damage) {
+        if (this.hp > 0) {
+            this.hp = this.hp - damage;
+        }
+    }
 });
