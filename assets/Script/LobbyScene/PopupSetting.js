@@ -46,7 +46,6 @@ cc.Class({
         const volumeSFX = cc.sys.localStorage.getItem(LocalStorageKey.SOUND.SFX_VOLUME_KEY);
         console.log("volume df", this.volumeDefault)
         this.enableBGM = true;
-        Emitter.emit(EventKey.SOUND.ENABLE_BGM, this.enableBGM, AudioName.BGM.LOBBY);
 
         this.sliderSoundBGM.progress = volumeBGM;
         this.toggleBGM.target.active = false;
@@ -59,6 +58,9 @@ cc.Class({
         const sliderNode = this.sliderSoundSFX.node;
         sliderNode.on(cc.Node.EventType.TOUCH_END, this.onSliderSFXEnd, this);
         sliderNode.on(cc.Node.EventType.TOUCH_CANCEL, this.onSliderSFXEnd, this);
+        const handle = this.sliderSoundSFX.handle.node;
+        handle.on(cc.Node.EventType.TOUCH_END, this.onSliderSFXEnd, this);
+        handle.on(cc.Node.EventType.TOUCH_CANCEL, this.onSliderSFXEnd, this);
     },
     onToggleBGMChanged() {
         if (this.toggleBGM.isChecked) {

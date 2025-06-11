@@ -133,6 +133,7 @@ cc.Class({
         const levelMultiplierNomal = GameConfig.BULLET.TYPE.NOMAL.UPGRADE.LEVER[currentLeverNomalAttack];
         const levelMultiplierUltimate = GameConfig.BULLET.TYPE.ULTIMATE.UPGRADE.LEVER[currentLeverUltimate];
 
+        
         this.upgradeButtons.forEach(button => {
             let labelPriceUpgrade = button.getChildByName('Price').getComponent(cc.Label);
             if(button.parent.name === "Attack"){
@@ -140,7 +141,7 @@ cc.Class({
                     labelPriceUpgrade.string = "MAX";
                 }else{
                     labelPriceUpgrade.string = Math.floor(priceBaseUpgradeNomal*levelMultiplierNomal).toString();
-
+                    this.priceUpgradeNomal = Math.floor(priceBaseUpgradeNomal*levelMultiplierNomal);
                 }
             }
             if(button.parent.name === "Ultimate"){
@@ -148,6 +149,7 @@ cc.Class({
                     labelPriceUpgrade.string = "MAX";
                 }else{
                     labelPriceUpgrade.string = Math.floor(priceBaseUpgradeUltimate*levelMultiplierUltimate).toString();
+                    this.priceUpgradeUltimate = Math.floor(priceBaseUpgradeUltimate*levelMultiplierUltimate);
 
                 }
             }
@@ -222,13 +224,17 @@ cc.Class({
     onUpgradeButtonClick(event, typeSkill) {
         if (typeSkill === SkillName.NOMAL) {
             UpgradeController.upgradeLeverNomalAttack()
+            GoldController.subtractGold(this.priceUpgradeNomal);
+
         }
         if (typeSkill === SkillName.ULTIMATE) {
             UpgradeController.upgradeLeverUltimate();
-        }
-        GoldController.subtractGold();
-        Emitter.emit(EventKey.SOUND.PLAY_SFX_UPGRADE, "name");
+            GoldController.subtractGold(this.priceUpgradeUltimate);
 
+        }
+        Emitter.emit(EventKey.SOUND.PLAY_SFX_UPGRADE, "name");
+        Emitter.emit(EventKey.GOLD.CHANGE_GOLD);
+        this.currentGold = GoldController.getGoldValue();
         this.initSkill();
         this.initButtonUpgrade();
     }
