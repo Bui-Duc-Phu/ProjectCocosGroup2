@@ -143,10 +143,15 @@ cc.Class({
     },
 
     loadSceneInternal(sceneName) {
+        if (sceneName === 'TestPlayer' && cc.game['ROOM_INIT_LOAD']) {
+            cc.game['ROOM_INIT_LOAD'] = false;
+            return;
+        }
         this.isSceneLoading = true;
         cc.director.preloadScene(sceneName, () => {
             cc.director.loadScene(sceneName);
         });
+        console.log(`Loading scene: ${sceneName}`);
     },
 
     executeExitSteps() {

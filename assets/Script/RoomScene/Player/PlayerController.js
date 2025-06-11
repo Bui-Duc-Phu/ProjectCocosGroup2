@@ -47,34 +47,24 @@ cc.Class({
         if (!this.playerScript.fsm.can('toMoveUp')) {
             return;
         }
-        if (this.playerScript.currentHP <= 0) {
-            return;
-        }
         this.playerScript.fsm.toMoveUp();
+        console.log('PlayerController onMoveUp');
     },
     onMoveDown() {
         if (!this.playerScript.fsm.can('toMoveDown')) {
             return;
         }
-        if (this.playerScript.currentHP <= 0) {
-            return;
-        }
         this.playerScript.fsm.toMoveDown();
+        console.log('PlayerController onMoveDown');
     },
     onShootUltimate() {
         if (!this.playerScript.fsm.can('toShootUltimate')) {
-            return;
-        }
-        if (this.playerScript.currentHP <= 0) {
             return;
         }
         this.playerScript.fsm.toShootUltimate();
     },
     onUseBomb() {
         if (!this.playerScript.fsm.can('toUseBomb')) {
-            return;
-        }
-        if (this.playerScript.currentHP <= 0) {
             return;
         }
         this.playerScript.fsm.toUseBomb();

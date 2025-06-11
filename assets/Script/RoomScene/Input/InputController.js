@@ -51,18 +51,21 @@ cc.Class({
         this.registerEventListener();
     },
     setInputTouchable(value) {
-        if (value) {
-            cc.tween(this.node)
-                .to(0.5, { opacity: 255 })
-                .start();
-        } else {
-            this.node.opacity = 0;
-        }
         this.isMoveButtonEnabled = value;
         this.moveUpButton.interactable = value;
         this.moveDownButton.interactable = value;
         this.skillButton.interactable = value;
         this.bombButton.interactable = (this.getBombAmount() > 0 && value) ? true : false;
+        if (value) {
+            this.registerKeyboardEvents();
+            cc.tween(this.node)
+                .to(0.5, { opacity: 255 })
+                .start();
+        } else {
+            this.node.opacity = 0;
+            this.unregisterKeyboardEvents();
+        }
+        console.log('InputController setInputTouchable:', value);
     },
     registerEventListener() {
         const eventHandlers = {
@@ -90,6 +93,9 @@ cc.Class({
     },
     registerKeyboardEvents() {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+    },
+    unregisterKeyboardEvents() {
+        cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
     },
 
     onKeyDown(event) {
@@ -148,6 +154,6 @@ cc.Class({
         this.moveDownButton.node.off('click', this.onMoveDown, this);
         this.skillButton.node.off('click', this.onUseSkill, this);
         this.bombButton.node.off('click', this.onUseBomb, this);
-        cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+        this.unregisterKeyboardEvents();
     },
 });

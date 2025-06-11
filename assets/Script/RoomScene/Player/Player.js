@@ -22,17 +22,14 @@ cc.Class({
         maxHP: {
             default: GameConfig.PLAYER.HP_BASE,
             type: cc.Integer,
-            visible: false,
         },
         currentHP: {
             default: 0,
             type: cc.Integer,
-            visible: false,
         },
         fsm: {
             default: null,
             serializable: false,
-            visible: false,
         },
         playerSpine: {
             default: null,
@@ -92,8 +89,8 @@ cc.Class({
             transitions: [
                 { name: 'toPortal', from: '*', to: FSM_STATE.PORTAL },
                 { name: 'toShoot', from: '*', to: FSM_STATE.SHOOT },
-                { name: 'toMoveUp', from: [FSM_STATE.SHOOT, FSM_STATE.HIT], to: FSM_STATE.MOVE_UP },
-                { name: 'toMoveDown', from: [FSM_STATE.SHOOT, FSM_STATE.HIT], to: FSM_STATE.MOVE_DOWN },
+                { name: 'toMoveUp', from: FSM_STATE.SHOOT, to: FSM_STATE.MOVE_UP },
+                { name: 'toMoveDown', from: FSM_STATE.SHOOT, to: FSM_STATE.MOVE_DOWN },
                 { name: 'toUseBomb', from: [FSM_STATE.SHOOT, FSM_STATE.MOVE_UP, FSM_STATE.MOVE_DOWN], to: FSM_STATE.USE_BOMB },
                 { name: 'toShootUltimate', from: [FSM_STATE.SHOOT, FSM_STATE.MOVE_UP, FSM_STATE.MOVE_DOWN], to: FSM_STATE.SHOOT_ULTIMATE },
                 { name: 'toDie', from: '*', to: FSM_STATE.DIE },
@@ -190,8 +187,9 @@ cc.Class({
     handleEnterDie() {
         this.playerSpine.setAnimation(1, SpineAnimation.DEATH, false);
         this.playerSpine.setCompleteListener(() => {
-            this.node.parent.active = false;
+            this.node.parent.destroy();
         });
+        
     },
     takeDamage(amount) {
         if (this.fsm.is(FSM_STATE.DIE)) return;
@@ -200,12 +198,6 @@ cc.Class({
         this.currentHP -= amount;
         console.log(`Current HP: ${this.currentHP}`);
         this.hpProgressBar.progress = this.currentHP / this.maxHP;
-        cc.tween(this.node)
-            .to(0.1, { opacity: 80 }, { easing: 'sineInOut' })
-            .to(0.1, { opacity: 255 }, { easing: 'sineInOut' })
-            .to(0.1, { opacity: 80 }, { easing: 'sineInOut' })
-            .to(0.1, { opacity: 255 }, { easing: 'sineInOut' })
-            .start();
         if (this.currentHP <= 0) {
             Emitter.emit(EventKey.PLAYER.ON_DIE, this.node);
             this.currentHP = 0;
@@ -213,9 +205,13 @@ cc.Class({
             this.boundOnShootBullet = null;
             this.playerSpine.clearTrack(1);
             this.fsm.toDie();
+        } else {
+            cc.tween(this.node)
+                .to(0.1, { opacity: 80 }, { easing: 'sineInOut' })
+                .to(0.1, { opacity: 255 }, { easing: 'sineInOut' })
+                .to(0.1, { opacity: 80 }, { easing: 'sineInOut' })
+                .to(0.1, { opacity: 255 }, { easing: 'sineInOut' })
+                .start();
         }
     },
-    onDisable() {
-        this.playerSpine.setCompleteListener(null);
-    }
 });
