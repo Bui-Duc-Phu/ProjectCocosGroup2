@@ -6,7 +6,7 @@ const EventKey = {
         ENABLE_BGM: 'ENABLE_BGM',
         PLAY_BGM: 'PLAY_BGM',
         STOP_BGM: 'STOP_BGM',
-        PLAY_SFX_UPGRADE: 'PLAY_SFX_UPGRADE'
+
     },
     POPUP: {
         SHOW: 'showPopup',
