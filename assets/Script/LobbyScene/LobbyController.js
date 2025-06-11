@@ -60,6 +60,9 @@ cc.Class({
     onClickButton(){
          Emitter.emit(EventKey.SOUND.PLAY_SFX,AudioName.SFX.CLICK);
     },
+    onClickStart(){
+        Emitter.emit(EventKey.SCENE.LOAD_ROOM);
+    },
     onDestroy() {
         Emitter.removeEvent(EventKey.GOLD.CHANGE_GOLD, this._onChangeGold);
     },
