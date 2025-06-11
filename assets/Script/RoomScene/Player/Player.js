@@ -56,10 +56,13 @@ cc.Class({
             type: cc.Float,
             visible: false,
         },
+        bulletPointer: {
+            default: null,
+            type: cc.Node,
+        },
     },
     onLoad() {
         this.init();
-        console.log('Player component loaded');
     },
     init() {
         this.currentHP = this.maxHP;
@@ -117,9 +120,7 @@ cc.Class({
     },
     onShootBullet() {
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
-        let bulletPositionX = this.node.position.x + this.node.width * this.node.scale;
-        let bulletPositionY = this.node.position.y + this.node.height * this.node.scale;
-        let bulletPosition = this.node.convertToWorldSpaceAR(cc.v2(bulletPositionX, bulletPositionY));
+        let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
         Emitter.emit(EventKey.PLAYER.SHOOT_NORMAL, bulletPosition);
     },
     handleUseBomb() {
@@ -127,9 +128,7 @@ cc.Class({
         this.boundOnShootBullet = null;
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
         this.playerSpine.setCompleteListener(() => {
-            let bulletPositionX = this.node.position.x + this.node.width * this.node.scale;
-            let bulletPositionY = this.node.position.y + this.node.height * this.node.scale;
-            let bulletPosition = this.node.convertToWorldSpaceAR(cc.v2(bulletPositionX, bulletPositionY));
+            let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
             Emitter.emit(EventKey.PLAYER.USE_BOMB, bulletPosition);
             this.fsm.toShoot();
         });
@@ -167,9 +166,7 @@ cc.Class({
         this.boundOnShootBullet = null;
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
         this.playerSpine.setCompleteListener(() => {
-            let bulletPositionX = this.node.position.x + this.node.width * this.node.scale;
-            let bulletPositionY = this.node.position.y + this.node.height * this.node.scale;
-            let bulletPosition = this.node.convertToWorldSpaceAR(cc.v2(bulletPositionX, bulletPositionY));
+            let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
             Emitter.emit(EventKey.PLAYER.SHOOT_ULTIMATE, bulletPosition);
             this.fsm.toShoot();
             console.log(bulletPosition);
