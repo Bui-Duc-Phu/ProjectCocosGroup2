@@ -130,6 +130,10 @@ const GameConfig = {
     ROOM:{
         TIME_START_GAME: 3,
         TIME_NEXT_WAVE: 3,
+        WORD_POS:{
+            X:792,
+            Y:478,
+        }
     }   
 }
 module.exports = GameConfig;

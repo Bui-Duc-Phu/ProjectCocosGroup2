@@ -16,6 +16,7 @@ cc.Class({
     onLoad() {
         this.colisionManager();
         this.registerEvent();
+        this.initGame();    
     },
     colisionManager() {
         let manager = cc.director.getCollisionManager();
@@ -30,12 +31,19 @@ cc.Class({
         });
     },
     initTitleWave() {
-        let titleWave = cc.instantiate(gameAsset.getTitleWavePrefab());
-        const show = () => {
-            titleWave.parent = this.node;
-            titleWave.setPosition(0, 0);
-        }
-        show();
+        const wordPos = cc.v2(GameConfig.ROOM.WORD_POS.X,GameConfig.ROOM.WORD_POS.Y);
+        this.titleWave = cc.instantiate(this.gameAsset.getTitleWavePrefab());
+        let component = this.titleWave.getComponent('Round');
+        component.init(this.waveCurrent);
+        this.titleWave.parent = this.node;
+        this.setPosition(this.titleWave,wordPos);
+    },
+    removeTitleWave() {
+        this.titleWave.active = false;
+    },
+    setPosition(node,wordPos) {
+        const pos =  this.node.convertToNodeSpaceAR(wordPos);
+        node.setPosition(pos);
     },
     unregisterEvent() {
         if (!this.eventMap) return;
@@ -48,8 +56,10 @@ cc.Class({
         Emitter.emit(EventKey.ROOM.GAME_OVER);
     },
     initGame() {
+        this.initTitleWave();
         this.scheduleOnce(() => {
             this.startGame();
+            this.removeTitleWave();
         }, GameConfig.ROOM.TIME_START_GAME);
     },
     summaryWave() {
