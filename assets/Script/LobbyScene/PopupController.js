@@ -22,7 +22,7 @@ cc.Class({
             type: require('PopupItem'),
             default: null
         },
-        popupSkill: {
+        popupResult: {
             type: require('PopupItem'),
             default: null
         },
@@ -34,12 +34,13 @@ cc.Class({
     },
     onLoad() {
         this.init();
-        this.registerEvent();
     },
     init() {
         this.onShowPopup = this.showPopup.bind(this);
         this.hideAllPopup();
         this.overlay.active = false;
+        this.registerEvent();
+
     },
     registerEvent() {
         Emitter.registerEvent(EventKey.POPUP.SHOW, this.onShowPopup)
@@ -67,7 +68,7 @@ cc.Class({
         this.popupSetting.hide();
         this.popupShop.hide();
         this.popupHero.hide();
-        this.popupSkill.hide();
+        this.popupResult.hide();
     },
     onDestroy() {
         Emitter.removeEvent(EventKey.POPUP.SHOW, this.onShowPopup);
