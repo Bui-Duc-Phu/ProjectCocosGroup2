@@ -30,12 +30,14 @@ cc.Class({
     },
     init() {
         this.progressBarComponent = this.node.getComponent(cc.ProgressBar);
+        this.cooldownLabel = this.node.getChildByName('label').getComponent(cc.Label);
         this.node.active = false;
         this.progressBarComponent.progress = 0;
     },
     onEnable() {
         this.totalDuration = this.durationSeconds;
         this.remainingTime = this.durationSeconds;
+        this.cooldownLabel.string = `${Math.floor(this.durationSeconds)}s`;
         this.isOnCooldown = true;
         this.progressBarComponent.progress = 1;
     },
@@ -45,7 +47,7 @@ cc.Class({
         }
 
         this.remainingTime -= dt;
-
+        this.cooldownLabel.string = `${Math.floor(this.remainingTime)}s`;
         if (this.remainingTime <= 0) {
             this.node.active = false;
         } else {

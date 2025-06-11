@@ -1,6 +1,7 @@
 const GameConfig = require('GameConfig');
 const Emitter = require('Emitter');
 const EventKey = require('EventKey');
+const LocalStorageKey = require('LocalStorageKey');
 cc.Class({
     extends: cc.Component,
 
@@ -29,17 +30,38 @@ cc.Class({
             default: true,
             visible: false,
         },
+        bombAmount: {
+            default: 0,
+            type: cc.Integer,
+            visible: false,
+        },
     },
     onLoad() {
+        this.init();
+    },
+    init() {
         this.setCooldown();
         this.registerButtonEvents();
         this.registerKeyboardEvents();
+    },
+    getBombAmount() {
+        let amount = cc.sys.localStorage.getItem(LocalStorageKey.PLAYER.BOMB_AMOUNT);
+        if (amount === null) {
+            amount = 0;
+            cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.BOMB_AMOUNT, amount.toString());
+        };
+        this.bombAmount = parseInt(amount);
+        this.bombAmountLabel = this.bombButton.node.getChildByName('BombAmount').getComponentInChildren(cc.Label);
+        this.bombAmountLabel.string = this.bombAmount.toString();
+        this.bombButton.interactable = this.bombAmount > 0;
+        return this.bombAmount;
     },
     registerButtonEvents() {
         this.moveUpButton.node.on('click', this.onMoveUp, this);
         this.moveDownButton.node.on('click', this.onMoveDown, this);
         this.skillButton.node.on('click', this.onUseSkill, this);
         this.bombButton.node.on('click', this.onUseBomb, this);
+        this.getBombAmount();   
     },
     registerKeyboardEvents() {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
@@ -70,7 +92,7 @@ cc.Class({
 
         this.bombCooldown = cc.instantiate(this.cooldownPrefab);
         this.bombCooldown.getComponent('CooldownController').durationSeconds = GameConfig.SHOP.ITEM.BOMB.COOLDOWN;
-        this.bombCooldown.parent = this.node.getChildByName('BombInput');    
+        this.bombCooldown.parent = this.node.getChildByName('BombInput');
     },
     onMoveUp() {
         Emitter.emit(EventKey.INPUT.MOVE_UP);
@@ -81,10 +103,15 @@ cc.Class({
     onUseSkill() {
         Emitter.emit(EventKey.INPUT.SHOOT_ULTIMATE);
         this.skillCooldown.active = true;
-    },  
+    },
     onUseBomb() {
-        Emitter.emit(EventKey.INPUT.USE_BOMB);
-        this.bombCooldown.active = true;
+        if (this.getBombAmount() > 0) {
+            Emitter.emit(EventKey.INPUT.USE_BOMB);
+            this.bombCooldown.active = true;
+            this.bombAmount -= 1;
+            cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.BOMB_AMOUNT, this.bombAmount.toString()); 
+            this.bombAmountLabel.string = this.bombAmount.toString();
+        }
     },
     onDestroy() {
         this.moveUpButton.node.off('click', this.onMoveUp, this);

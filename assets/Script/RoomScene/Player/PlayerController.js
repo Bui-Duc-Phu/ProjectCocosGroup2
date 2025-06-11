@@ -5,9 +5,14 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        player: {
+        playerPrefab: {
             default: null,
-            type: cc.Node,
+            type: cc.Prefab,
+        },
+        playerList: {
+            default: [],
+            type: [cc.Node],
+            visible: false,
         },
 
     },
@@ -16,7 +21,13 @@ cc.Class({
     },
     init() {
         this.registerEventListener();
-        this.playerScript = this.player.getComponent('Player');
+        this.createPlayer();
+    },
+    createPlayer() {
+        this.playerNode = cc.instantiate(this.playerPrefab);
+        this.node.addChild(this.playerNode);
+        this.playerScript = this.playerNode.getChildByName('PlayerSpine').getComponent('Player');
+        this.playerList.push(this.playerNode);
     },
     registerEventListener() {
         const eventHandlers = {
@@ -27,7 +38,6 @@ cc.Class({
             [EventKey.ROOM.PAUSE]: this.onPause.bind(this),
             [EventKey.ROOM.RESUME]: this.onResume.bind(this),
             [EventKey.ROOM.RESTART]: this.onRestart.bind(this),
-            [EventKey.PLAYER.ON_HIT]: this.onHit.bind(this),
         };
         for (const event in eventHandlers) {
             Emitter.registerEvent(event, eventHandlers[event]);
@@ -71,8 +81,5 @@ cc.Class({
         for (const event in this.eventHandlers) {
             Emitter.unregisterEvent(event, this.eventHandlers[event]);
         }
-    },
-    onHit(damage) {
-        this.playerScript.takeDamage(damage);
     },
 });

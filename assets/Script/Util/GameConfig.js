@@ -78,7 +78,7 @@ const GameConfig = {
             },
             ULTIMATE:{
                 NAME:"ULTIMATE",    
-                COEFFICIENT_DAMAGE:2,
+                COEFFICIENT_DAMAGE:3,
                 DURATION_MOVE:1.5,
                 COUNT_TARGET:5,
                 MOVE_BY_X:3000,

@@ -19,12 +19,12 @@ cc.Class({
     extends: cc.Component,
     properties: {
         maxHP: {
-            default: 1500,
+            default: 150,
             type: cc.Integer,
             visible: false,
         },
         currentHP: {
-            default: 1500,
+            default: 150,
             type: cc.Integer,
             visible: false,
         },
@@ -56,10 +56,13 @@ cc.Class({
             type: cc.Float,
             visible: false,
         },
+        bulletPointer: {
+            default: null,
+            type: cc.Node,
+        },
     },
     onLoad() {
         this.init();
-        console.log('Player component loaded');
     },
     init() {
         this.currentHP = this.maxHP;
@@ -68,6 +71,12 @@ cc.Class({
         this.playerFrame.setPosition(-420, -100);
         this.initStateMachine();
         this.playerPositionY = [-300, -100, 100];
+
+    },
+    onCollisionEnter(other, self) {
+        console.log(other.node.getComponent('MonsterItem'), "  ",self.node);
+        this.takeDamage(other.node.getComponent('MonsterItem').damage);
+
     },
     initStateMachine() {
         this.fsm = new StateMachine({
@@ -88,17 +97,14 @@ cc.Class({
                 onEnterMoveUp: () => this.handleEnterMoveUp(),
                 onEnterMoveDown: () => this.handleEnterMoveDown(),
                 onEnterShootUltimate: () => this.handleEnterShootUltimate(),
-                onEnterHit: () => this.handleEnterHit(),
                 onEnterDie: () => this.handleEnterDie(),
                 onUseBomb: () => this.handleUseBomb(),
-                onLeaveShoot:() => this.handleLeaveShoot(),
 
                 onLeavePortal: () => this.playerSpine.setCompleteListener(null),
                 onLeaveMoveUp: () => this.playerSpine.setCompleteListener(null),
                 onLeaveMoveDown: () => this.playerSpine.setCompleteListener(null),
                 onLeaveShootUltimate: () => this.playerSpine.setCompleteListener(null),
                 onLeaveUseBomb: () => this.playerSpine.setCompleteListener(null),
-                onLeaveHit: () => this.playerSpine.setCompleteListener(null),
             },
         });
     },
@@ -111,27 +117,23 @@ cc.Class({
         });
     },
     handleEnterShoot() {
-        if (!this.boundOnShootBullet){
+        if (!this.boundOnShootBullet) {
             this.boundOnShootBullet = this.onShootBullet.bind(this);
-            this.schedule(this.boundOnShootBullet, 0.5);
+            this.schedule(this.boundOnShootBullet, 0.4);
         }
     },
     onShootBullet() {
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
-        this.playerSpine.setCompleteListener(() => {
-            let bulletPosition = this.node.convertToWorldSpaceAR(cc.v2(this.playerFrame.position.x + 100, this.playerFrame.position.y));
-            Emitter.emit(EventKey.PLAYER.SHOOT_NORMAL, bulletPosition);
-        });
-    },
-    handleLeaveShoot() {
-        this.playerSpine.setCompleteListener(null);
+        let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
+        Emitter.emit(EventKey.PLAYER.SHOOT_NORMAL, bulletPosition);
     },
     handleUseBomb() {
         this.unschedule(this.boundOnShootBullet);
         this.boundOnShootBullet = null;
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
         this.playerSpine.setCompleteListener(() => {
-            Emitter.emit(EventKey.PLAYER.USE_BOMB);
+            let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
+            Emitter.emit(EventKey.PLAYER.USE_BOMB, bulletPosition);
             this.fsm.toShoot();
         });
     },
@@ -168,14 +170,10 @@ cc.Class({
         this.boundOnShootBullet = null;
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
         this.playerSpine.setCompleteListener(() => {
-            Emitter.emit(EventKey.PLAYER.SHOOT_ULTIMATE);
+            let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
+            Emitter.emit(EventKey.PLAYER.SHOOT_ULTIMATE, bulletPosition);
             this.fsm.toShoot();
-        });
-    },
-    handleEnterHit() {
-        this.playerSpine.setAnimation(1, SpineAnimation.IDLE_TURNS, false);
-        this.playerSpine.setCompleteListener(() => {
-            this.fsm.toShoot();
+            console.log(bulletPosition);
         });
     },
     handleEnterDie() {
@@ -189,16 +187,13 @@ cc.Class({
     },
     takeDamage(amount) {
         if (this.fsm.is(FSM_STATE.DIE)) return;
-
+        console.log(`Player took damage: ${amount}`);
         this.currentHP -= amount;
+        console.log(`Current HP: ${this.currentHP}`);
         this.hpProgressBar.progress = this.currentHP / this.maxHP;
-        Emitter.emit(EventKey.PLAYER.ON_HIT, this.currentHP, this.maxHP);
-
         if (this.currentHP <= 0) {
             this.currentHP = 0;
             this.fsm.toDie();
-        } else {
-            this.fsm.toHit();
         }
     },
     onDisable() {
