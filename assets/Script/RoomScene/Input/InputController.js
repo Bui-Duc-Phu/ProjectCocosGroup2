@@ -22,6 +22,10 @@ cc.Class({
             default: null,
             type: cc.Button,
         },
+        settingButton: {
+            default: null,
+            type: cc.Button,
+        },
         cooldownPrefab: {
             default: null,
             type: cc.Prefab,
@@ -43,17 +47,40 @@ cc.Class({
         this.setCooldown();
         this.registerButtonEvents();
         this.registerKeyboardEvents();
+        this.setInputTouchable(false);
+        this.registerEventListener();
+    },
+    setInputTouchable(value) {
+        this.isMoveButtonEnabled = value;
+        this.moveUpButton.interactable = value;
+        this.moveDownButton.interactable = value;
+        this.skillButton.interactable = value;
+        this.bombButton.interactable = (this.getBombAmount() > 0 && value) ? true : false;
+        if (value) {
+            this.registerKeyboardEvents();
+            cc.tween(this.node)
+                .to(0.5, { opacity: 255 })
+                .start();
+        } else {
+            this.node.opacity = 0;
+            this.unregisterKeyboardEvents();
+        }
+        console.log('InputController setInputTouchable:', value);
+    },
+    registerEventListener() {
+        const eventHandlers = {
+            [EventKey.PLAYER.READY]: this.setInputTouchable.bind(this, true),
+            [EventKey.PLAYER.ON_DIE]: this.setInputTouchable.bind(this, false),
+        }
+        for (const event in eventHandlers) {
+            Emitter.registerEvent(event, eventHandlers[event]);
+        }
     },
     getBombAmount() {
         let amount = cc.sys.localStorage.getItem(LocalStorageKey.PLAYER.BOMB_AMOUNT);
-        if (amount === null) {
-            amount = 0;
-            cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.BOMB_AMOUNT, amount.toString());
-        };
         this.bombAmount = parseInt(amount);
         this.bombAmountLabel = this.bombButton.node.getChildByName('BombAmount').getComponentInChildren(cc.Label);
         this.bombAmountLabel.string = this.bombAmount.toString();
-        this.bombButton.interactable = this.bombAmount > 0;
         return this.bombAmount;
     },
     registerButtonEvents() {
@@ -61,10 +88,14 @@ cc.Class({
         this.moveDownButton.node.on('click', this.onMoveDown, this);
         this.skillButton.node.on('click', this.onUseSkill, this);
         this.bombButton.node.on('click', this.onUseBomb, this);
-        this.getBombAmount();   
+        this.settingButton.node.on('click', this.onSettingButtonClick, this);
+        this.bombButton.interactable = this.getBombAmount() > 0;
     },
     registerKeyboardEvents() {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+    },
+    unregisterKeyboardEvents() {
+        cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
     },
 
     onKeyDown(event) {
@@ -105,19 +136,24 @@ cc.Class({
         this.skillCooldown.active = true;
     },
     onUseBomb() {
-        if (this.getBombAmount() > 0) {
-            Emitter.emit(EventKey.INPUT.USE_BOMB);
-            this.bombCooldown.active = true;
-            this.bombAmount -= 1;
-            cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.BOMB_AMOUNT, this.bombAmount.toString()); 
-            this.bombAmountLabel.string = this.bombAmount.toString();
+        if (this.getBombAmount() <= 0) {
+            return;
         }
+        Emitter.emit(EventKey.INPUT.USE_BOMB);
+        this.bombCooldown.active = true;
+        this.bombAmount -= 1;
+        cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.BOMB_AMOUNT, this.bombAmount.toString());
+        this.bombAmountLabel.string = this.bombAmount.toString();
+    },
+    onSettingButtonClick() {
+        console.log('Setting button clicked');
+        Emitter.emit(EventKey.POPUP.SHOW, 'Setting');
     },
     onDestroy() {
         this.moveUpButton.node.off('click', this.onMoveUp, this);
         this.moveDownButton.node.off('click', this.onMoveDown, this);
         this.skillButton.node.off('click', this.onUseSkill, this);
         this.bombButton.node.off('click', this.onUseBomb, this);
-        cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+        this.unregisterKeyboardEvents();
     },
 });

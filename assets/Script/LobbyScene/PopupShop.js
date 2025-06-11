@@ -2,6 +2,7 @@ const ItemName = require('ItemName');
 const GoldController = require('GoldController');
 const Emitter = require('Emitter');
 const EventKey = require('EventKey');
+const AudioName = require('AudioName')
 cc.Class({
     extends: require('PopupItem'),
 
@@ -93,12 +94,16 @@ cc.Class({
         } else {
             GoldController.subtractGold(this.priceItem);
             Emitter.emit(EventKey.GOLD.CHANGE_GOLD);
+            Emitter.emit(EventKey.SOUND.PLAY_SFX,AudioName.SFX.BUY_SUCCESS);
             this.amountItem = Number(this.amountItem) + 1;
             cc.sys.localStorage.setItem(this.itemName, this.amountItem);
-            
         }
         this.currentGold = GoldController.getGoldValue();
         this.initItem();
         this.initItemDetail();
+    },
+    hide(){
+        this._super();
+        this.itemDetail.active = false;
     }
 });
