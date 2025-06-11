@@ -179,7 +179,6 @@ cc.Class({
         let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
         Emitter.emit(EventKey.PLAYER.SHOOT_ULTIMATE, bulletPosition);
         this.playerSpine.setCompleteListener(() => {
-
             this.fsm.toShoot();
             console.log(bulletPosition);
         });
