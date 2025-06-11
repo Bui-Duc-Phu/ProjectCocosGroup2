@@ -52,7 +52,7 @@ cc.Class({
             visible: false,
         },
         moveDuration: {
-            default: 0.5,
+            default: 1,
             type: cc.Float,
             visible: false,
         },
@@ -201,8 +201,10 @@ cc.Class({
         console.log(`Current HP: ${this.currentHP}`);
         this.hpProgressBar.progress = this.currentHP / this.maxHP;
         cc.tween(this.node)
-            .to(0.2, { opacity: 150 }, { easing: 'sineInOut' })
-            .to(0.2, { opacity: 255 }, { easing: 'sineInOut' })
+            .to(0.1, { opacity: 80 }, { easing: 'sineInOut' })
+            .to(0.1, { opacity: 255 }, { easing: 'sineInOut' })
+            .to(0.1, { opacity: 80 }, { easing: 'sineInOut' })
+            .to(0.1, { opacity: 255 }, { easing: 'sineInOut' })
             .start();
         if (this.currentHP <= 0) {
             this.currentHP = 0;
