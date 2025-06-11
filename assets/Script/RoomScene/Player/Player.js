@@ -187,6 +187,7 @@ cc.Class({
     handleEnterDie() {
         this.playerSpine.setAnimation(1, SpineAnimation.DEATH, false);
         this.playerSpine.setCompleteListener(() => {
+            this.playerSpine.timeScale = 0;
             this.node.parent.destroy();
         });
         
