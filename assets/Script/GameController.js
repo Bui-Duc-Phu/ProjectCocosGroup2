@@ -5,7 +5,6 @@ const GoldController = require('GoldController');
 const UpgradeController = require('UpgradeController');
 
 const FSM_STATES = {
-    LOADING: 'Loading',
     LOBBY: 'Lobby',
     ROOM: 'Room',
     EXITING: 'Exiting',
@@ -68,17 +67,13 @@ cc.Class({
 
     initializeStateMachine() {
         this.fsm = new StateMachine({
-            init: FSM_STATES.LOADING,
+            init: 'init',
             transitions: [
-                { name: 'finishLoading', from: FSM_STATES.LOADING, to: FSM_STATES.LOBBY },
-                { name: 'enterRoom', from: FSM_STATES.LOBBY, to: FSM_STATES.ROOM },
+                { name: 'enterRoom', from: [FSM_STATES.LOBBY, 'init'], to: FSM_STATES.ROOM },
                 { name: 'leaveRoom', from: FSM_STATES.ROOM, to: FSM_STATES.LOBBY },
                 { name: 'requestExit', from: FSM_STATES.LOBBY, to: FSM_STATES.EXITING }
             ],
             methods: {
-                onEnterLoading: (lifecycle) => {
-                    this.emitStateChange(FSM_STATES.LOADING, lifecycle.from);
-                },
                 onEnterLobby: (lifecycle) => {
                     this.emitStateChange(FSM_STATES.LOBBY, lifecycle.from);
                 },
@@ -89,10 +84,6 @@ cc.Class({
                     this.emitStateChange(FSM_STATES.EXITING, lifecycle.from);
                     this.executeExitSteps();
                 },
-
-                onFinishLoading: () => {
-                    this.loadSceneInternal('Lobby');
-                },
                 onEnterRoom: () => {
                     this.loadSceneInternal('Room');
                 },
@@ -101,7 +92,6 @@ cc.Class({
                 },
             }
         });
-        this.emitStateChange(FSM_STATES.LOADING, 'None');
     },
 
     emitStateChange(newState, oldState) {
@@ -134,11 +124,7 @@ cc.Class({
         this.singletonList = [];
     },
     onLoadLobbyRequest() {
-        if (this.fsm.is(FSM_STATES.LOADING)) {
-            this.fsm.finishLoading();
-        } else if (this.fsm.is(FSM_STATES.ROOM)) {
-            this.fsm.leaveRoom();
-        }
+        this.fsm.leaveRoom();
     },
 
     onLoadRoomRequest() {
