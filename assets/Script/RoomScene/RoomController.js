@@ -1,6 +1,7 @@
 const Emitter = require("Emitter");
 const EventKey = require("EventKey");
 const GameConfig = require("GameConfig");
+const PopupName = require("PopupName");
 
 
 cc.Class({
@@ -28,6 +29,7 @@ cc.Class({
         this.colisionManager();
         this.registerEvent();
         this.initGame();    
+       
     },
     colisionManager() {
         let manager = cc.director.getCollisionManager();
@@ -44,11 +46,11 @@ cc.Class({
         });
     },
     summaryGame(sumGold, sumMonsterKill) {
-        this.sumGold = sumGold;
+        this.sumGold = sumGold - 100;
         this.sumMonsterKill = sumMonsterKill;
         this.score = this.caculateScore();
-        console.log("score", this.score);
-        console.log('summaryGame', this.sumGold, this.sumMonsterKill, this.score);
+        this.updateResult(this.score,this.sumGold);
+        this.showPopupResult();
     },
     initTitleWave() {
         const wordPos = cc.v2(GameConfig.ROOM.WORD_POS.X,GameConfig.ROOM.WORD_POS.Y);
@@ -107,4 +109,11 @@ cc.Class({
         const scoreWave = this.waveCurrent * GameConfig.ROOM.SUMMARY_GAME.SCORE_ONE_WAVE;
         return scoreKill + scoreWave;
     },
+    showPopupResult() {
+        Emitter.emit(EventKey.POPUP.SHOW, PopupName.RESULT);
+    },
+    updateResult(score, sumGold) {
+        Emitter.emit(EventKey.ROOM.UPDATE_RESULT, score, sumGold);
+    },
+
 });

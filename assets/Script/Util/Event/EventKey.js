@@ -48,6 +48,7 @@ const EventKey = {
         START_GAME: 'START_GAME',
         GAME_OVER: 'GAME_OVER',
         SUMMARY_GAME: 'SUMMARY_GAME',
+        UPDATE_RESULT: 'UPDATE_RESULT',
     },
     WAVE: {
         WAVE_COMPLETE: 'WAVE_COMPLETE',

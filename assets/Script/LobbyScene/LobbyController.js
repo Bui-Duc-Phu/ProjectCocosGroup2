@@ -2,12 +2,8 @@ const GoldController = require('GoldController')
 const Emitter = require('Emitter');
 const EventKey = require('EventKey');
 const AudioName = require('AudioName');
-const typePopup = {
-    Setting: 'Setting',
-    Shop: 'Shop',
-    Hero: 'Hero',
-    Skill: 'Skill'
-}
+const PopupName = require('PopupName');
+
 cc.Class({
     extends: cc.Component,
     properties: {
@@ -48,16 +44,16 @@ cc.Class({
         });
     },
     showSetting() {
-        Emitter.emit(EventKey.POPUP.SHOW, typePopup.Setting);
+        Emitter.emit(EventKey.POPUP.SHOW, PopupName.SETTING);
     },
     showShop() {
-        Emitter.emit(EventKey.POPUP.SHOW, typePopup.Shop);
+        Emitter.emit(EventKey.POPUP.SHOW, PopupName.SHOP);
     },
     showHero() {
-        Emitter.emit(EventKey.POPUP.SHOW, typePopup.Hero);
+        Emitter.emit(EventKey.POPUP.SHOW, PopupName.HERO);
     },
     showSkill() {
-        Emitter.emit(EventKey.POPUP.SHOW, typePopup.Skill);
+        Emitter.emit(EventKey.POPUP.SHOW, PopupName.SKILL);
     },
     onClickButton(){
          Emitter.emit(EventKey.SOUND.PLAY_SFX,AudioName.SFX.CLICK);
