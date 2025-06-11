@@ -179,6 +179,7 @@ cc.Class({
         });
     },
     onGameOver() {
+        this.isGameOver = true;
         this.listChar.forEach((monster) => {
             monster.onDie();
         });
@@ -212,4 +213,5 @@ cc.Class({
             this.sumMonsterKill++;
         }
     }
+
 });

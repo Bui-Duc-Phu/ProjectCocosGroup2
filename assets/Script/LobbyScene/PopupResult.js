@@ -21,6 +21,8 @@ cc.Class({
         this.labelSumGold.string = sumGold;
     },
 
+    
+
 
 
 
