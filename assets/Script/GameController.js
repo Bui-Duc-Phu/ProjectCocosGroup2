@@ -3,6 +3,9 @@ const EventKey = require('EventKey');
 const StateMachine = require('javascript-state-machine');
 const GoldController = require('GoldController');
 const UpgradeController = require('UpgradeController');
+const LocalStorageKey = require('LocalStorageKey');
+const ItemName = require('ItemName');
+
 
 const FSM_STATES = {
     LOBBY: 'Lobby',
@@ -58,7 +61,7 @@ cc.Class({
         let amount = cc.sys.localStorage.getItem(LocalStorageKey.PLAYER.BOMB_AMOUNT);
         if (amount === null) {
             amount = 0;
-            cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.BOMB_AMOUNT, amount.toString());
+            cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.BOMB_AMOUNT, amount);
         };
     },
     addSingletonToList() {

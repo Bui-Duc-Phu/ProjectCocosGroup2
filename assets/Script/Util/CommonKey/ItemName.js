@@ -1,4 +1,4 @@
 const ItemName = {
-    BOOM: "boom",
+    BOMB: "BOMB",
 };
 module.exports = ItemName;

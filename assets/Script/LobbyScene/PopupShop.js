@@ -29,6 +29,10 @@ cc.Class({
         notEnoughGoldSpriteFrame: {
             type: cc.SpriteFrame,
             default: null
+        },
+        amount:{
+            type:cc.Label,
+            default:null
         }
     },
 
@@ -41,38 +45,47 @@ cc.Class({
         this.currentGold = GoldController.getGoldValue();
         this.itemDetail.active = false;
         this.itemList = this.shopItem.children;
-        console.log(this.itemList);
-        this.itemList.forEach(item => {
-            let priceItem = Number(item.getComponent("Item").price.string);
-            if (!this.isGoldEnough(priceItem)) {
-                console.log(this.isGoldEnough(priceItem));
-                item.getComponent("Item").price.node.color = cc.Color.RED;
-            } else {
-                item.getComponent("Item").price.node.color = cc.Color.WHITE;
-            }
-        });
+        this.initItem();
 
     },
     isGoldEnough(priceItem) {
         return this.currentGold >= priceItem;
     },
 
-    onClickItem(event, typeItem) {
+    onClickItem(event, ItemName) {
         const item = event.target;
+        this.itemName = ItemName;
         this.priceItem = Number(item.getComponent("Item").price.string);
         console.log(this.priceItem);
-        const spriteFrame = item.getChildByName("Icon").getComponent(cc.Sprite).spriteFrame;
-        this.initItemDetail(spriteFrame);
+        this.spriteFrame = item.getChildByName("Icon").getComponent(cc.Sprite).spriteFrame;
+        this.amountItem = cc.sys.localStorage.getItem(ItemName);
+        console.log(this.amountItem)
+        
+        this.initItemDetail();
+    },
+    initItem() {
+        this.itemList.forEach(item => {
+            let priceItem = Number(item.getComponent("Item").price.string);
+            if (!this.isGoldEnough(priceItem)) {           
+                item.getComponent("Item").price.node.color = cc.Color.RED;
+            } else {
+                item.getComponent("Item").price.node.color = cc.Color.WHITE;
+            }
+        });
     },
 
-    initItemDetail(spriteFrame) {
+    initItemDetail() {
         this.itemDetail.active = true;
-        this.iconItemDetail.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+        this.iconItemDetail.getComponent(cc.Sprite).spriteFrame = this.spriteFrame;
         this.spriteBackgroundBuy.spriteFrame = this.enoughGoldSpriteFrame;
+        let buttonComponent = this.spriteBackgroundBuy.node.parent.getComponent(cc.Button)
+        buttonComponent.transition = cc.Button.Transition.SCALE;
         if (!this.isGoldEnough(this.priceItem)) {
             console.log(this.isGoldEnough(this.priceItem));
             this.spriteBackgroundBuy.spriteFrame = this.notEnoughGoldSpriteFrame;
+            buttonComponent.transition = cc.Button.Transition.NONE;
         }
+        this.amount.string = this.amountItem.toString();
     },
     onClickBuy() {
         if (this.currentGold < this.priceItem) {
@@ -80,6 +93,12 @@ cc.Class({
         } else {
             GoldController.subtractGold(this.priceItem);
             Emitter.emit(EventKey.GOLD.CHANGE_GOLD);
+            this.amountItem = Number(this.amountItem) + 1;
+            cc.sys.localStorage.setItem(this.itemName, this.amountItem);
+            
         }
+        this.currentGold = GoldController.getGoldValue();
+        this.initItem();
+        this.initItemDetail();
     }
 });
