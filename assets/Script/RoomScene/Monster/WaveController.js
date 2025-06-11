@@ -46,12 +46,6 @@ cc.Class({
         });
     },
 
-    onWaveComplete() {
-        this.scheduleOnce(() => {
-            this.onNextWave();
-        }, 3);
-    },
-
     onNextWave() {
         this.currentLevel++;
         this.startWave();
@@ -104,14 +98,12 @@ cc.Class({
 
     registerEvent() {
         this.eventMap = new Map([
-            [EventKey.WAVE.WAVE_COMPLETE, this.onWaveComplete.bind(this)],
             [EventKey.WAVE.START_SPECIFIC_WAVE, this.startSpecificWave.bind(this)]
         ]);
         this.eventMap.forEach((handler, key) => {
             Emitter.registerEvent(key, handler);
         });
     },
-
     unregisterEvent() {
         if (!this.eventMap) return;
         this.eventMap.forEach((handler, key) => {

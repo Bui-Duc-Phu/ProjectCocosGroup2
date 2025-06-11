@@ -10,6 +10,17 @@ cc.Class({
         waveCurrent: {
             default: 1,
             type: cc.Integer,
+            visible: false,
+        },
+        sumGold: {
+            default: 0,
+            type: cc.Integer,
+            visible: false,
+        },
+        sumMonsterKill: {
+            default: 0,
+            type: cc.Integer,
+            visible: false,
         },
         gameAsset: require("GameAsset"),
     },
@@ -25,21 +36,30 @@ cc.Class({
     registerEvent() {
         this.eventMap = new Map([
             [EventKey.PLAYER.ON_DIE, this.gameOver.bind(this)],
+            [EventKey.WAVE.WAVE_COMPLETE, this.summaryWave.bind(this)],
+            [EventKey.ROOM.SUMMARY_GAME, this.summaryGame.bind(this)],
         ]);
         this.eventMap.forEach((handler, key) => {
             Emitter.registerEvent(key, handler);
         });
     },
+    summaryGame(sumGold, sumMonsterKill) {
+        this.sumGold = sumGold;
+        this.sumMonsterKill = sumMonsterKill;
+        this.score = this.caculateScore();
+        console.log("score", this.score);
+        console.log('summaryGame', this.sumGold, this.sumMonsterKill, this.score);
+    },
     initTitleWave() {
         const wordPos = cc.v2(GameConfig.ROOM.WORD_POS.X,GameConfig.ROOM.WORD_POS.Y);
         this.titleWave = cc.instantiate(this.gameAsset.getTitleWavePrefab());
-        let component = this.titleWave.getComponent('Round');
-        component.init(this.waveCurrent);
+        this.componentTitleWave = this.titleWave.getComponent('Round');
+        this.componentTitleWave.init(this.waveCurrent);
         this.titleWave.parent = this.node;
         this.setPosition(this.titleWave,wordPos);
     },
-    removeTitleWave() {
-        this.titleWave.active = false;
+    enableTitleWave(enable) {
+        this.titleWave.active = enable;
     },
     setPosition(node,wordPos) {
         const pos =  this.node.convertToNodeSpaceAR(wordPos);
@@ -59,10 +79,21 @@ cc.Class({
         this.initTitleWave();
         this.scheduleOnce(() => {
             this.startGame();
-            this.removeTitleWave();
+            this.enableTitleWave(false);
         }, GameConfig.ROOM.TIME_START_GAME);
     },
     summaryWave() {
+        if(this.waveCurrent == 3) {
+            this.gameOver();
+            console.log('game over');
+            return;
+        }
+        this.componentTitleWave.updateTitleWave(this.waveCurrent + 1);
+        this.enableTitleWave(true);
+        this.scheduleOnce(() => {
+            this.nextWave();
+            this.enableTitleWave(false);
+        }, GameConfig.ROOM.TIME_START_GAME);
     },
     startGame() {
         Emitter.emit(EventKey.WAVE.START_SPECIFIC_WAVE, this.waveCurrent);
@@ -70,5 +101,10 @@ cc.Class({
     nextWave() {
         this.waveCurrent++;
         Emitter.emit(EventKey.WAVE.START_SPECIFIC_WAVE, this.waveCurrent);
+    },
+    caculateScore() {
+        const scoreKill = this.sumMonsterKill * GameConfig.ROOM.SUMMARY_GAME.SCORE_ONE_KILL;
+        const scoreWave = this.waveCurrent * GameConfig.ROOM.SUMMARY_GAME.SCORE_ONE_WAVE;
+        return scoreKill + scoreWave;
     },
 });

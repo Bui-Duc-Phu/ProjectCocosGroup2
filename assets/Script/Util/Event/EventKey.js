@@ -47,6 +47,7 @@ const EventKey = {
     ROOM: {
         START_GAME: 'START_GAME',
         GAME_OVER: 'GAME_OVER',
+        SUMMARY_GAME: 'SUMMARY_GAME',
     },
     WAVE: {
         WAVE_COMPLETE: 'WAVE_COMPLETE',

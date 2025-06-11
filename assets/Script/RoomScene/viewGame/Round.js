@@ -19,6 +19,10 @@ cc.Class({
         this.wave = wave;
         this.titleWave.string = `Round ${this.wave}`;
     },
+
+    updateTitleWave(wave){
+        this.titleWave.string = `Round ${wave}`;
+    },
    
 
 });

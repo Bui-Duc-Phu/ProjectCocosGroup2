@@ -35,7 +35,17 @@ cc.Class({
         gameAsset: {
             default: null,
             type: require('GameAsset')
-        }
+        },
+        sumGold: {
+            default: 0,
+            type: cc.Integer,
+            visible: false,
+        },
+        sumMonsterKill: {
+            default: 0,
+            type: cc.Integer,
+            visible: false,
+        },
     },
     onLoad() {
         this.registerEvent();
@@ -47,16 +57,15 @@ cc.Class({
         this.spawnedCount = 0;
         this.currentWaveData = data;
         this.spawnNextMonster(data);
+        this.totalMonsters = data.totalMonsters;
     },
     spawnNextMonster(waveData) {
         if (this.spawnedCount >= waveData.totalMonsters) {
             return;
         }
-
         const monsterType = this.selectMonsterTypeForSpawn(waveData);
         this.spawnMonster(monsterType, waveData.level);
         this.spawnedCount++;
-
         if (this.spawnedCount < waveData.totalMonsters && !this.isGameOver) {
             this.scheduleOnce(() => {
                 this.spawnNextMonster(waveData);
@@ -68,7 +77,6 @@ cc.Class({
         if (waveData.level % 5 === 0 && this.shouldSpawnBoss(this.spawnedCount, waveData.totalMonsters)) {
             return GameConfig.MONSTER.TYPE.BOSS;
         }
-
         for (const [type, count] of Object.entries(waveData.monsterTypeCounts)) {
             if (count > 0) {
                 waveData.monsterTypeCounts[type]--;
@@ -77,7 +85,6 @@ cc.Class({
         }
         return GameConfig.MONSTER.TYPE.DOG;
     },
-
     shouldSpawnBoss(spawnIndex, totalMonsters) {
         const bossPosition = Math.floor(Math.random() * totalMonsters);
         return spawnIndex === bossPosition;
@@ -153,7 +160,7 @@ cc.Class({
         if (index !== -1) {
             this.listChar.splice(index, 1);
         }
-        if (this.listChar.length === 0 && !this.isGameOver) {
+        if (this.listChar.length === 0 && !this.isGameOver && this.totalMonsters === this.spawnedCount) {
             Emitter.emit(EventKey.WAVE.WAVE_COMPLETE);
         }
     },
@@ -176,6 +183,7 @@ cc.Class({
             monster.onDie();
         });
         this.listChar = [];
+        Emitter.emit(EventKey.ROOM.SUMMARY_GAME, this.sumGold, this.sumMonsterKill);
     },
     unregisterEvent() {
         if (!this.eventMap) return;
@@ -199,5 +207,9 @@ cc.Class({
     },
     takeDamage(monster, bullet) {
         monster.hp -= bullet.damage;
+        if(monster.hp <= 0) {
+            this.sumGold += monster.gold;
+            this.sumMonsterKill++;
+        }
     }
 });
