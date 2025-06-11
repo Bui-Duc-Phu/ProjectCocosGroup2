@@ -19,12 +19,12 @@ cc.Class({
     extends: cc.Component,
     properties: {
         maxHP: {
-            default: 150,
+            default: GameConfig.PLAYER.HP_BASE,
             type: cc.Integer,
             visible: false,
         },
         currentHP: {
-            default: 150,
+            default: 0,
             type: cc.Integer,
             visible: false,
         },
@@ -52,13 +52,21 @@ cc.Class({
             visible: false,
         },
         moveDuration: {
-            default: 0.3,
+            default: 0.5,
             type: cc.Float,
             visible: false,
         },
         bulletPointer: {
             default: null,
             type: cc.Node,
+        },
+        xInit: {
+            default: -420,
+            type: cc.Integer,
+        },
+        yInit: {
+            default: -100,
+            type: cc.Integer,
         },
     },
     onLoad() {
@@ -68,13 +76,13 @@ cc.Class({
         this.currentHP = this.maxHP;
         this.playerSpine = this.node.getComponent(sp.Skeleton);
         this.hpProgressBar.progress = this.currentHP / this.maxHP;
-        this.playerFrame.setPosition(-420, -100);
+        this.playerFrame.setPosition(this.xInit, this.yInit);
         this.initStateMachine();
         this.playerPositionY = [-300, -100, 100];
 
     },
     onCollisionEnter(other, self) {
-        console.log(other.node.getComponent('MonsterItem'), "  ",self.node);
+        console.log(other.node.getComponent('MonsterItem'), "  ", self.node);
         this.takeDamage(other.node.getComponent('MonsterItem').damage);
 
     },
@@ -88,7 +96,6 @@ cc.Class({
                 { name: 'toMoveDown', from: [FSM_STATE.SHOOT, FSM_STATE.HIT], to: FSM_STATE.MOVE_DOWN },
                 { name: 'toUseBomb', from: [FSM_STATE.SHOOT, FSM_STATE.MOVE_UP, FSM_STATE.MOVE_DOWN], to: FSM_STATE.USE_BOMB },
                 { name: 'toShootUltimate', from: [FSM_STATE.SHOOT, FSM_STATE.MOVE_UP, FSM_STATE.MOVE_DOWN], to: FSM_STATE.SHOOT_ULTIMATE },
-                { name: 'toHit', from: [FSM_STATE.SHOOT, FSM_STATE.MOVE_UP, FSM_STATE.MOVE_DOWN, FSM_STATE.SHOOT_ULTIMATE], to: FSM_STATE.HIT },
                 { name: 'toDie', from: '*', to: FSM_STATE.DIE },
             ],
             methods: {
@@ -169,16 +176,15 @@ cc.Class({
         this.unschedule(this.boundOnShootBullet);
         this.boundOnShootBullet = null;
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
+        let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
+        Emitter.emit(EventKey.PLAYER.SHOOT_ULTIMATE, bulletPosition);
         this.playerSpine.setCompleteListener(() => {
-            let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
-            Emitter.emit(EventKey.PLAYER.SHOOT_ULTIMATE, bulletPosition);
+
             this.fsm.toShoot();
             console.log(bulletPosition);
         });
     },
     handleEnterDie() {
-        this.unschedule(this.boundOnShootBullet);
-        this.boundOnShootBullet = null;
         this.playerSpine.setAnimation(1, SpineAnimation.DEATH, false);
         this.playerSpine.setCompleteListener(() => {
             this.node.parent.active = false;
@@ -187,12 +193,20 @@ cc.Class({
     },
     takeDamage(amount) {
         if (this.fsm.is(FSM_STATE.DIE)) return;
+
         console.log(`Player took damage: ${amount}`);
         this.currentHP -= amount;
         console.log(`Current HP: ${this.currentHP}`);
         this.hpProgressBar.progress = this.currentHP / this.maxHP;
+        cc.tween(this.node)
+            .to(0.2, { opacity: 150 }, { easing: 'sineInOut' })
+            .to(0.2, { opacity: 255 }, { easing: 'sineInOut' })
+            .start();
         if (this.currentHP <= 0) {
             this.currentHP = 0;
+            this.unschedule(this.boundOnShootBullet);
+            this.boundOnShootBullet = null;
+            this.playerSpine.clearTrack(1);
             this.fsm.toDie();
         }
     },
