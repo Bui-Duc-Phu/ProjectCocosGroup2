@@ -52,7 +52,7 @@ cc.Class({
             visible: false,
         },
         moveDuration: {
-            default: 0.03,
+            default: 0.3,
             type: cc.Float,
             visible: false,
         },
@@ -181,7 +181,7 @@ cc.Class({
         this.boundOnShootBullet = null;
         this.playerSpine.setAnimation(1, SpineAnimation.DEATH, false);
         this.playerSpine.setCompleteListener(() => {
-            this.node.active = false;
+            this.node.parent.active = false;
             Emitter.emit(EventKey.PLAYER.ON_DIE, this.node);
         });
     },

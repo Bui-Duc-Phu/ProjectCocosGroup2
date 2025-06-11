@@ -23,7 +23,7 @@ const EventKey = {
         ON_HIT: 'ON_HIT',
         SHOOT_NORMAL: 'SHOOT_NORMAL_BULLET',
         SHOOT_ULTIMATE: 'SHOOT_ULTIMATE_BULLET',
-        ON_DIE: 'ON_DIE',
+        ON_DIE: 'PLAYER_ON_DIE',
         USE_BOMB: 'PLAYER_USE_BOMB',
         SHOOT_BOMB: 'SHOOT_BOMB_BULLET',
     },
