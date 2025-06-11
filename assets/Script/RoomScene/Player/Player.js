@@ -3,6 +3,7 @@ const GameConfig = require('GameConfig');
 const SpineAnimation = require('SpineAnimation');
 const EventKey = require('EventKey');
 const StateMachine = require('javascript-state-machine');
+const AudioName = require('AudioName');
 
 const FSM_STATE = {
     PORTAL: 'portal',
@@ -52,9 +53,8 @@ cc.Class({
             visible: false,
         },
         moveDuration: {
-            default: 1,
+            default: 0.3,
             type: cc.Float,
-            visible: false,
         },
         bulletPointer: {
             default: null,
@@ -122,6 +122,7 @@ cc.Class({
             this.playerSpine.setAnimation(0, SpineAnimation.IDLE, true);
             this.node.angle = 5;
             Emitter.emit(EventKey.PLAYER.READY);
+            Emitter.emit(EventKey.SOUND.PLAY_BGM, AudioName.BGM.ROOM);
             this.playerSpine.timeScale = 1;
             this.fsm.toShoot();
         });
@@ -190,7 +191,6 @@ cc.Class({
         this.playerSpine.setAnimation(1, SpineAnimation.DEATH, false);
         this.playerSpine.setCompleteListener(() => {
             this.node.parent.active = false;
-            Emitter.emit(EventKey.PLAYER.ON_DIE, this.node);
         });
     },
     takeDamage(amount) {
@@ -207,6 +207,7 @@ cc.Class({
             .to(0.1, { opacity: 255 }, { easing: 'sineInOut' })
             .start();
         if (this.currentHP <= 0) {
+            Emitter.emit(EventKey.PLAYER.ON_DIE, this.node);
             this.currentHP = 0;
             this.unschedule(this.boundOnShootBullet);
             this.boundOnShootBullet = null;

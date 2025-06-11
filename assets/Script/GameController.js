@@ -88,7 +88,7 @@ cc.Class({
                     this.executeExitSteps();
                 },
                 onEnterRoom: () => {
-                    this.loadSceneInternal('Room');
+                    this.loadSceneInternal('TestPlayer');
                 },
                 onLeaveRoom: () => {
                     this.loadSceneInternal('Lobby');

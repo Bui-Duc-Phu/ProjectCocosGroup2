@@ -47,10 +47,16 @@ cc.Class({
         if (!this.playerScript.fsm.can('toMoveUp')) {
             return;
         }
+        if (this.playerScript.currentHP <= 0) {
+            return;
+        }
         this.playerScript.fsm.toMoveUp();
     },
     onMoveDown() {
         if (!this.playerScript.fsm.can('toMoveDown')) {
+            return;
+        }
+        if (this.playerScript.currentHP <= 0) {
             return;
         }
         this.playerScript.fsm.toMoveDown();
@@ -59,23 +65,25 @@ cc.Class({
         if (!this.playerScript.fsm.can('toShootUltimate')) {
             return;
         }
+        if (this.playerScript.currentHP <= 0) {
+            return;
+        }
         this.playerScript.fsm.toShootUltimate();
     },
     onUseBomb() {
         if (!this.playerScript.fsm.can('toUseBomb')) {
             return;
         }
+        if (this.playerScript.currentHP <= 0) {
+            return;
+        }
         this.playerScript.fsm.toUseBomb();
     },
     onPause() {
-        this.playerScript.fsm.toPortal();
     },
     onResume() {
-        this.playerScript.fsm.toShoot();
     },
     onRestart() {
-        this.playerScript.init();
-        this.playerScript.fsm.toShoot();
     },
     onDestroy() {
         for (const event in this.eventHandlers) {

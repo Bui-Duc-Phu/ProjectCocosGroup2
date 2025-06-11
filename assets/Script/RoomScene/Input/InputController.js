@@ -63,11 +63,11 @@ cc.Class({
         this.moveDownButton.interactable = value;
         this.skillButton.interactable = value;
         this.bombButton.interactable = (this.getBombAmount() > 0 && value) ? true : false;
-        this.settingButton.interactable = value;
     },
     registerEventListener() {
         const eventHandlers = {
             [EventKey.PLAYER.READY]: this.setInputTouchable.bind(this, true),
+            [EventKey.PLAYER.ON_DIE]: this.setInputTouchable.bind(this, false),
         }
         for (const event in eventHandlers) {
             Emitter.registerEvent(event, eventHandlers[event]);
@@ -140,6 +140,7 @@ cc.Class({
         this.bombAmountLabel.string = this.bombAmount.toString();
     },
     onSettingButtonClick() {
+        console.log('Setting button clicked');
         Emitter.emit(EventKey.POPUP.SHOW, 'Setting');
     },
     onDestroy() {
