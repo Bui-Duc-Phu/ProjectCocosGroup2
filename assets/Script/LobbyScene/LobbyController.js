@@ -28,6 +28,8 @@ cc.Class({
         this.onChangeGold();
         this._onChangeGold = this.onChangeGold.bind(this);
         this.registerEvent();
+        Emitter.emit(EventKey.SOUND.ENABLE_BGM, this.enableBGM, AudioName.BGM.LOBBY);
+
     },
     registerEvent() {
         Emitter.registerEvent(EventKey.GOLD.CHANGE_GOLD, this._onChangeGold);
@@ -64,6 +66,7 @@ cc.Class({
         Emitter.emit(EventKey.SCENE.LOAD_ROOM);
     },
     onDestroy() {
+        Emitter.emit(EventKey.SOUND.ENABLE_BGM,false);
         Emitter.removeEvent(EventKey.GOLD.CHANGE_GOLD, this._onChangeGold);
     },
     
