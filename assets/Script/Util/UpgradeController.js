@@ -28,15 +28,20 @@ class UpgradeController {
     upgradeLeverNomalAttack() {
         let currentLever = this.getLeverNomalAttack();
         if (currentLever >= 10) {
-            return;
+            return false;
         }
         currentLever += 1;
         cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.NORMAL_ATTACK_LEVEL, currentLever.toString());
+        return true;
     }
     upgradeLeverUltimate() {
         let currentLever = this.getLeverUltimate();
+        if (currentLever >= 10) {
+            return false;
+        }
         currentLever += 1;
         cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.ULTIMATE_LEVEL, currentLever.toString());
+        return true;
     }
 };
 
