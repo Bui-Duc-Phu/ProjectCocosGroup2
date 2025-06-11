@@ -9,6 +9,7 @@ const AudioName = {
         RESULT_BATTLE: "resultBattleSFX",
         GOLD_USE: "goldUseSFX",
         GOLD_GET: "goldGetSFX",
+        BUY_SUCCESS: "buySuccessSFX"
     },
 };
 module.exports = AudioName;
