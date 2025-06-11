@@ -1,0 +1,34 @@
+{
+  "ver": "2.3.3",
+  "uuid": "9c03d5a6-e6d9-4164-9505-8e03a0432570",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "platformSettings": {},
+  "subMetas": {
+    "WingBadge_Center_Badge_Left": {
+      "ver": "1.0.4",
+      "uuid": "a0314b38-d0ae-4788-ad6e-7c844b39744b",
+      "rawTextureUuid": "9c03d5a6-e6d9-4164-9505-8e03a0432570",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 100,
+      "height": 194,
+      "rawWidth": 100,
+      "rawHeight": 194,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

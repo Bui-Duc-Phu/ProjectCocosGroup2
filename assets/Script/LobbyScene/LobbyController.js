@@ -33,8 +33,10 @@ cc.Class({
     start() {
         if (!cc.game.isPersistRootNode(this.popupNode)) {
             cc.game.addPersistRootNode(this.popupNode);
+            console.log("PopupNode added to persist root nodes");
         } else {
             this.popupNode.destroy();
+            console.log("PopupNode already exists in persist root nodes, destroying the old one");
         }
     },
     onChangeGold() {
@@ -56,12 +58,13 @@ cc.Class({
         Emitter.emit(EventKey.POPUP.SHOW, PopupName.SKILL);
     },
     onClickButton(){
-         Emitter.emit(EventKey.SOUND.PLAY_SFX,AudioName.SFX.CLICK);
+        Emitter.emit(EventKey.SOUND.PLAY_SFX,AudioName.SFX.CLICK);
     },
     onClickStart(){
         Emitter.emit(EventKey.SCENE.LOAD_ROOM);
     },
     onDestroy() {
+        console.log("LobbyController destroyed");
         Emitter.emit(EventKey.SOUND.ENABLE_BGM,false);
         Emitter.removeEvent(EventKey.GOLD.CHANGE_GOLD, this._onChangeGold);
     },
