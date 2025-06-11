@@ -29,7 +29,6 @@ cc.Class({
 
     onLoad() {
         this.registerEvent();
-        this.startWave();
     },
 
     onDestroy() {
@@ -73,7 +72,8 @@ cc.Class({
     },
 
     calculateMonstersForLevel(level) {
-        return Math.min(5 + level, 50);
+        const waveCount = GameConfig.MONSTER.WAVE_COUNT;
+        return Math.min(waveCount + level, 50);
     },
 
     calculateTypeProbabilities(level) {

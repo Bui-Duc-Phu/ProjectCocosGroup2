@@ -19,6 +19,10 @@ cc.Class({
             default: true,
             visible: false,
         },
+        isGameOver: {
+            default: false,
+            visible: false,
+        },
         spawnedCount: {
             default: 0,
             type: cc.Integer,
@@ -33,21 +37,17 @@ cc.Class({
             type: require('GameAsset')
         }
     },
-
     onLoad() {
         this.registerEvent();
     },
-
     onDestroy() {
         this.unregisterEvent();
     },
-
     onStartWave(data) {
         this.spawnedCount = 0;
         this.currentWaveData = data;
         this.spawnNextMonster(data);
     },
-
     spawnNextMonster(waveData) {
         if (this.spawnedCount >= waveData.totalMonsters) {
             return;
@@ -57,7 +57,7 @@ cc.Class({
         this.spawnMonster(monsterType, waveData.level);
         this.spawnedCount++;
 
-        if (this.spawnedCount < waveData.totalMonsters) {
+        if (this.spawnedCount < waveData.totalMonsters && !this.isGameOver) {
             this.scheduleOnce(() => {
                 this.spawnNextMonster(waveData);
             }, waveData.spawnInterval);
@@ -153,7 +153,7 @@ cc.Class({
         if (index !== -1) {
             this.listChar.splice(index, 1);
         }
-        if (this.listChar.length === 0) {
+        if (this.listChar.length === 0 && !this.isGameOver) {
             Emitter.emit(EventKey.WAVE.WAVE_COMPLETE);
         }
     },
@@ -165,12 +165,18 @@ cc.Class({
             [EventKey.MONSTER.ON_ULTIMATE_HIT, this.onUltimateHit.bind(this)],
             [EventKey.MONSTER.ON_BOMB_HIT, this.onBombHit.bind(this)],
             [EventKey.MONSTER.ON_DIE, this.onMonsterDie.bind(this)],
+            [EventKey.ROOM.GAME_OVER, this.onGameOver.bind(this)],
         ]);
         this.eventMap.forEach((handler, key) => {
             Emitter.registerEvent(key, handler);
         });
     },
-
+    onGameOver() {
+        this.listChar.forEach((monster) => {
+            monster.onDie();
+        });
+        this.listChar = [];
+    },
     unregisterEvent() {
         if (!this.eventMap) return;
         this.eventMap.forEach((handler, key) => {
@@ -178,23 +184,19 @@ cc.Class({
         });
         this.eventMap.clear();
     },
-
     onMonsterHit(monster, bullet) {
         this.takeDamage(monster, bullet);
     },
-
     onUltimateHit(monsters, bullet) {
         monsters.forEach((monster) => {
             this.takeDamage(monster, bullet);
         });
     },
-
     onBombHit(monsters, bullet) {
         monsters.forEach((monster) => {
             this.takeDamage(monster, bullet);
         });
     },
-
     takeDamage(monster, bullet) {
         monster.hp -= bullet.damage;
     }

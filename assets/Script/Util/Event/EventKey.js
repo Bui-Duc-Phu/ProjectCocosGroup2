@@ -45,11 +45,8 @@ const EventKey = {
         USE_BOMB: 'INPUT_USE_BOMB',
     },
     ROOM: {
-        PAUSE: 'ROOM_PAUSE',
-        RESUME: 'ROOM_RESUME',
-        RESTART: 'ROOM_RESTART',
-        SHOOT_ULTIMATE: 'SHOOT_ULTIMATE',
-        USE_BOMB: 'USE_BOMB',
+        START_GAME: 'START_GAME',
+        GAME_OVER: 'GAME_OVER',
     },
     WAVE: {
         WAVE_COMPLETE: 'WAVE_COMPLETE',

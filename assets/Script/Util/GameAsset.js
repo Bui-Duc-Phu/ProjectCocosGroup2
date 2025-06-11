@@ -43,6 +43,10 @@ cc.Class({
             default:null,
             type:cc.Prefab
         },
+        titleWavePrefab:{
+            default:null,
+            type:cc.Prefab
+        },
     },
     getSpriteFramByType(type){
         switch(type){
@@ -75,6 +79,9 @@ cc.Class({
             case GameConfig.SHOP.ITEM.BOMB.NAME:
                 return this.hitBombEffectPrefab;
         }
+    },
+    getTitleWavePrefab(){
+        return this.titleWavePrefab;
     }
 
 });
