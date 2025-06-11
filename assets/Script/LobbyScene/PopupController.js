@@ -1,11 +1,7 @@
 const Emitter = require('Emitter');
 const EventKey = require('EventKey');
-const typePopup = {
-    Setting: 'Setting',
-    Shop: 'Shop',
-    Hero: 'Hero',
-    Skill: 'Skill'
-}
+const PopupName = require('PopupName');
+
 cc.Class({
     extends: cc.Component,
 
@@ -37,28 +33,38 @@ cc.Class({
     },
     init() {
         this.onShowPopup = this.showPopup.bind(this);
+        this.onUpdateResult = this.updateResult.bind(this);
         this.hideAllPopup();
         this.overlay.active = false;
         this.registerEvent();
 
     },
+
+    updateResult(score, sumGold) {
+        console.log("updateResult11", score, sumGold);
+        this.popupResult.updateResult(score, sumGold);
+    },
     registerEvent() {
         Emitter.registerEvent(EventKey.POPUP.SHOW, this.onShowPopup)
+        Emitter.registerEvent(EventKey.ROOM.UPDATE_RESULT, this.onUpdateResult);
     },
     showPopup(type) {
         this.overlay.active = true;
         switch (type) {
-            case typePopup.Setting:
+            case PopupName.SETTING:
                 this.popupSetting.show();
                 break;
-            case typePopup.Shop:
+            case PopupName.SHOP:
                 this.popupShop.show();
                 break;
-            case typePopup.Hero:
+            case PopupName.HERO:
                 this.popupHero.show();
                 break;
-            case typePopup.Skill:
+            case PopupName.SKILL:
                 this.popupSkill.show();
+                break;
+            case PopupName.RESULT:
+                this.popupResult.show();
                 break;
             default:
                 break;
@@ -72,5 +78,6 @@ cc.Class({
     },
     onDestroy() {
         Emitter.removeEvent(EventKey.POPUP.SHOW, this.onShowPopup);
+        Emitter.removeEvent(EventKey.ROOM.UPDATE_RESULT, this.onUpdateResult);
     }
 });

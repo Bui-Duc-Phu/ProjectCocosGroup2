@@ -29,7 +29,6 @@ cc.Class({
 
     onLoad() {
         this.registerEvent();
-        this.startWave();
     },
 
     onDestroy() {
@@ -45,12 +44,6 @@ cc.Class({
             monsterTypeCounts: this.monsterTypeCounts,
             spawnInterval: this.spawnInterval
         });
-    },
-
-    onWaveComplete() {
-        this.scheduleOnce(() => {
-            this.onNextWave();
-        }, 3);
     },
 
     onNextWave() {
@@ -73,7 +66,8 @@ cc.Class({
     },
 
     calculateMonstersForLevel(level) {
-        return Math.min(5 + level, 50);
+        const waveCount = GameConfig.MONSTER.WAVE_COUNT;
+        return Math.min(waveCount + level, 50);
     },
 
     calculateTypeProbabilities(level) {
@@ -104,14 +98,12 @@ cc.Class({
 
     registerEvent() {
         this.eventMap = new Map([
-            [EventKey.WAVE.WAVE_COMPLETE, this.onWaveComplete.bind(this)],
             [EventKey.WAVE.START_SPECIFIC_WAVE, this.startSpecificWave.bind(this)]
         ]);
         this.eventMap.forEach((handler, key) => {
             Emitter.registerEvent(key, handler);
         });
     },
-
     unregisterEvent() {
         if (!this.eventMap) return;
         this.eventMap.forEach((handler, key) => {

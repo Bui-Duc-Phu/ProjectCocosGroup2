@@ -6,7 +6,6 @@ cc.Class({
     properties: {
         id: {
             default: "",
-            type: cc.String,
             visible: false,
         },
         durationMove: {
@@ -26,7 +25,6 @@ cc.Class({
         },
         type: {
             default: "",
-            type: cc.String,
             visible: false,
         },
         currentTarget: {
