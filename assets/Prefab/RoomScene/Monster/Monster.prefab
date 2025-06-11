@@ -422,7 +422,8 @@
     "_enabled": true,
     "id": 0,
     "type": "",
-    "HP": 0,
+    "hp": 0,
+    "maxHP": 0,
     "damage": 0,
     "durationMove": 0,
     "gold": 0,
@@ -446,12 +447,12 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 17,
-      "y": -7
+      "y": 7
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 168,
-      "height": 100
+      "height": 99
     },
     "_id": ""
   },

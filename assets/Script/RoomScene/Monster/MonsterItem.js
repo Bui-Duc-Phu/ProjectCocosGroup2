@@ -30,12 +30,10 @@ cc.Class({
     properties: {
         id: {
             default: "",
-            type: cc.String,
             visible: false
         },
         type: {
             default: "",
-            type: cc.String,
             visible: false
         },
         hp: {

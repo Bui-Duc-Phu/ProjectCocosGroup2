@@ -15,6 +15,7 @@ const GameConfig = {
             X:1560,
             Y:[100,300,500],
         },
+        WAVE_COUNT: 10,
         HP_BASE:100,
         DAMAGE_BASE:25,
         GOLD_BASE:5,
@@ -124,6 +125,18 @@ const GameConfig = {
                     }
                 }
             }
+        }
+    },
+    ROOM:{
+        TIME_START_GAME: 4,
+        TIME_NEXT_WAVE: 3,
+        WORD_POS:{
+            X:792,
+            Y:478,
+        },
+        SUMMARY_GAME:{
+            SCORE_ONE_KILL: 10,
+            SCORE_ONE_WAVE: 50,
         }
     }   
 }
