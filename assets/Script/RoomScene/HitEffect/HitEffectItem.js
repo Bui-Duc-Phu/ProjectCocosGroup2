@@ -5,31 +5,29 @@ cc.Class({
     properties: {
         id: {
             default: '',
-            type: cc.String,
             visible: false,
         },
-        type: { 
+        type: {
             default: '',
-            type: cc.String,
             visible: false,
         },
     },
- 
 
-    init(data){
+
+    init(data) {
         this.id = data.id;
         this.type = data.type;
     },
-    playHitEffect(){
+    playHitEffect() {
 
     },
 
 
-    onStopEffect(){
-     
+    onStopEffect() {
+
     },
 
-    onDestroy(){
+    onDestroy() {
         this.onStopEffect();
     },
     stopTween(...tweens) {
