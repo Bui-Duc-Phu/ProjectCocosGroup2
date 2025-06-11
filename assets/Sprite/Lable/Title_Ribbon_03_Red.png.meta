@@ -1,0 +1,34 @@
+{
+  "ver": "2.3.3",
+  "uuid": "ea770a88-e8cf-4d8d-b038-27365d537d44",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "platformSettings": {},
+  "subMetas": {
+    "Title_Ribbon_03_Red": {
+      "ver": "1.0.4",
+      "uuid": "10baa770-e7d3-4e1f-be5d-e47ea49e73d8",
+      "rawTextureUuid": "ea770a88-e8cf-4d8d-b038-27365d537d44",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 472,
+      "height": 84,
+      "rawWidth": 472,
+      "rawHeight": 84,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
