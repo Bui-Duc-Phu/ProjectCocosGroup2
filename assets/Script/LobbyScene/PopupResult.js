@@ -1,50 +1,25 @@
+const ItemName = require('ItemName');
 const GoldController = require('GoldController');
-const ScoreController = require('ScoreController');
+const Emitter = require('Emitter');
+const EventKey = require('EventKey');
+const AudioName = require('AudioName')
 cc.Class({
     extends: require('PopupItem'),
 
     properties: {
-        highScoreTextLabel: {
+        labelScore: {
+            default: null,
             type: cc.Label,
-            default: null
         },
-        highScoreValueLabel: {
+        labelSumGold: {
+            default: null,
             type: cc.Label,
-            default: null
-        },
-        scoreValueLabel: {
-            type: cc.Label,
-            default: null
-        },
-        goldLabel: {
-            type: cc.Label,
-            default: null
         },
     },
-    onLoad(){
-        this.init();
+    updateResult(score, sumGold) {
+        this.labelScore.string = score;
+        this.labelSumGold.string = sumGold;
     },
-    updateResult(newScore, gold) {
-        let highScore = ScoreController.getHighScore(newScore);
-        if(newScore === highScore){
-            this.highScoreTextLabel.string = "New High Score:";
-        }
-        ScoreController.setScoreValue(highScore);
-        this.highScoreValueLabel.string = highScore;
-        this.scoreValueLabel.string = newScore;
-        this.goldLabel.string = gold;
-    },
-    init(){
-        this.highScoreTextLabel.string = "High Score:";
-        this.highScoreValueLabel.string = ScoreController.getScoreValue();
-    },
-    onDisable(){
-        this.highScoreTextLabel.string = "High Score:";
-
-    }
-
-
-
 
     
 

@@ -41,9 +41,9 @@ cc.Class({
 
     },
 
-    updateResult(score, gold) {
-        console.log("updateResult11", score, gold);
-        this.popupResult.updateResult(score, gold);
+    updateResult(score, sumGold) {
+        console.log("updateResult11", score, sumGold);
+        this.popupResult.updateResult(score, sumGold);
     },
     registerEvent() {
         Emitter.registerEvent(EventKey.POPUP.SHOW, this.onShowPopup)

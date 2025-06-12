@@ -12,6 +12,6 @@ const LocalStorageKey = {
     },
     ROOM: {
         RECORD_SCORE: 'RECORD_SCORE',
-    },   
+    },
 };
 module.exports = LocalStorageKey;
