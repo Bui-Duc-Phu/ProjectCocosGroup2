@@ -71,11 +71,12 @@ cc.Class({
         this.bombButton.interactable = (this.getBombAmount() > 0 && value) ? true : false;
     },
     registerEventListener() {
-        const eventHandlers = {
+        this.eventHandlers = {
             [EventKey.PLAYER.READY]: this.setInputTouchable.bind(this, true),
-            [EventKey.PLAYER.ON_DIE]: this.setInputTouchable.bind(this, false),        }
-        for (const event in eventHandlers) {
-            Emitter.registerEvent(event, eventHandlers[event]);
+            [EventKey.PLAYER.ON_DIE]: this.setInputTouchable.bind(this, false),
+        }
+        for (const event in this.eventHandlers) {
+            Emitter.registerEvent(event, this.eventHandlers[event]);
         }
     },
     getBombAmount() {
@@ -162,6 +163,9 @@ cc.Class({
     },
     onDestroy() {
         this.unregisterKeyboardEvents();
+        for (const event in this.eventHandlers) {
+            Emitter.removeEvent(event, this.eventHandlers[event]);
+        }
         console.log('InputController onDestroy');
     },
 });

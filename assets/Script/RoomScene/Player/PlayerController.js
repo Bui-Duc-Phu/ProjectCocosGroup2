@@ -42,7 +42,7 @@ cc.Class({
         this.playerScript.node.name = `Player${this.playerIndex}`;
     },
     registerEventListener() {
-        const eventHandlers = {
+        this.eventHandlers = {
             [EventKey.INPUT.MOVE_UP]: this.onMoveUp.bind(this),
             [EventKey.INPUT.MOVE_DOWN]: this.onMoveDown.bind(this),
             [EventKey.INPUT.SHOOT_ULTIMATE]: this.onShootUltimate.bind(this),
@@ -51,8 +51,8 @@ cc.Class({
             // [EventKey.ROOM.RESUME]: this.onResume.bind(this),
             [EventKey.ROOM.RESTART]: this.onRestart.bind(this),
         };
-        for (const event in eventHandlers) {
-            Emitter.registerEvent(event, eventHandlers[event]);
+        for (const event in this.eventHandlers) {
+            Emitter.registerEvent(event, this.eventHandlers[event]);
         }
     },
     onMoveUp() {
@@ -93,7 +93,7 @@ cc.Class({
     },
     onDestroy() {
         for (const event in this.eventHandlers) {
-            Emitter.unregisterEvent(event, this.eventHandlers[event]);
+            Emitter.removeEvent(event, this.eventHandlers[event]);
         }
     },
 });
