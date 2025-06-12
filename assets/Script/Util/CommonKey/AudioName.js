@@ -12,7 +12,6 @@ const AudioName = {
         BOMB: "BombSFX",
         SHOOT_NORMAL: "ShootNormalSFX",
         FALLING_BOMB: "FallingBombSFX",
-
     },
 };
 module.exports = AudioName;

@@ -117,7 +117,7 @@ cc.Class({
     },
     playSFX(sfxName) {
         let sfxClip = this.sfxList.find(clip => clip.name === sfxName);
-        this.sfxAudioId = cc.audioEngine.play(sfxClip, false, this.sfxVolume);
+        cc.audioEngine.play(sfxClip, false, this.sfxVolume);
     },
     stopBGM() {
         if (this.currentBgmAudioId !== null) {

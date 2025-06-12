@@ -188,9 +188,10 @@ cc.Class({
     handleEnterDie() {
         this.unschedule(this.boundOnShootBullet);
         this.boundOnShootBullet = null;
-        this.playerSpine.timeScale = 5;
+        this.playerSpine.timeScale = 4;
         this.playerSpine.setAnimation(1, SpineAnimation.DEATH, false);
         this.playerSpine.setCompleteListener(() => {
+            Emitter.emit(EventKey.PLAYER.ON_DIE, this.node);
             this.playerSpine.timeScale = 0;
             this.node.parent.destroy();
         });
@@ -204,7 +205,6 @@ cc.Class({
         console.log(`Current HP: ${this.currentHP}`);
         this.hpProgressBar.progress = this.currentHP / this.maxHP;
         if (this.currentHP <= 0) {
-            Emitter.emit(EventKey.PLAYER.ON_DIE, this.node);
             this.currentHP = 0;
             this.fsm.toDie();
         } else {

@@ -1,6 +1,7 @@
 const EventKey = require('EventKey');
 const Emitter = require('Emitter');
 const GameConfig = require('GameConfig');
+const AudioName = require('AudioName');
 cc.Class({
     extends: require('BulletItem'),
 
@@ -42,10 +43,10 @@ cc.Class({
     activateTriggerState() {
         this.enableCollider(true);
         this.node.opacity = 0;
-        Emitter.emit(EventKey.SOUND.PLAY_SFX, GameConfig.AUDIO_NAME.SFX.BOMB);
     },
     onExplode() {
         this.activateTriggerState();
+        Emitter.emit(EventKey.SOUND.PLAY_SFX, AudioName.SFX.BOMB);
         this.scheduleOnce(() => { this.emitAndClear() }, 0.2);
     },
     enableCollider(enable) {

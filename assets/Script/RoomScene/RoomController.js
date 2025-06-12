@@ -40,6 +40,7 @@ cc.Class({
             [EventKey.PLAYER.ON_DIE, this.gameOver.bind(this)],
             [EventKey.WAVE.WAVE_COMPLETE, this.summaryWave.bind(this)],
             [EventKey.ROOM.SUMMARY_GAME, this.summaryGame.bind(this)],
+            [EventKey.ROOM.EXIT, this.onCleanup.bind(this)],
         ]);
         this.eventMap.forEach((handler, key) => {
             Emitter.registerEvent(key, handler);
@@ -116,6 +117,15 @@ cc.Class({
     },
     updateResult(score, sumGold) {
         Emitter.emit(EventKey.ROOM.UPDATE_RESULT, score, sumGold);
+    },
+    onCleanup() {
+        if (!this.boundedOnCleanUp) {
+            this.boundedOnCleanUp = true;
+            return;
+        }
+        this.unregisterEvent();
+        this.enableTitleWave(false);
+        this.titleWave.destroy();
     },
     saveGoldtoLocalStorage(sumGold) {
         console.log("add Gold", sumGold);

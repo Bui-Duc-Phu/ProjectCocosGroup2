@@ -86,18 +86,18 @@
         "__id__": 27
       },
       {
-        "__id__": 87
+        "__id__": 88
       }
     ],
     "_active": true,
     "_level": 1,
     "_components": [
       {
-        "__id__": 90
+        "__id__": 91
       }
     ],
     "_prefab": {
-      "__id__": 91
+      "__id__": 92
     },
     "_opacity": 255,
     "_color": {
@@ -181,7 +181,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 610.5479096680293
+      "z": 510.9453924735746
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -419,6 +419,8 @@
     },
     "_enabled": true,
     "waveCurrent": 1,
+    "sumGold": 0,
+    "sumMonsterKill": 0,
     "gameAsset": {
       "__id__": 11
     },
@@ -628,6 +630,8 @@
     "gameAsset": {
       "__id__": 11
     },
+    "sumGold": 0,
+    "sumMonsterKill": 0,
     "_id": "82o6fB1jZL0ZtuuoQqIoGO"
   },
   {
@@ -922,11 +926,11 @@
     "_level": 2,
     "_components": [
       {
-        "__id__": 85
+        "__id__": 86
       }
     ],
     "_prefab": {
-      "__id__": 86
+      "__id__": 87
     },
     "_opacity": 255,
     "_color": {
@@ -2925,7 +2929,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 84
+      "__id__": 85
     },
     "_opacity": 255,
     "_color": {
@@ -3112,11 +3116,15 @@
     "_enabled": true,
     "duration": 0.1,
     "zoomScale": 1.2,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 84
+      }
+    ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
-    "_N$transition": 2,
-    "transition": 2,
+    "_N$transition": 3,
+    "transition": 3,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 230,
@@ -3183,6 +3191,16 @@
     "_id": "73ejuIuxBI9ZRsmOM2ILR+"
   },
   {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 27
+    },
+    "component": "",
+    "_componentId": "5d3e9+gMsdI6I+t3OBv5gL7",
+    "handler": "onSettingButtonClick",
+    "customEventData": ""
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 2
@@ -3246,11 +3264,11 @@
     "_level": 2,
     "_components": [
       {
-        "__id__": 88
+        "__id__": 89
       }
     ],
     "_prefab": {
-      "__id__": 89
+      "__id__": 90
     },
     "_opacity": 255,
     "_color": {
@@ -3299,13 +3317,15 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 87
+      "__id__": 88
     },
     "_enabled": true,
     "playerPrefab": {
       "__uuid__": "30dddff2-e6aa-4688-9046-90dce523fc75"
     },
     "playerList": [],
+    "playerScriptList": [],
+    "playerIndex": 0,
     "_id": "63A+FV/ThME61wTMd5aCTc"
   },
   {
