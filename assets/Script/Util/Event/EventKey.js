@@ -28,6 +28,7 @@ const EventKey = {
         USE_BOMB: 'PLAYER_USE_BOMB',
         SHOOT_BOMB: 'SHOOT_BOMB_BULLET',
         READY: 'PLAYER_READY',
+        CHANGE_NAME: 'CHANGE_NAME'
     },
     SCENE: {
         LOAD_LOBBY: 'LOAD_LOBBY', 
