@@ -18,6 +18,11 @@ cc.Class({
             type: [require('Player')],
             visible: false,
         },
+        playerIndex: {
+            default: 0,
+            type: cc.Integer,
+            visible: false,
+        },
 
     },
     onLoad() {
@@ -33,15 +38,18 @@ cc.Class({
         this.playerScript = this.playerNode.getChildByName('PlayerSpine').getComponent('Player');
         this.playerList.push(this.playerNode);
         this.playerScriptList.push(this.playerScript);
+        this.playerIndex += 1;
+        this.playerScript.node.name = `Player${this.playerIndex}`;
     },
     registerEventListener() {
+        console.log("PlayerController registerEventListener");
         const eventHandlers = {
             [EventKey.INPUT.MOVE_UP]: this.onMoveUp.bind(this),
             [EventKey.INPUT.MOVE_DOWN]: this.onMoveDown.bind(this),
             [EventKey.INPUT.SHOOT_ULTIMATE]: this.onShootUltimate.bind(this),
             [EventKey.INPUT.USE_BOMB]: this.onUseBomb.bind(this),
-            [EventKey.ROOM.PAUSE]: this.onPause.bind(this),
-            [EventKey.ROOM.RESUME]: this.onResume.bind(this),
+            // [EventKey.ROOM.PAUSE]: this.onPause.bind(this),
+            // [EventKey.ROOM.RESUME]: this.onResume.bind(this),
             [EventKey.ROOM.RESTART]: this.onRestart.bind(this),
         };
         for (const event in eventHandlers) {
@@ -74,18 +82,23 @@ cc.Class({
         }
         this.playerScript.fsm.toUseBomb();
     },
-    onPause() {
-        this.playerScriptList.forEach(player => {
-            player.onPause();
-        });
-    },
-    onResume() {
-        this.playerScriptList.forEach(player => {
-            player.onResume();
-        });
-    },
+    // onPause() {
+    //     this.playerScriptList.forEach(player => {
+    //         player.onPause();
+    //     });
+    // },
+    // onResume() {
+    //     this.playerScriptList.forEach(player => {
+    //         player.onResume();
+    //     });
+    // },
     onRestart() {
-        this.playerList.forEach(player => {
+        if (!this.boundedOnRestart) {
+            this.boundedOnRestart = true;
+            return;
+        }
+        console.log("PlayerController onRestart");
+        this.playerList.forEach(player, index => {
             player.destroy();
         })
         this.playerList = [];
