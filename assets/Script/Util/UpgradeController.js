@@ -43,6 +43,7 @@ class UpgradeController {
         cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.ULTIMATE_LEVEL, currentLever.toString());
         return true;
     }
+    
 };
 
 const instance = new UpgradeController();
