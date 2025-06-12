@@ -50,7 +50,7 @@ cc.Class({
             visible: false,
         },
         moveDuration: {
-            default: 0.3,
+            default: 0.2,
             type: cc.Float,
         },
         bulletPointer: {
@@ -76,12 +76,10 @@ cc.Class({
         this.playerFrame.setPosition(this.xInit, this.yInit);
         this.initStateMachine();
         this.playerPositionY = [-300, -100, 100];
-
     },
     onCollisionEnter(other, self) {
         console.log(other.node.getComponent('MonsterItem'), "  ", self.node);
         this.takeDamage(other.node.getComponent('MonsterItem').damage);
-
     },
     initStateMachine() {
         this.fsm = new StateMachine({
@@ -89,8 +87,8 @@ cc.Class({
             transitions: [
                 { name: 'toPortal', from: '*', to: FSM_STATE.PORTAL },
                 { name: 'toShoot', from: '*', to: FSM_STATE.SHOOT },
-                { name: 'toMoveUp', from: FSM_STATE.SHOOT, to: FSM_STATE.MOVE_UP },
-                { name: 'toMoveDown', from: FSM_STATE.SHOOT, to: FSM_STATE.MOVE_DOWN },
+                { name: 'toMoveUp', from: [FSM_STATE.SHOOT, FSM_STATE.SHOOT_ULTIMATE, FSM_STATE.USE_BOMB], to: FSM_STATE.MOVE_UP },
+                { name: 'toMoveDown', from: [FSM_STATE.SHOOT, FSM_STATE.SHOOT_ULTIMATE, FSM_STATE.USE_BOMB], to: FSM_STATE.MOVE_DOWN },
                 { name: 'toUseBomb', from: [FSM_STATE.SHOOT, FSM_STATE.MOVE_UP, FSM_STATE.MOVE_DOWN], to: FSM_STATE.USE_BOMB },
                 { name: 'toShootUltimate', from: [FSM_STATE.SHOOT, FSM_STATE.MOVE_UP, FSM_STATE.MOVE_DOWN], to: FSM_STATE.SHOOT_ULTIMATE },
                 { name: 'toDie', from: '*', to: FSM_STATE.DIE },
@@ -113,6 +111,7 @@ cc.Class({
         });
     },
     handleEnterPortal() {
+        console.log('Entering Portal State');
         this.playerSpine.setAnimation(1, SpineAnimation.PORTAL, false);
         this.playerSpine.setCompleteListener(() => {
             this.playerSpine.setAnimation(0, SpineAnimation.IDLE, true);
@@ -138,10 +137,10 @@ cc.Class({
         this.unschedule(this.boundOnShootBullet);
         this.boundOnShootBullet = null;
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
+        let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
+        Emitter.emit(EventKey.PLAYER.SHOOT_BOMB, bulletPosition);
+        Emitter.emit(EventKey.SOUND.PLAY_SFX, AudioName.SFX.FALLING_BOMB);
         this.playerSpine.setCompleteListener(() => {
-            let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
-            Emitter.emit(EventKey.PLAYER.SHOOT_BOMB, bulletPosition);
-            Emitter.emit(EventKey.SOUND.PLAY_SFX, AudioName.SFX.FALLING_BOMB);
             this.fsm.toShoot();
         });
     },
@@ -182,7 +181,6 @@ cc.Class({
         Emitter.emit(EventKey.SOUND.PLAY_SFX, AudioName.SFX.SHOOT_NORMAL);
         this.playerSpine.setCompleteListener(() => {
             this.fsm.toShoot();
-            console.log(bulletPosition);
         });
     },
     handleEnterDie() {
@@ -191,11 +189,10 @@ cc.Class({
         this.playerSpine.timeScale = 4;
         this.playerSpine.setAnimation(1, SpineAnimation.DEATH, false);
         this.playerSpine.setCompleteListener(() => {
-            Emitter.emit(EventKey.PLAYER.ON_DIE, this.node);
+            Emitter.emit(EventKey.PLAYER.ON_DIE, this.node.name);
             this.playerSpine.timeScale = 0;
             this.node.parent.destroy();
         });
-
     },
     takeDamage(amount) {
         if (this.fsm.is(FSM_STATE.DIE)) return;
@@ -215,5 +212,12 @@ cc.Class({
                 .to(0.1, { opacity: 255 }, { easing: 'sineInOut' })
                 .start();
         }
+    },
+    onDestroy() {
+        console.log('Player destroyed');
+        this.unschedule(this.boundOnShootBullet);
+        this.boundOnShootBullet = null;
+        this.playerSpine.clearTracks();
+        this.playerSpine.setCompleteListener(null);
     },
 });

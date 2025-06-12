@@ -79,16 +79,6 @@ cc.Class({
         }
         this.playerScript.fsm.toUseBomb();
     },
-    // onPause() {
-    //     this.playerScriptList.forEach(player => {
-    //         player.onPause();
-    //     });
-    // },
-    // onResume() {
-    //     this.playerScriptList.forEach(player => {
-    //         player.onResume();
-    //     });
-    // },
     onRestart() {
         if (!this.boundedOnRestart) {
             this.boundedOnRestart = true;

@@ -57,7 +57,6 @@ cc.Class({
         Emitter.emit(EventKey.SOUND.PLAY_SFX,AudioName.SFX.CLICK);
     },
     onClickStart(){
-        console.log("Start Game");
         Emitter.emit(EventKey.SCENE.LOAD_ROOM);
     },
     onDestroy() {

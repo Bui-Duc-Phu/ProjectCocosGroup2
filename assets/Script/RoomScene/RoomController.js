@@ -123,7 +123,7 @@ cc.Class({
         this.unregisterEvent();
         this.scheduleOnce(() => {
             Emitter.emit(EventKey.SCENE.LOAD_LOBBY);
-        }, 0.1);
+        }, 0.3);
     },
     saveGoldtoLocalStorage(sumGold) {
         console.log("add Gold", sumGold);

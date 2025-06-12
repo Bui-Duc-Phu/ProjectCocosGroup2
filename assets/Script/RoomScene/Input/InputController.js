@@ -44,36 +44,31 @@ cc.Class({
         this.init();
     },
     init() {
+        this.registerEventListener();
         this.setCooldown();
-        this.registerButtonEvents();
         this.registerKeyboardEvents();
         this.setInputTouchable(false);
-        this.registerEventListener();
-        console.log('InputController initialized');
     },
     setInputTouchable(value) {
+        console.log('InputController setInputTouchable:', value);
+        console.log(this.node);
         if (value) {
             this.registerKeyboardEvents();
             cc.tween(this.node)
                 .to(0.5, { opacity: 255 })
                 .start();
         } else {
-            this.node.opacity = 0;
             this.unregisterKeyboardEvents();
         }
-        this.isMoveButtonEnabled = value;
         this.moveUpButton.interactable = value;
         this.moveDownButton.interactable = value;
         this.skillButton.interactable = value;
         this.bombButton.interactable = (this.getBombAmount() > 0 && value) ? true : false;
-        console.log('InputController setInputTouchable:', value);
     },
     registerEventListener() {
         const eventHandlers = {
             [EventKey.PLAYER.READY]: this.setInputTouchable.bind(this, true),
-            [EventKey.PLAYER.ON_DIE]: this.setInputTouchable.bind(this, false),
-            [EventKey.ROOM.EXIT]: this.onCleanUP.bind(this),
-        }
+            [EventKey.PLAYER.ON_DIE]: this.setInputTouchable.bind(this, false),        }
         for (const event in eventHandlers) {
             Emitter.registerEvent(event, eventHandlers[event]);
         }
@@ -84,14 +79,6 @@ cc.Class({
         this.bombAmountLabel = this.bombButton.node.getChildByName('BombAmount').getComponentInChildren(cc.Label);
         this.bombAmountLabel.string = this.bombAmount.toString();
         return this.bombAmount;
-    },
-    registerButtonEvents() {
-        this.moveUpButton.node.on('click', this.onMoveUp, this);
-        this.moveDownButton.node.on('click', this.onMoveDown, this);
-        this.skillButton.node.on('click', this.onUseSkill, this);
-        this.bombButton.node.on('click', this.onUseBomb, this);
-        this.settingButton.node.on('click', this.onSettingButtonClick, this);
-        this.bombButton.interactable = this.getBombAmount() > 0;
     },
     registerKeyboardEvents() {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
@@ -148,22 +135,10 @@ cc.Class({
         this.bombAmountLabel.string = this.bombAmount.toString();
     },
     onSettingButtonClick() {
-        console.log('Setting button clicked');
         Emitter.emit(EventKey.POPUP.SHOW, 'Setting');
-    },
-    onCleanUP() {
-        console.log('Cleaning up InputController');
-        if (!this.boundedOnCleanUp) {
-            this.boundedOnCleanUp = true;
-            return;
-        }
-        this.moveUpButton.node.off('click', this.onMoveUp, this);
-        this.moveDownButton.node.off('click', this.onMoveDown, this);
-        this.skillButton.node.off('click', this.onUseSkill, this);
-        this.bombButton.node.off('click', this.onUseBomb, this);
-        this.node.destroy();
     },
     onDestroy() {
         this.unregisterKeyboardEvents();
+        console.log('InputController onDestroy');
     },
 });
