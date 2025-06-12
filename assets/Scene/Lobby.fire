@@ -12664,6 +12664,9 @@
       "r": 247,
       "g": 201,
       "b": 72,
+      "r": 247,
+      "g": 201,
+      "b": 72,
       "a": 255
     },
     "_contentSize": {
@@ -12794,6 +12797,7 @@
   },
   {
     "__type__": "cc.Node",
+    "_name": "New Label copy",
     "_name": "New Label copy",
     "_objFlags": 0,
     "_parent": {
