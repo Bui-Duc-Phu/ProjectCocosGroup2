@@ -135,7 +135,7 @@ cc.Class({
     },
 
     loadSceneInternal(sceneName) {
-        if ((sceneName === 'TestPlayer' && cc.game['ROOM_INIT_LOAD'])) {
+        if ((sceneName === 'Room' && cc.game['ROOM_INIT_LOAD'])) {
             cc.game['ROOM_INIT_LOAD'] = false;
             return;
         }
@@ -150,7 +150,6 @@ cc.Class({
             cc.director.loadScene(sceneName);
         });
         Emitter.emit(EventKey.SOUND.STOP_BGM);
-        console.log(`Loading scene: ${sceneName}`);
     },
 
     executeExitSteps() {
