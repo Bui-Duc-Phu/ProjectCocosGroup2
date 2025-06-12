@@ -26,8 +26,6 @@ cc.Class({
     onLoad() {
         this.doLoadingScene();
         this.onProgressStart();
-        cc.game['ROOM_INIT_LOAD'] = true;
-        cc.game['LOBBY_INIT_LOAD'] = true;
     },
     onProgressStart() {
         this.dotStates = ["Loading", "Loading.", "Loading..", "Loading..."];

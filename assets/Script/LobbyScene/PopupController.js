@@ -79,7 +79,6 @@ cc.Class({
         this.popupResult.hide();
     },
     onSelfDestroy() {
-        console.log('PopupController selfDestroy');
         this.hideAllPopup();
         cc.game.removePersistRootNode(this.node);
         this.node.destroy();

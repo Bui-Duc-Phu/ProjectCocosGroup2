@@ -50,7 +50,7 @@ cc.Class({
             visible: false,
         },
         moveDuration: {
-            default: 0.3,
+            default: 0.25,
             type: cc.Float,
         },
         bulletPointer: {
@@ -76,12 +76,10 @@ cc.Class({
         this.playerFrame.setPosition(this.xInit, this.yInit);
         this.initStateMachine();
         this.playerPositionY = [-300, -100, 100];
-
     },
     onCollisionEnter(other, self) {
         console.log(other.node.getComponent('MonsterItem'), "  ", self.node);
         this.takeDamage(other.node.getComponent('MonsterItem').damage);
-
     },
     initStateMachine() {
         this.fsm = new StateMachine({
@@ -113,7 +111,7 @@ cc.Class({
         });
     },
     handleEnterPortal() {
-        this.playerSpine.timeScale = 2;
+        console.log('Entering Portal State');
         this.playerSpine.setAnimation(1, SpineAnimation.PORTAL, false);
         this.playerSpine.setCompleteListener(() => {
             this.playerSpine.setAnimation(0, SpineAnimation.IDLE, true);
@@ -133,14 +131,16 @@ cc.Class({
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
         let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
         Emitter.emit(EventKey.PLAYER.SHOOT_NORMAL, bulletPosition);
+        Emitter.emit(EventKey.SOUND.PLAY_SFX, AudioName.SFX.SHOOT_NORMAL);
     },
     handleUseBomb() {
         this.unschedule(this.boundOnShootBullet);
         this.boundOnShootBullet = null;
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
+        let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
+        Emitter.emit(EventKey.PLAYER.SHOOT_BOMB, bulletPosition);
+        Emitter.emit(EventKey.SOUND.PLAY_SFX, AudioName.SFX.FALLING_BOMB);
         this.playerSpine.setCompleteListener(() => {
-            let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
-            Emitter.emit(EventKey.PLAYER.SHOOT_BOMB, bulletPosition);
             this.fsm.toShoot();
         });
     },
@@ -178,21 +178,21 @@ cc.Class({
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
         let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
         Emitter.emit(EventKey.PLAYER.SHOOT_ULTIMATE, bulletPosition);
+        Emitter.emit(EventKey.SOUND.PLAY_SFX, AudioName.SFX.SHOOT_NORMAL);
         this.playerSpine.setCompleteListener(() => {
             this.fsm.toShoot();
-            console.log(bulletPosition);
         });
     },
     handleEnterDie() {
         this.unschedule(this.boundOnShootBullet);
         this.boundOnShootBullet = null;
-        this.playerSpine.timeScale = 5;
+        this.playerSpine.timeScale = 4;
         this.playerSpine.setAnimation(1, SpineAnimation.DEATH, false);
         this.playerSpine.setCompleteListener(() => {
+            Emitter.emit(EventKey.PLAYER.ON_DIE, this.node.name);
             this.playerSpine.timeScale = 0;
             this.node.parent.destroy();
         });
-
     },
     takeDamage(amount) {
         if (this.fsm.is(FSM_STATE.DIE)) return;
@@ -202,7 +202,6 @@ cc.Class({
         console.log(`Current HP: ${this.currentHP}`);
         this.hpProgressBar.progress = this.currentHP / this.maxHP;
         if (this.currentHP <= 0) {
-            Emitter.emit(EventKey.PLAYER.ON_DIE, this.node);
             this.currentHP = 0;
             this.fsm.toDie();
         } else {
@@ -213,5 +212,12 @@ cc.Class({
                 .to(0.1, { opacity: 255 }, { easing: 'sineInOut' })
                 .start();
         }
+    },
+    onDestroy() {
+        console.log('Player destroyed');
+        this.unschedule(this.boundOnShootBullet);
+        this.boundOnShootBullet = null;
+        this.playerSpine.clearTracks();
+        this.playerSpine.setCompleteListener(null);
     },
 });
