@@ -42,18 +42,14 @@ cc.Class({
         this.playerScript.node.name = `Player${this.playerIndex}`;
     },
     registerEventListener() {
-        console.log("PlayerController registerEventListener");
-        const eventHandlers = {
+        this.eventHandlers = {
             [EventKey.INPUT.MOVE_UP]: this.onMoveUp.bind(this),
             [EventKey.INPUT.MOVE_DOWN]: this.onMoveDown.bind(this),
             [EventKey.INPUT.SHOOT_ULTIMATE]: this.onShootUltimate.bind(this),
             [EventKey.INPUT.USE_BOMB]: this.onUseBomb.bind(this),
-            // [EventKey.ROOM.PAUSE]: this.onPause.bind(this),
-            // [EventKey.ROOM.RESUME]: this.onResume.bind(this),
-            [EventKey.ROOM.RESTART]: this.onRestart.bind(this),
         };
-        for (const event in eventHandlers) {
-            Emitter.registerEvent(event, eventHandlers[event]);
+        for (const event in this.eventHandlers) {
+            Emitter.registerEvent(event, this.eventHandlers[event]);
         }
     },
     onMoveUp() {
@@ -82,32 +78,9 @@ cc.Class({
         }
         this.playerScript.fsm.toUseBomb();
     },
-    // onPause() {
-    //     this.playerScriptList.forEach(player => {
-    //         player.onPause();
-    //     });
-    // },
-    // onResume() {
-    //     this.playerScriptList.forEach(player => {
-    //         player.onResume();
-    //     });
-    // },
-    onRestart() {
-        if (!this.boundedOnRestart) {
-            this.boundedOnRestart = true;
-            return;
-        }
-        console.log("PlayerController onRestart");
-        this.playerList.forEach(player, index => {
-            player.destroy();
-        })
-        this.playerList = [];
-        this.playerScriptList = [];
-        this.createPlayer();
-    },
     onDestroy() {
         for (const event in this.eventHandlers) {
-            Emitter.unregisterEvent(event, this.eventHandlers[event]);
+            Emitter.removeEvent(event, this.eventHandlers[event]);
         }
     },
 });

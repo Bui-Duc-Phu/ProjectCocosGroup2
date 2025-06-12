@@ -28,6 +28,7 @@ const EventKey = {
         USE_BOMB: 'PLAYER_USE_BOMB',
         SHOOT_BOMB: 'SHOOT_BOMB_BULLET',
         READY: 'PLAYER_READY',
+        CHANGE_NAME: 'CHANGE_NAME'
     },
     SCENE: {
         LOAD_LOBBY: 'LOAD_LOBBY', 
@@ -49,16 +50,11 @@ const EventKey = {
         GAME_OVER: 'GAME_OVER',
         SUMMARY_GAME: 'SUMMARY_GAME',
         UPDATE_RESULT: 'UPDATE_RESULT',
-        RESTART: 'RESTART',
+        EXIT: 'EXIT_ROOM',
     },
     WAVE: {
         WAVE_COMPLETE: 'WAVE_COMPLETE',
         START_SPECIFIC_WAVE: 'START_SPECIFIC_WAVE',
-    },
-    BULLET: {
-        BOMB:{
-            ON_EXPLODE: 'ON_BOMB_EXPLODE',
-        }
     },
 };
 

@@ -1,9 +1,10 @@
 const PopupName = {
-    SETTING: 'Setting',
-    SHOP: 'Shop',
-    HERO: 'Hero',
-    SKILL: 'Skill',
-    Result: 'Result'
+    SETTING: 'SETTING',
+    SHOP: 'SHOP',
+    HERO: 'HERO',
+    SKILL: 'SKILL',
+    Result: 'Result',
+    INFOR: 'INFOR',
+    CHANGE_NAME: 'CHANGE_NAME'
 }
-
 export default PopupName;

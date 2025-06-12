@@ -84,7 +84,6 @@ cc.Class({
             this.sliderSoundBGM.progress = 0;
         }
     },
-
     onSliderBGMChange() {
         let volume = this.sliderSoundBGM.progress;
         this.backGroundSliderBGM.width = volume * this.sliderSoundBGM.node.width;
@@ -101,7 +100,6 @@ cc.Class({
             this.toggleBGM.isChecked = true;
         }
     },
-
     onSliderSFXChange() {
         let volume = this.sliderSoundSFX.progress;
         this.backGroundSliderSFX.width = volume * this.sliderSoundSFX.node.width;
@@ -115,7 +113,6 @@ cc.Class({
             this.toggleSFX.isChecked = true;
         }
     },
-
     onSliderSFXEnd() {
         let volume = this.sliderSoundSFX.progress;
 
@@ -132,7 +129,6 @@ cc.Class({
             this.toggleSFX.isChecked = true;
         }
     },
-
     onToggleSFXChanged() {
         if (this.toggleSFX.isChecked) {
 
@@ -156,7 +152,14 @@ cc.Class({
         if (cc.director.getScene().name === 'Lobby') {
             Emitter.emit(EventKey.GAME.REQUEST_EXIT);
         } else {
-            Emitter.emit(EventKey.SCENE.LOAD_LOBBY);
+            Emitter.emit(EventKey.ROOM.EXIT);
+            cc.director.resume();
+            this.hide();
+        }
+    },
+    onRoomResume() {
+        if (cc.director.getScene().name === 'Room') {
+            cc.director.resume();
         }
     },
 

@@ -1,6 +1,7 @@
 const EventKey = require('EventKey');
 const Emitter = require('Emitter');
 const GameConfig = require('GameConfig');
+const AudioName = require('AudioName');
 cc.Class({
     extends: require('BulletItem'),
 
@@ -21,11 +22,6 @@ cc.Class({
             })
             .start();
     },
-    onExplode() {
-        this.activateTriggerState();
-        Emitter.emit(EventKey.BULLET.BOMB.ON_EXPLODE, this);
-        this.bombDamage();
-    },
     onCollide(target, self) {
         if (!this.canAddTarget()) { return }
         this.addTargetIfValid(target);
@@ -38,26 +34,26 @@ cc.Class({
         if (this.currentTarget.includes(monster)) { return }
         this.currentTarget.push(monster);
     },
-    emitBombDamage(){
+    emitAndClear() {
         if (this.currentTarget.length <= 0) { return }
         const worldPos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
         Emitter.emit(EventKey.MONSTER.ON_BOMB_HIT, this.currentTarget, this, worldPos);
-       
+        this.onClear();
     },
     activateTriggerState() {
         this.enableCollider(true);
         this.node.opacity = 0;
     },
-    bombDamage() {
-        this.scheduleOnce(() => { 
-            this.emitBombDamage()
-            this.onClear();      
-         }, 0.2);
+    onExplode() {
+        this.activateTriggerState();
+        Emitter.emit(EventKey.SOUND.PLAY_SFX, AudioName.SFX.BOMB);
+        this.scheduleOnce(() => { this.emitAndClear() }, 0.2);
     },
     enableCollider(enable) {
         const collider = this.getComponent(cc.Collider);
         collider.enabled = enable;
     },
+
     onClear() {
         this.stopTween(this.moveTween)
         this.node.destroy();

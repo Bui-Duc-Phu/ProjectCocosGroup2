@@ -17,50 +17,78 @@ cc.Class({
     onDestroy() {
         this.unregisterEvent();
     },
-
     spawnHitEffect(type, worldPos) {
+        const hitEffect = this.createHitEffect(type);
+        this.setupHitEffect(hitEffect, worldPos);
+    },
+    createHitEffect(type) {
         const prefab = this.gameAsset.getHitEffectPrefabByType(type);
         const hitEffect = cc.instantiate(prefab);
         const component = hitEffect.getComponent('HitEffectItem');
-        component.init({ id: this.genID(), type: type });
+        this.initializeHitEffect(component, type);
+        return hitEffect;
+    },
+    initializeHitEffect(component, type) {
+        component.init({
+            id: this.generateHitEffectId(),
+            type: type
+        });
+    },
+    setupHitEffect(hitEffect, worldPos) {
         this.setPositionHitEffect(hitEffect, worldPos);
-        this.node.addChild(hitEffect);
-        component.playHitEffect();
+        this.addHitEffectToScene(hitEffect);
+        this.playHitEffect(hitEffect);
     },
     setPositionHitEffect(hitEffect, worldPos) {
         const localPos = this.node.convertToNodeSpaceAR(worldPos);
         hitEffect.setPosition(localPos);
     },
-    genID() {
+    addHitEffectToScene(hitEffect) {
+        this.node.addChild(hitEffect);
+    },
+    playHitEffect(hitEffect) {
+        const component = hitEffect.getComponent('HitEffectItem');
+        component.playHitEffect();
+    },
+    generateHitEffectId() {
         return Date.now();
     },
     registerEvent() {
-        this.eventMap = new Map([
+        this.eventMap = this.createEventMap();
+        this.registerEventHandlers();
+    },
+    createEventMap() {
+        return new Map([
             [EventKey.MONSTER.ON_HIT, this.onMonsterHit.bind(this)],
             [EventKey.MONSTER.ON_ULTIMATE_HIT, this.onMonsterHitUltimate.bind(this)],
             [EventKey.MONSTER.ON_BOMB_HIT, this.onMonsterHitBomb.bind(this)],
         ]);
+    },
+    registerEventHandlers() {
         this.eventMap.forEach((handler, key) => {
             Emitter.registerEvent(key, handler);
         });
     },
     unregisterEvent() {
+        this.unregisterEventHandlers();
+        this.clearEventMap();
+    },
+    unregisterEventHandlers() {
         this.eventMap.forEach((handler, key) => {
             Emitter.removeEvent(key, handler);
         });
+    },
+    clearEventMap() {
         this.eventMap.clear();
     },
     onMonsterHit(monster, bullet, worldPos) {
         this.spawnHitEffect(bullet.type, worldPos);
     },
     onMonsterHitUltimate(monster, bullet, worldPos) {
-        console.log('onMonsterHitUltimate', worldPos);
-        console.log(bullet.type);
         this.spawnHitEffect(bullet.type, worldPos);
     },
     onMonsterHitBomb(monster, bullet, worldPos) {
         this.spawnHitEffect(bullet.type, worldPos);
     },
-
 
 });

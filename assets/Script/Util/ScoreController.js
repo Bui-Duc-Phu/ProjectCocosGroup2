@@ -1,5 +1,4 @@
 const LocalStorageKey = require('LocalStorageKey');
-
 class ScoreController {
     constructor() {
         this.getScoreValue();
@@ -13,7 +12,7 @@ class ScoreController {
         score = parseInt(score, 10);
         return score;
     }
-    setScoreValue(score){
+    setScoreValue(score) {
         cc.sys.localStorage.setItem(LocalStorageKey.ROOM.RECORD_SCORE, score);
     }
     getHighScore(newScore) {
@@ -21,7 +20,6 @@ class ScoreController {
         return newScore > score ? newScore : score;
     }
 };
-
 const instance = new ScoreController();
 
 module.exports = instance;

@@ -5,9 +5,9 @@ const GoldController = require('GoldController');
 const UpgradeController = require('UpgradeController');
 const Emitter = require('Emitter');
 const EventKey = require('EventKey');
+const AudioName = require('AudioName');
 cc.Class({
     extends: require('PopupItem'),
-
     properties: {
         activeSpriteFrame: {
             type: cc.SpriteFrame,
@@ -77,9 +77,9 @@ cc.Class({
             type: cc.ProgressBar,
             default: null
         },
-        upgradeButtons:{
-            type:[cc.Node],
-            default:[]
+        upgradeButtons: {
+            type: [cc.Node],
+            default: []
         },
         enoughGoldSpriteFrame: {
             type: cc.SpriteFrame,
@@ -89,7 +89,6 @@ cc.Class({
             type: cc.SpriteFrame,
             default: null
         }
-
     },
     onLoad() {
         this.init();
@@ -107,7 +106,6 @@ cc.Class({
         this.hpBase.string = GameConfig.PLAYER.HP_BASE.toString();
         this.damageBase.string = GameConfig.BULLET.DAMAGE_BASE.toString();
         this.attackSpeed.string = GameConfig.BULLET.TYPE.NOMAL.COOLDOWN.toString();
-
     },
     initSkill() {
         let currentLeverNomalAttack = UpgradeController.getLeverNomalAttack();
@@ -133,31 +131,26 @@ cc.Class({
         const levelMultiplierNomal = GameConfig.BULLET.TYPE.NOMAL.UPGRADE.LEVER[currentLeverNomalAttack];
         const levelMultiplierUltimate = GameConfig.BULLET.TYPE.ULTIMATE.UPGRADE.LEVER[currentLeverUltimate];
 
-        
         this.upgradeButtons.forEach(button => {
             let labelPriceUpgrade = button.getChildByName('Price').getComponent(cc.Label);
-            if(button.parent.name === "Attack"){
-                if(currentLeverNomalAttack === 10){
+            if (button.parent.name === "Attack") {
+                if (currentLeverNomalAttack === 10) {
                     labelPriceUpgrade.string = "MAX";
-                }else{
-                    labelPriceUpgrade.string = Math.floor(priceBaseUpgradeNomal*levelMultiplierNomal).toString();
-                    this.priceUpgradeNomal = Math.floor(priceBaseUpgradeNomal*levelMultiplierNomal);
+                } else {
+                    labelPriceUpgrade.string = Math.floor(priceBaseUpgradeNomal * levelMultiplierNomal).toString();
+                    this.priceUpgradeNomal = Math.floor(priceBaseUpgradeNomal * levelMultiplierNomal);
                 }
             }
-            if(button.parent.name === "Ultimate"){
-                if(currentLeverUltimate === 10){
+            if (button.parent.name === "Ultimate") {
+                if (currentLeverUltimate === 10) {
                     labelPriceUpgrade.string = "MAX";
-                }else{
-                    labelPriceUpgrade.string = Math.floor(priceBaseUpgradeUltimate*levelMultiplierUltimate).toString();
-                    this.priceUpgradeUltimate = Math.floor(priceBaseUpgradeUltimate*levelMultiplierUltimate);
-
+                } else {
+                    labelPriceUpgrade.string = Math.floor(priceBaseUpgradeUltimate * levelMultiplierUltimate).toString();
+                    this.priceUpgradeUltimate = Math.floor(priceBaseUpgradeUltimate * levelMultiplierUltimate);
                 }
             }
-
         });
-
     },
-
     onButtonClick(event, data) {
         this.activeNode(data);
         this.activeButton(data);
@@ -200,21 +193,22 @@ cc.Class({
             sprite.spriteFrame = isActive ? this.activeSpriteFrame : this.unActiveSpriteFrame;
         }
     },
-    isGoldEnough(priceUpgrade){
+    isGoldEnough(priceUpgrade) {
+        console.log(priceUpgrade);
         return this.currentGold >= priceUpgrade;
     },
-    initButtonUpgrade(){
+    initButtonUpgrade() {
         this.upgradeButtons.forEach(button => {
             let spriteBackgroundUpgrade = button.getChildByName('Background').getComponent(cc.Sprite);
             let labelPriceUpgrade = button.getChildByName('Price').getComponent(cc.Label);
             const priceUpgrade = Number(labelPriceUpgrade.string);
             let buttonComponent = button.getComponent(cc.Button);
-            
-            if(!this.isGoldEnough(priceUpgrade)){
+
+            if (!this.isGoldEnough(priceUpgrade)) {
                 spriteBackgroundUpgrade.spriteFrame = this.notEnoughGoldSpriteFrame;
                 labelPriceUpgrade.node.color = cc.Color.RED;
                 buttonComponent.interactable = false;
-            }else{
+            } else {
                 spriteBackgroundUpgrade.spriteFrame = this.enoughGoldSpriteFrame;
                 labelPriceUpgrade.node.color = cc.Color.WHITE;
                 buttonComponent.interactable = true;
@@ -225,14 +219,12 @@ cc.Class({
         if (typeSkill === SkillName.NOMAL) {
             UpgradeController.upgradeLeverNomalAttack()
             GoldController.subtractGold(this.priceUpgradeNomal);
-
         }
         if (typeSkill === SkillName.ULTIMATE) {
             UpgradeController.upgradeLeverUltimate();
             GoldController.subtractGold(this.priceUpgradeUltimate);
-
         }
-        Emitter.emit(EventKey.SOUND.PLAY_SFX_UPGRADE, "name");
+        Emitter.emit(EventKey.SOUND.PLAY_SFX, AudioName.SFX.BUY_SUCCESS);
         Emitter.emit(EventKey.GOLD.CHANGE_GOLD);
         this.currentGold = GoldController.getGoldValue();
         this.initSkill();

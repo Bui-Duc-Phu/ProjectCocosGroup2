@@ -22,11 +22,18 @@ cc.Class({
             type: require('PopupItem'),
             default: null
         },
+        popupInfor: {
+            type: require('PopupItem'),
+            default: null
+        },
+        popupChangeName: {
+            type: require('PopupItem'),
+            default: null
+        },
         overlay: {
-            type:cc.Node,
+            type: cc.Node,
             default: null
         }
-
     },
     onLoad() {
         this.init();
@@ -38,11 +45,8 @@ cc.Class({
         this.hideAllPopup();
         this.overlay.active = false;
         this.registerEvent();
-
     },
-
     updateResult(score, gold) {
-        console.log("updateResult11", score, gold);
         this.popupResult.updateResult(score, gold);
     },
     registerEvent() {
@@ -68,6 +72,12 @@ cc.Class({
             case PopupName.RESULT:
                 this.popupResult.show();
                 break;
+            case PopupName.INFOR:
+                this.popupInfor.show();
+                break;
+            case PopupName.CHANGE_NAME:
+                this.popupChangeName.show();
+                break;
             default:
                 break;
         }
@@ -77,9 +87,10 @@ cc.Class({
         this.popupShop.hide();
         this.popupHero.hide();
         this.popupResult.hide();
+        this.popupInfor.hide();
+        this.popupChangeName.hide();
     },
     onSelfDestroy() {
-        console.log('PopupController selfDestroy');
         this.hideAllPopup();
         cc.game.removePersistRootNode(this.node);
         this.node.destroy();

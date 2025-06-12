@@ -4,8 +4,6 @@ const StateMachine = require('javascript-state-machine');
 const GoldController = require('GoldController');
 const UpgradeController = require('UpgradeController');
 const LocalStorageKey = require('LocalStorageKey');
-const ItemName = require('ItemName');
-
 
 const FSM_STATES = {
     LOBBY: 'Lobby',
@@ -49,7 +47,6 @@ cc.Class({
         this.initializeStateMachine();
         this.registerEventListeners();
         this.addSingletonToList();
-        cc.director.on(cc.Director.EVENT_AFTER_SCENE_LAUNCH, this.onSceneLaunched, this);
         let amount = cc.sys.localStorage.getItem(LocalStorageKey.PLAYER.BOMB_AMOUNT);
         if (amount === null) {
             amount = 0;
@@ -58,6 +55,8 @@ cc.Class({
     },
     addSingletonToList() {
         this.singletonList.push(Emitter);
+        this.singletonList.push(GoldController);
+        this.singletonList.push(UpgradeController);
     },
 
     initializeStateMachine() {
@@ -80,9 +79,15 @@ cc.Class({
                     this.executeExitSteps();
                 },
                 onEnterRoom: () => {
+                    if (this.isSceneLoading) {
+                        return;
+                    }
                     this.loadSceneInternal('Room');
                 },
                 onLeaveRoom: () => {
+                    if (this.isSceneLoading) {
+                        return;
+                    }
                     this.loadSceneInternal('Lobby');
                 },
             }
@@ -119,35 +124,36 @@ cc.Class({
         this.singletonList = [];
     },
     onLoadLobbyRequest() {
+        if (this.fsm.is(FSM_STATES.LOBBY)) {
+            return;
+        }
         this.fsm.leaveRoom();
     },
-
     onLoadRoomRequest() {
+        if (this.fsm.is(FSM_STATES.ROOM)) {
+            return;
+        }
         this.fsm.enterRoom();
     },
-
     onRequestExit() {
         this.fsm.requestExit();
     },
 
-    onSceneLaunched(scene) {
-        this.isSceneLoading = false;
-    },
-
     loadSceneInternal(sceneName) {
-        if ((sceneName === 'Room' && cc.game['ROOM_INIT_LOAD'])) {
-            cc.game['ROOM_INIT_LOAD'] = false;
+        if (sceneName === 'Room' && !this.roomInitLoad) {
+            this.roomInitLoad = true;
             return;
         }
-        if ((sceneName === 'Lobby' && cc.game['LOBBY_INIT_LOAD'])) {
-            cc.game['LOBBY_INIT_LOAD'] = false;
+        if (sceneName === 'Lobby' && !this.lobbyInitLoad) {
+            this.lobbyInitLoad = true;
             return;
         }
         this.isSceneLoading = true;
-        cc.director.preloadScene(sceneName, () => {
-            console.log(`Scene ${sceneName} preloaded`);
+        cc.director.preloadScene(sceneName, (completedCount, totalCount,item) => {
+            console.log(`Preloading scene ${sceneName}: ${completedCount}/${totalCount}`);
         },() => {
             cc.director.loadScene(sceneName);
+            this.isSceneLoading = false;
         });
         Emitter.emit(EventKey.SOUND.STOP_BGM);
     },
@@ -155,7 +161,6 @@ cc.Class({
     executeExitSteps() {
         this.cleanupSingletonList();
         this.unregisterEventListeners();
-        cc.director.off(cc.Director.EVENT_AFTER_SCENE_LAUNCH, this.onSceneLaunched, this);
         cc.director.preloadScene('Portal', () => {
             cc.director.loadScene('Portal');
             cc.game['GAME_CONTROLLER_EXIST'] = false;
