@@ -1,9 +1,12 @@
 const LocalStorageKey = require('LocalStorageKey');
+
 class UpgradeController {
+
     constructor() {
         this.getLeverNomalAttack();
         this.getLeverUltimate();
     }
+
     getLeverNomalAttack() {
         let lever = cc.sys.localStorage.getItem(LocalStorageKey.PLAYER.NORMAL_ATTACK_LEVEL);
         if (!lever) {
@@ -40,7 +43,11 @@ class UpgradeController {
         cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.ULTIMATE_LEVEL, currentLever.toString());
         return true;
     }
+    destroy() {
+        UpgradeController.instance = null;
+    }
 };
+
 const instance = new UpgradeController();
 
 module.exports = instance;

@@ -1,4 +1,5 @@
 const LocalStorageKey = require('LocalStorageKey');
+
 class GoldController {
     constructor() {
         this.getGoldValue();
@@ -12,6 +13,7 @@ class GoldController {
         const goldValue = parseInt(goldString, 10);
         return goldValue;
     }
+
     addGold(amount) {
         if (typeof amount !== 'number' || amount <= 0 || isNaN(amount)) {
             return false;
@@ -21,6 +23,7 @@ class GoldController {
         cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.GOLD, currentGold.toString());
         return true;
     }
+
     subtractGold(amount) {
         if (typeof amount !== 'number' || amount <= 0 || isNaN(amount)) {
             return false;
@@ -33,6 +36,12 @@ class GoldController {
         cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.GOLD, currentGold.toString());
         return true;
     }
+
+    destroy() {
+        GoldController.instance = null;
+    }
 };
+
 const instance = new GoldController();
+
 module.exports = instance;
