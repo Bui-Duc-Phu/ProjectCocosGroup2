@@ -32,7 +32,7 @@ class Emitter {
     destroy() {
         if (this.emitter) {
             this.emitter.removeAllListeners();
-            this.emitter = null;
+            Emitter.instance = null;
         }
     }
 }
