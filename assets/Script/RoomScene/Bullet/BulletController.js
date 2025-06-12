@@ -46,17 +46,22 @@ cc.Class({
         this.initPositionBullet(bullet, worldPos);
         component.onMove();
     },
-
+    caculateDamage(type,level) {
+      const percentDamage = level *  type.UPGRADE.PERCENT_DAMAGE_ADD;
+      const damageBase = GameConfig.BULLET.DAMAGE_BASE * type.COEFFICIENT_DAMAGE;
+      const newDamage = damageBase + damageBase * percentDamage;
+      return newDamage;
+    },
     initPositionBullet(bullet, worldPos) {
         const nodePos = this.node.convertToNodeSpaceAR(worldPos);
         bullet.setPosition(nodePos.x, nodePos.y);
     },
-    parseData(type) {
+    parseData(type,level) {
         return {
             id: this.genID(),
             type: type.NAME,
             durationMove: type.DURATION_MOVE,
-            damage: GameConfig.BULLET.DAMAGE_BASE * type.COEFFICIENT_DAMAGE,
+            damage: this.caculateDamage(type,level),
             countTarget: type.COUNT_TARGET,
         }
     },
@@ -74,15 +79,26 @@ cc.Class({
         const worldPos = cc.v2(BomDType.POSITION.INIT.X, BomDType.POSITION.INIT.Y)
         this.initBulletByType(BomDType, worldPos);
     },
-    shootUltimateBullet(worldPos) {
-        this.onShootUltimateBullet(cc.v2(155, 355))
+
+    getDataLocalStorageByKey(key) {
+        const data = cc.sys.localStorage.getItem(key);
+        return data;
     },
-    shootNomalBullet(worldPos) {
-        this.onShootNomalBullet(cc.v2(155, 355))
+
+    getLevelBulletByType(type) {
+        if(type.NAME == GameConfig.BULLET.TYPE.NOMAL.NAME) {
+            const level = this.getDataLocalStorageByKey(LocalStorageKey.PLAYER.NORMAL_ATTACK_LEVEL);
+            return level;
+        }
+        if(type.NAME == GameConfig.BULLET.TYPE.ULTIMATE.NAME) {
+            const level = this.getDataLocalStorageByKey(LocalStorageKey.PLAYER.ULTIMATE_LEVEL);
+            return level;
+        }
+        return 1;
     },
-    shootBombBullet(worldPos) {
-        this.onShootBombBullet(cc.v2(155, 355))
-    },
+    
+ 
+   
 
 
 

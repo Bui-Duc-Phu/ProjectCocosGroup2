@@ -337,7 +337,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 368.9268220121709
+      "z": 514.4190898479566
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -14331,7 +14331,6 @@
     "labelScore": {
       "__id__": 284
     },
-    "labelRecordScore": null,
     "labelSumGold": {
       "__id__": 308
     },

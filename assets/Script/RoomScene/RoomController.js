@@ -3,7 +3,7 @@ const EventKey = require("EventKey");
 const GameConfig = require("GameConfig");
 const PopupName = require("PopupName");
 const GoldController = require("GoldController");
-
+const LocalStorageKey = require("LocalStorageKey");
 cc.Class({
     extends: cc.Component,
 
@@ -52,6 +52,7 @@ cc.Class({
         this.updateResult(this.score,this.sumGold);
         this.showPopupResult();
         this.saveGoldtoLocalStorage(sumGold);
+        
     },
     initTitleWave() {
         const wordPos = cc.v2(GameConfig.ROOM.WORD_POS.X,GameConfig.ROOM.WORD_POS.Y);
@@ -117,7 +118,7 @@ cc.Class({
         Emitter.emit(EventKey.ROOM.UPDATE_RESULT, score, sumGold);
     },
     saveGoldtoLocalStorage(sumGold) {
-        console.log("add Gold", sumGold);
         GoldController.addGold(sumGold);
     },
+ 
 });
