@@ -199,24 +199,27 @@
     "_enabled": true,
     "bgmList": [
       {
-        "__uuid__": "8d6bb95b-07a0-4992-a489-550ceaf319d4"
+        "__uuid__": "50c077ba-f341-4b36-a293-ec3501ef9022"
       },
       {
-        "__uuid__": "81ab88be-9d50-4129-862c-7e0223dcc9bc"
+        "__uuid__": "9e3a50eb-9b96-4a83-93ed-1e3f388fad4e"
       }
     ],
     "sfxList": [
       {
-        "__uuid__": "1aad367f-0cf8-4733-ba9f-49f4179ba0ff"
+        "__uuid__": "ab806943-403f-4dc2-888a-f04f7b8afa48"
       },
       {
-        "__uuid__": "dc18859f-a693-406d-aa8b-6e6589fd03ee"
+        "__uuid__": "9fa63fdc-4d16-454e-a0aa-bea3fa65c170"
       },
       {
-        "__uuid__": "afc29f88-a798-4855-b10b-da436fff3cec"
+        "__uuid__": "877a3af7-a021-40bf-bc45-83275e61321d"
       },
       {
-        "__uuid__": "8f97c155-16d9-44ea-9333-a2570438d1c5"
+        "__uuid__": "f545a27f-d568-4f57-8470-15bd34e4893d"
+      },
+      {
+        "__uuid__": "0b5660bd-1b7a-4736-b8e3-e4ef987c602f"
       }
     ],
     "bgmVolume": 1,
@@ -343,7 +346,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 368.9268220121709
+      "z": 510.9453924735746
     },
     "_scale": {
       "__type__": "cc.Vec3",

@@ -141,6 +141,7 @@ cc.Class({
         this.playerSpine.setCompleteListener(() => {
             let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
             Emitter.emit(EventKey.PLAYER.SHOOT_BOMB, bulletPosition);
+            Emitter.emit(EventKey.SOUND.PLAY_SFX, AudioName.SFX.FALLING_BOMB);
             this.fsm.toShoot();
         });
     },
