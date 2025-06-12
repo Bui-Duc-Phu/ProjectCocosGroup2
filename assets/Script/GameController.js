@@ -4,8 +4,6 @@ const StateMachine = require('javascript-state-machine');
 const GoldController = require('GoldController');
 const UpgradeController = require('UpgradeController');
 const LocalStorageKey = require('LocalStorageKey');
-const ItemName = require('ItemName');
-
 
 const FSM_STATES = {
     LOBBY: 'Lobby',
@@ -57,6 +55,8 @@ cc.Class({
     },
     addSingletonToList() {
         this.singletonList.push(Emitter);
+        this.singletonList.push(GoldController);
+        this.singletonList.push(UpgradeController);
     },
 
     initializeStateMachine() {
