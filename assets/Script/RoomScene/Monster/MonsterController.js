@@ -10,7 +10,7 @@ cc.Class({
             default: null,
             type: cc.Prefab
         },
-        listChar: {
+        listMonster: {
             default: [],
             type: [require('MonsterItem')],
             visible: false,
@@ -116,7 +116,7 @@ cc.Class({
         this.node.addChild(monster);
         this.positionInit(monster, position);
         monsterItem.onMove();
-        this.listChar.push(monsterItem);
+        this.listMonster.push(monsterItem);
     },
 
     getSpriteFrameByType(type) {
@@ -156,11 +156,11 @@ cc.Class({
 
     onMonsterDie(monster) {
         monster.onDie();
-        const index = this.listChar.indexOf(monster);
+        const index = this.listMonster.indexOf(monster);
         if (index !== -1) {
-            this.listChar.splice(index, 1);
+            this.listMonster.splice(index, 1);
         }
-        if (this.listChar.length === 0 && !this.isGameOver && this.totalMonsters === this.spawnedCount) {
+        if (this.listMonster.length === 0 && !this.isGameOver && this.totalMonsters === this.spawnedCount) {
             Emitter.emit(EventKey.WAVE.WAVE_COMPLETE);
         }
     },
@@ -180,10 +180,10 @@ cc.Class({
     },
     onGameOver() {
         this.isGameOver = true;
-        this.listChar.forEach((monster) => {
+        this.listMonster.forEach((monster) => {
             monster.onDie();
         });
-        this.listChar = [];
+        this.listMonster = [];
         Emitter.emit(EventKey.ROOM.SUMMARY_GAME, this.sumGold, this.sumMonsterKill);
     },
     unregisterEvent() {

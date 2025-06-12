@@ -14314,6 +14314,7 @@
     "labelScore": {
       "__id__": 283
     },
+    "labelRecordScore": null,
     "labelSumGold": {
       "__id__": 307
     },
