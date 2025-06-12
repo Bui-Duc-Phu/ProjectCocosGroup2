@@ -12635,7 +12635,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Point",
+    "_name": "Label",
     "_objFlags": 0,
     "_parent": {
       "__id__": 276
@@ -12660,9 +12660,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 247,
+      "g": 201,
+      "b": 72,
       "a": 255
     },
     "_contentSize": {
@@ -12677,8 +12677,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 207.937,
+      "x": 72.982,
+      "y": 207.912,
       "z": 0
     },
     "_scale": {
@@ -12741,9 +12741,9 @@
     "_enabled": true,
     "_color": {
       "__type__": "cc.Color",
-      "r": 3,
-      "g": 3,
-      "b": 3,
+      "r": 255,
+      "g": 51,
+      "b": 0,
       "a": 255
     },
     "_offset": {
@@ -12764,9 +12764,9 @@
     "_enabled": true,
     "_color": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
+      "r": 3,
+      "g": 3,
+      "b": 3,
       "a": 255
     },
     "_width": 1,
@@ -12785,12 +12785,15 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Rewards",
+    "_name": "New Label copy",
     "_objFlags": 0,
     "_parent": {
       "__id__": 276
     },
-    "_children": [
+    "_children": [],
+    "_active": true,
+    "_level": 3,
+    "_components": [
       {
         "__id__": 289
       },
