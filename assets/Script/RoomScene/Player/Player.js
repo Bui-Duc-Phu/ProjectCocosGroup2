@@ -50,7 +50,7 @@ cc.Class({
             visible: false,
         },
         moveDuration: {
-            default: 0.2,
+            default: 0.25,
             type: cc.Float,
         },
         bulletPointer: {
@@ -87,8 +87,8 @@ cc.Class({
             transitions: [
                 { name: 'toPortal', from: '*', to: FSM_STATE.PORTAL },
                 { name: 'toShoot', from: '*', to: FSM_STATE.SHOOT },
-                { name: 'toMoveUp', from: [FSM_STATE.SHOOT, FSM_STATE.SHOOT_ULTIMATE, FSM_STATE.USE_BOMB], to: FSM_STATE.MOVE_UP },
-                { name: 'toMoveDown', from: [FSM_STATE.SHOOT, FSM_STATE.SHOOT_ULTIMATE, FSM_STATE.USE_BOMB], to: FSM_STATE.MOVE_DOWN },
+                { name: 'toMoveUp', from: FSM_STATE.SHOOT, to: FSM_STATE.MOVE_UP },
+                { name: 'toMoveDown', from: FSM_STATE.SHOOT, to: FSM_STATE.MOVE_DOWN },
                 { name: 'toUseBomb', from: [FSM_STATE.SHOOT, FSM_STATE.MOVE_UP, FSM_STATE.MOVE_DOWN], to: FSM_STATE.USE_BOMB },
                 { name: 'toShootUltimate', from: [FSM_STATE.SHOOT, FSM_STATE.MOVE_UP, FSM_STATE.MOVE_DOWN], to: FSM_STATE.SHOOT_ULTIMATE },
                 { name: 'toDie', from: '*', to: FSM_STATE.DIE },

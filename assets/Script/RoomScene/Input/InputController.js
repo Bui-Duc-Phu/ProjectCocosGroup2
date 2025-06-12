@@ -39,6 +39,11 @@ cc.Class({
             type: cc.Integer,
             visible: false,
         },
+        moveCooldown: {
+            default: 0.3,
+            type: cc.Float,
+            visible: false,
+        },
     },
     onLoad() {
         this.init();
@@ -115,9 +120,19 @@ cc.Class({
         this.bombCooldown.parent = this.node.getChildByName('BombInput');
     },
     onMoveUp() {
+        if (!this.isMoveButtonEnabled) {
+            return;
+        }
+        this.isMoveButtonEnabled = false;
+        this.moveCooldown = 0.3;
         Emitter.emit(EventKey.INPUT.MOVE_UP);
     },
     onMoveDown() {
+        if (!this.isMoveButtonEnabled) {
+            return;
+        }
+        this.isMoveButtonEnabled = false;
+        this.moveCooldown = 0.3;
         Emitter.emit(EventKey.INPUT.MOVE_DOWN);
     },
     onUseSkill() {
@@ -133,6 +148,14 @@ cc.Class({
         this.bombAmount -= 1;
         cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.BOMB_AMOUNT, this.bombAmount.toString());
         this.bombAmountLabel.string = this.bombAmount.toString();
+    },
+    update(dt) {
+        if (this.moveCooldown > 0) {
+            this.moveCooldown -= dt;
+            if (this.moveCooldown <= 0) {
+                this.isMoveButtonEnabled = true;
+            }
+        }
     },
     onSettingButtonClick() {
         Emitter.emit(EventKey.POPUP.SHOW, 'Setting');
