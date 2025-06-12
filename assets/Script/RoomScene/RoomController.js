@@ -93,6 +93,7 @@ cc.Class({
             console.log('game over');
             return;
         }
+        console.log('summary wave', this.waveCurrent);
         this.componentTitleWave.updateTitleWave(this.waveCurrent + 1);
         this.enableTitleWave(true);
         this.scheduleOnce(() => {
