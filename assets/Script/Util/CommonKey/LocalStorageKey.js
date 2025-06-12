@@ -10,5 +10,8 @@ const LocalStorageKey = {
         NORMAL_ATTACK_LEVEL: 'NORMAL_ATTACK_LEVEL',
         ULTIMATE_LEVEL: 'ULTIMATE_LEVEL',
     },
+    ROOM: {
+        RECORD_SCORE: 'RECORD_SCORE'
+    }
 };
 module.exports = LocalStorageKey;
