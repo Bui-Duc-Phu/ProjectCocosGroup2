@@ -83,18 +83,21 @@ cc.Class({
         this.initBulletByType(BomDType, worldPos);
     },
     caculateDamage(type, level) {
-        const percentDamage = level * type.UPGRADE.PERCENT_DAMAGE_ADD;
         const damageBase = GameConfig.BULLET.DAMAGE_BASE * type.COEFFICIENT_DAMAGE;
-        const newDamage = damageBase + damageBase * percentDamage;
-        return newDamage;
-    },
+        if (!type.UPGRADE) {
+            return damageBase;
+        }
+        const percentDamage = level * type.UPGRADE.PERCENT_DAMAGE_ADD;
+        return damageBase + (damageBase * percentDamage);
+    }
+    ,
     getLevelByTypeName(typeName) {
         if (typeName === GameConfig.BULLET.TYPE.NOMAL.NAME) {
             return UpgradeController.getLeverNomalAttack();
         } else if (typeName === GameConfig.BULLET.TYPE.ULTIMATE.NAME) {
             return UpgradeController.getLeverUltimate();
         }
-        return 1;
+        return;
     },
     clearAllBullet() {
         this.listBullet.forEach((bullet) => {

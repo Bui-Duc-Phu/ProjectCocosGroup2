@@ -55,6 +55,11 @@ const EventKey = {
         WAVE_COMPLETE: 'WAVE_COMPLETE',
         START_SPECIFIC_WAVE: 'START_SPECIFIC_WAVE',
     },
+    BULLET: {
+        BOMB:{
+            ON_EXPLODE: 'ON_BOMB_EXPLODE',
+        }
+    },
 };
 
 module.exports = EventKey;
