@@ -149,6 +149,9 @@ cc.Class({
     onSettingButtonClick() {
         console.log('Setting button clicked');
         Emitter.emit(EventKey.POPUP.SHOW, 'Setting');
+        this.scheduleOnce(() => {
+            cc.director.pause();
+        }, 0.1);
     },
     update(dt) {
         if (this.moveCooldown > 0) {

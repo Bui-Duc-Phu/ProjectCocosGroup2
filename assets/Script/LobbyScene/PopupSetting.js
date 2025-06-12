@@ -157,8 +157,18 @@ cc.Class({
             Emitter.emit(EventKey.GAME.REQUEST_EXIT);
         } else {
             Emitter.emit(EventKey.ROOM.EXIT);
+            if (!cc.director.getScene().name === 'Room') {
+                return;
+            }
+            cc.director.resume();
             this.hide();
         }
     },
+    onRoomResume() {
+        if (!cc.director.getScene().name === 'Room') {
+            return;
+        }
+        cc.director.resume();
+    }
 
 });
