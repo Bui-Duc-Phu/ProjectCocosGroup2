@@ -15,7 +15,7 @@ const GameConfig = {
             X:1560,
             Y:[100,300,500],
         },
-        WAVE_COUNT: 10,
+        WAVE_COUNT: 20,
         HP_BASE:100,
         DAMAGE_BASE:25,
         GOLD_BASE:5,
@@ -111,7 +111,7 @@ const GameConfig = {
                 COUNT:1000,
                 COEFFICIENT_DAMAGE:1.25,
                 COUNT_TARGET:1000,
-                DURATION_MOVE:1.5,
+                DURATION_MOVE:1,
                 MOVE_BY_X:1000,
                 COOLDOWN:1,
                 POSITION:{
