@@ -119,13 +119,11 @@ cc.Class({
         Emitter.emit(EventKey.ROOM.UPDATE_RESULT, score, sumGold);
     },
     onCleanup() {
-        if (!this.boundedOnCleanUp) {
-            this.boundedOnCleanUp = true;
-            return;
-        }
+        console.log("Cleanup RoomController");
         this.unregisterEvent();
-        this.enableTitleWave(false);
-        this.titleWave.destroy();
+        this.scheduleOnce(() => {
+            Emitter.emit(EventKey.SCENE.LOAD_LOBBY);
+        }, 0.1);
     },
     saveGoldtoLocalStorage(sumGold) {
         console.log("add Gold", sumGold);

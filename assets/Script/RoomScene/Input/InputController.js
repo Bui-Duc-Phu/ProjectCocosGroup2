@@ -49,13 +49,9 @@ cc.Class({
         this.registerKeyboardEvents();
         this.setInputTouchable(false);
         this.registerEventListener();
+        console.log('InputController initialized');
     },
     setInputTouchable(value) {
-        this.isMoveButtonEnabled = value;
-        this.moveUpButton.interactable = value;
-        this.moveDownButton.interactable = value;
-        this.skillButton.interactable = value;
-        this.bombButton.interactable = (this.getBombAmount() > 0 && value) ? true : false;
         if (value) {
             this.registerKeyboardEvents();
             cc.tween(this.node)
@@ -65,12 +61,18 @@ cc.Class({
             this.node.opacity = 0;
             this.unregisterKeyboardEvents();
         }
+        this.isMoveButtonEnabled = value;
+        this.moveUpButton.interactable = value;
+        this.moveDownButton.interactable = value;
+        this.skillButton.interactable = value;
+        this.bombButton.interactable = (this.getBombAmount() > 0 && value) ? true : false;
         console.log('InputController setInputTouchable:', value);
     },
     registerEventListener() {
         const eventHandlers = {
             [EventKey.PLAYER.READY]: this.setInputTouchable.bind(this, true),
             [EventKey.PLAYER.ON_DIE]: this.setInputTouchable.bind(this, false),
+            [EventKey.ROOM.EXIT]: this.onCleanUP.bind(this),
         }
         for (const event in eventHandlers) {
             Emitter.registerEvent(event, eventHandlers[event]);
@@ -149,11 +151,19 @@ cc.Class({
         console.log('Setting button clicked');
         Emitter.emit(EventKey.POPUP.SHOW, 'Setting');
     },
-    onDestroy() {
+    onCleanUP() {
+        console.log('Cleaning up InputController');
+        if (!this.boundedOnCleanUp) {
+            this.boundedOnCleanUp = true;
+            return;
+        }
         this.moveUpButton.node.off('click', this.onMoveUp, this);
         this.moveDownButton.node.off('click', this.onMoveDown, this);
         this.skillButton.node.off('click', this.onUseSkill, this);
         this.bombButton.node.off('click', this.onUseBomb, this);
+        this.node.destroy();
+    },
+    onDestroy() {
         this.unregisterKeyboardEvents();
     },
 });
