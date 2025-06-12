@@ -39,36 +39,33 @@ cc.Class({
             type: cc.Integer,
             visible: false,
         },
-        moveCooldown: {
-            default: 0.3,
-            type: cc.Float,
-            visible: false,
-        },
     },
     onLoad() {
         this.init();
     },
     init() {
-        this.registerEventListener();
         this.setCooldown();
+        this.registerButtonEvents();
         this.registerKeyboardEvents();
         this.setInputTouchable(false);
+        this.registerEventListener();
     },
     setInputTouchable(value) {
-        console.log('InputController setInputTouchable:', value);
-        console.log(this.node);
+        this.isMoveButtonEnabled = value;
+        this.moveUpButton.interactable = value;
+        this.moveDownButton.interactable = value;
+        this.skillButton.interactable = value;
+        this.bombButton.interactable = (this.getBombAmount() > 0 && value) ? true : false;
         if (value) {
             this.registerKeyboardEvents();
             cc.tween(this.node)
                 .to(0.5, { opacity: 255 })
                 .start();
         } else {
+            this.node.opacity = 0;
             this.unregisterKeyboardEvents();
         }
-        this.moveUpButton.interactable = value;
-        this.moveDownButton.interactable = value;
-        this.skillButton.interactable = value;
-        this.bombButton.interactable = (this.getBombAmount() > 0 && value) ? true : false;
+        console.log('InputController setInputTouchable:', value);
     },
     registerEventListener() {
         this.eventHandlers = {
@@ -85,6 +82,14 @@ cc.Class({
         this.bombAmountLabel = this.bombButton.node.getChildByName('BombAmount').getComponentInChildren(cc.Label);
         this.bombAmountLabel.string = this.bombAmount.toString();
         return this.bombAmount;
+    },
+    registerButtonEvents() {
+        this.moveUpButton.node.on('click', this.onMoveUp, this);
+        this.moveDownButton.node.on('click', this.onMoveDown, this);
+        this.skillButton.node.on('click', this.onUseSkill, this);
+        this.bombButton.node.on('click', this.onUseBomb, this);
+        this.settingButton.node.on('click', this.onSettingButtonClick, this);
+        this.bombButton.interactable = this.getBombAmount() > 0;
     },
     registerKeyboardEvents() {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
@@ -121,19 +126,9 @@ cc.Class({
         this.bombCooldown.parent = this.node.getChildByName('BombInput');
     },
     onMoveUp() {
-        if (!this.isMoveButtonEnabled) {
-            return;
-        }
-        this.isMoveButtonEnabled = false;
-        this.moveCooldown = 0.3;
         Emitter.emit(EventKey.INPUT.MOVE_UP);
     },
     onMoveDown() {
-        if (!this.isMoveButtonEnabled) {
-            return;
-        }
-        this.isMoveButtonEnabled = false;
-        this.moveCooldown = 0.3;
         Emitter.emit(EventKey.INPUT.MOVE_DOWN);
     },
     onUseSkill() {
@@ -150,18 +145,15 @@ cc.Class({
         cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.BOMB_AMOUNT, this.bombAmount.toString());
         this.bombAmountLabel.string = this.bombAmount.toString();
     },
-    update(dt) {
-        if (this.moveCooldown > 0) {
-            this.moveCooldown -= dt;
-            if (this.moveCooldown <= 0) {
-                this.isMoveButtonEnabled = true;
-            }
-        }
-    },
     onSettingButtonClick() {
+        console.log('Setting button clicked');
         Emitter.emit(EventKey.POPUP.SHOW, 'Setting');
     },
     onDestroy() {
+        this.moveUpButton.node.off('click', this.onMoveUp, this);
+        this.moveDownButton.node.off('click', this.onMoveDown, this);
+        this.skillButton.node.off('click', this.onUseSkill, this);
+        this.bombButton.node.off('click', this.onUseBomb, this);
         this.unregisterKeyboardEvents();
         for (const event in this.eventHandlers) {
             Emitter.removeEvent(event, this.eventHandlers[event]);

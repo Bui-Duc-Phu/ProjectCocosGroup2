@@ -1,17 +1,17 @@
 const AudioName = {
     BGM : {
-        LOBBY: "LobbyBGM",
-        ROOM: "RoomBGM",
+        LOBBY: "lobbyBGM",
+        ROOM: "roomBGM",
+        BATTLE: "battleBGM",
     },
     SFX : {
-        CLICK: "ClickSFX",
-        RESULT_BATTLE: "ResultBattleSFX",
-        GOLD_USE: "GoldUseSFX",
-        GOLD_GET: "GoldGetSFX",
-        BUY_SUCCESS: "BuySuccessSFX",
-        BOMB: "BombSFX",
-        SHOOT_NORMAL: "ShootNormalSFX",
-        FALLING_BOMB: "FallingBombSFX",
+        CLICK: "clickSFX",
+        RESULT_BATTLE: "resultBattleSFX",
+        GOLD_USE: "goldUseSFX",
+        GOLD_GET: "goldGetSFX",
+        BUY_SUCCESS: "buySuccessSFX",
+        BOMB: "bombSFX",
+        SHOOT_NORMAL: "shootNormalSFX",
     },
 };
 module.exports = AudioName;

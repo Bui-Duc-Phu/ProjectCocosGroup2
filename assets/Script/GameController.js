@@ -49,6 +49,7 @@ cc.Class({
         this.initializeStateMachine();
         this.registerEventListeners();
         this.addSingletonToList();
+        cc.director.on(cc.Director.EVENT_AFTER_SCENE_LAUNCH, this.onSceneLaunched, this);
         let amount = cc.sys.localStorage.getItem(LocalStorageKey.PLAYER.BOMB_AMOUNT);
         if (amount === null) {
             amount = 0;
@@ -79,17 +80,9 @@ cc.Class({
                     this.executeExitSteps();
                 },
                 onEnterRoom: () => {
-                    if (this.isSceneLoading) {
-                        return;
-                    }
-                    console.log('Entering Room state');
                     this.loadSceneInternal('Room');
                 },
                 onLeaveRoom: () => {
-                    if (this.isSceneLoading) {
-                        return;
-                    }
-                    console.log('Leaving Room state');
                     this.loadSceneInternal('Lobby');
                 },
             }
@@ -128,28 +121,33 @@ cc.Class({
     onLoadLobbyRequest() {
         this.fsm.leaveRoom();
     },
+
     onLoadRoomRequest() {
         this.fsm.enterRoom();
     },
+
     onRequestExit() {
         this.fsm.requestExit();
     },
 
+    onSceneLaunched(scene) {
+        this.isSceneLoading = false;
+    },
+
     loadSceneInternal(sceneName) {
-        if (sceneName === 'Room' && !this.roomInitLoad) {
-            this.roomInitLoad = true;
+        if ((sceneName === 'Room' && cc.game['ROOM_INIT_LOAD'])) {
+            cc.game['ROOM_INIT_LOAD'] = false;
             return;
         }
-        if (sceneName === 'Lobby' && !this.lobbyInitLoad) {
-            this.lobbyInitLoad = true;
+        if ((sceneName === 'Lobby' && cc.game['LOBBY_INIT_LOAD'])) {
+            cc.game['LOBBY_INIT_LOAD'] = false;
             return;
         }
         this.isSceneLoading = true;
-        cc.director.preloadScene(sceneName, (completedCount, totalCount,item) => {
-            console.log(`Preloading scene ${sceneName}: ${completedCount}/${totalCount}`);
+        cc.director.preloadScene(sceneName, () => {
+            console.log(`Scene ${sceneName} preloaded`);
         },() => {
             cc.director.loadScene(sceneName);
-            this.isSceneLoading = false;
         });
         Emitter.emit(EventKey.SOUND.STOP_BGM);
     },
@@ -157,6 +155,7 @@ cc.Class({
     executeExitSteps() {
         this.cleanupSingletonList();
         this.unregisterEventListeners();
+        cc.director.off(cc.Director.EVENT_AFTER_SCENE_LAUNCH, this.onSceneLaunched, this);
         cc.director.preloadScene('Portal', () => {
             cc.director.loadScene('Portal');
             cc.game['GAME_CONTROLLER_EXIST'] = false;
