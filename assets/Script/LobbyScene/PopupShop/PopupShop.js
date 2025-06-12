@@ -5,7 +5,6 @@ const EventKey = require('EventKey');
 const AudioName = require('AudioName')
 cc.Class({
     extends: require('PopupItem'),
-
     properties: {
         shopItem: {
             type: cc.Node,
@@ -31,16 +30,14 @@ cc.Class({
             type: cc.SpriteFrame,
             default: null
         },
-        amount:{
-            type:cc.Label,
-            default:null
+        amount: {
+            type: cc.Label,
+            default: null
         }
     },
-
     onLoad() {
         this.init();
     },
-
     init() {
         this.priceItem = 0;
         this.currentGold = GoldController.getGoldValue();
@@ -52,7 +49,6 @@ cc.Class({
     isGoldEnough(priceItem) {
         return this.currentGold >= priceItem;
     },
-
     onClickItem(event, ItemName) {
         const item = event.target;
         this.itemName = ItemName;
@@ -61,20 +57,19 @@ cc.Class({
         this.spriteFrame = item.getChildByName("Icon").getComponent(cc.Sprite).spriteFrame;
         this.amountItem = cc.sys.localStorage.getItem(ItemName);
         console.log(this.amountItem)
-        
+
         this.initItemDetail();
     },
     initItem() {
         this.itemList.forEach(item => {
             let priceItem = Number(item.getComponent("Item").price.string);
-            if (!this.isGoldEnough(priceItem)) {           
+            if (!this.isGoldEnough(priceItem)) {
                 item.getComponent("Item").price.node.color = cc.Color.RED;
             } else {
                 item.getComponent("Item").price.node.color = cc.Color.WHITE;
             }
         });
     },
-
     initItemDetail() {
         this.itemDetail.active = true;
         this.iconItemDetail.getComponent(cc.Sprite).spriteFrame = this.spriteFrame;
@@ -94,7 +89,7 @@ cc.Class({
         } else {
             GoldController.subtractGold(this.priceItem);
             Emitter.emit(EventKey.GOLD.CHANGE_GOLD);
-            Emitter.emit(EventKey.SOUND.PLAY_SFX,AudioName.SFX.BUY_SUCCESS);
+            Emitter.emit(EventKey.SOUND.PLAY_SFX, AudioName.SFX.BUY_SUCCESS);
             this.amountItem = Number(this.amountItem) + 1;
             cc.sys.localStorage.setItem(this.itemName, this.amountItem);
         }
@@ -102,7 +97,7 @@ cc.Class({
         this.initItem();
         this.initItemDetail();
     },
-    hide(){
+    hide() {
         this._super();
         this.itemDetail.active = false;
     }

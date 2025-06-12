@@ -1,4 +1,4 @@
-const GoldController = require('GoldController') 
+const GoldController = require('GoldController')
 const Emitter = require('Emitter');
 const EventKey = require('EventKey');
 const AudioName = require('AudioName');
@@ -28,24 +28,21 @@ cc.Class({
         this.onChangeGold();
         this._onChangeGold = this.onChangeGold.bind(this);
         this._onChangeName = this.onChangeName.bind(this);
-        this.registerEvent();   
+        this.registerEvent();
         Emitter.emit(EventKey.SOUND.PLAY_BGM, AudioName.BGM.LOBBY);
-        
+
         let username = this.getUsername();
         this.username.string = username;
     },
     registerEvent() {
         Emitter.registerEvent(EventKey.GOLD.CHANGE_GOLD, this._onChangeGold);
         Emitter.registerEvent(EventKey.PLAYER.CHANGE_NAME, this._onChangeName);
-
     },
     start() {
         if (!cc.game.isPersistRootNode(this.popupNode)) {
             cc.game.addPersistRootNode(this.popupNode);
-            console.log("PopupNode added to persist root nodes");
         } else {
             this.popupNode.destroy();
-            console.log("PopupNode already exists in persist root nodes, destroying the old one");
         }
     },
     onChangeGold() {
@@ -73,26 +70,24 @@ cc.Class({
     showChangeName() {
         Emitter.emit(EventKey.POPUP.SHOW, PopupName.CHANGE_NAME);
     },
-    onClickButton(){
-        Emitter.emit(EventKey.SOUND.PLAY_SFX,AudioName.SFX.CLICK);
+    onClickButton() {
+        Emitter.emit(EventKey.SOUND.PLAY_SFX, AudioName.SFX.CLICK);
     },
-    onClickStart(){
+    onClickStart() {
         Emitter.emit(EventKey.SCENE.LOAD_ROOM);
     },
-    getUsername(){
+    getUsername() {
         let username = cc.sys.localStorage.getItem(LocalStorageKey.PLAYER.NAME);
-            if (!username) {
-                username = 'Player';
-                cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.NAME, username);
-                return username;
-            }
+        if (!username) {
+            username = 'Player';
+            cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.NAME, username);
             return username;
+        }
+        return username;
     },
     onDestroy() {
-        console.log("LobbyController destroyed");
-        Emitter.emit(EventKey.SOUND.ENABLE_BGM,false);
+        Emitter.emit(EventKey.SOUND.ENABLE_BGM, false);
         Emitter.removeEvent(EventKey.GOLD.CHANGE_GOLD, this._onChangeGold);
         Emitter.removeEvent(EventKey.PLAYER.CHANGE_NAME, this._onChangeName);
-
     },
 });
