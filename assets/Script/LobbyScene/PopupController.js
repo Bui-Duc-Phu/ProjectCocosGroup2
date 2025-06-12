@@ -22,6 +22,14 @@ cc.Class({
             type: require('PopupItem'),
             default: null
         },
+        popupInfor: {
+            type: require('PopupItem'),
+            default: null
+        },
+        popupChangeName: {
+            type: require('PopupItem'),
+            default: null
+        },
         overlay: {
             type:cc.Node,
             default: null
@@ -68,6 +76,12 @@ cc.Class({
             case PopupName.RESULT:
                 this.popupResult.show();
                 break;
+            case PopupName.INFOR:
+                this.popupInfor.show();
+                break;
+            case PopupName.CHANGE_NAME:
+                this.popupChangeName.show();
+                break;
             default:
                 break;
         }
@@ -77,6 +91,11 @@ cc.Class({
         this.popupShop.hide();
         this.popupHero.hide();
         this.popupResult.hide();
+        this.popupInfor.hide();
+        this.popupChangeName.hide();
+
+
+        
     },
     onSelfDestroy() {
         console.log('PopupController selfDestroy');

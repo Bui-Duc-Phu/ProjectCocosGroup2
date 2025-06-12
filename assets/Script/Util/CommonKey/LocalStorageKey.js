@@ -9,6 +9,7 @@ const LocalStorageKey = {
         HP_POTION_AMOUNT: 'PLAYER_HP_POTION_AMOUNT',
         NORMAL_ATTACK_LEVEL: 'NORMAL_ATTACK_LEVEL',
         ULTIMATE_LEVEL: 'ULTIMATE_LEVEL',
+        NAME: 'NAME'
     },
     ROOM: {
         RECORD_SCORE: 'RECORD_SCORE'
