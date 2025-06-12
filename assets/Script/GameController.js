@@ -38,14 +38,6 @@ cc.Class({
     onLoad() {
         this.init();
     },
-
-    onDestroy() {
-        this.unregisterEventListeners();
-        cc.director.off(cc.Director.EVENT_AFTER_SCENE_LAUNCH, this.onSceneLaunched, this);
-        cc.director.preloadScene('Portal', () => {
-            cc.director.loadScene('Portal');
-        });
-    },
     init() {
         if (cc.game['GAME_CONTROLLER_EXIST']) {
             this.node.destroy();
@@ -74,7 +66,7 @@ cc.Class({
             transitions: [
                 { name: 'enterRoom', from: [FSM_STATES.LOBBY, 'init'], to: FSM_STATES.ROOM },
                 { name: 'leaveRoom', from: FSM_STATES.ROOM, to: FSM_STATES.LOBBY },
-                { name: 'requestExit', from: FSM_STATES.LOBBY, to: FSM_STATES.EXITING }
+                { name: 'requestExit', from: [FSM_STATES.LOBBY, 'init'], to: FSM_STATES.EXITING }
             ],
             methods: {
                 onEnterLobby: (lifecycle) => {
@@ -84,7 +76,7 @@ cc.Class({
                     this.emitStateChange(FSM_STATES.ROOM, lifecycle.from);
                 },
                 onEnterExiting: (lifecycle) => {
-                    this.emitStateChange(FSM_STATES.EXITING, lifecycle.from);
+                    Emitter.emit(EventKey.GAME.PREPARE_FOR_EXIT);
                     this.executeExitSteps();
                 },
                 onEnterRoom: () => {
@@ -143,21 +135,32 @@ cc.Class({
     },
 
     loadSceneInternal(sceneName) {
-        if (sceneName === 'TestPlayer' && cc.game['ROOM_INIT_LOAD']) {
+        if ((sceneName === 'Room' && cc.game['ROOM_INIT_LOAD'])) {
             cc.game['ROOM_INIT_LOAD'] = false;
+            return;
+        }
+        if ((sceneName === 'Lobby' && cc.game['LOBBY_INIT_LOAD'])) {
+            cc.game['LOBBY_INIT_LOAD'] = false;
             return;
         }
         this.isSceneLoading = true;
         cc.director.preloadScene(sceneName, () => {
+            console.log(`Scene ${sceneName} preloaded`);
+        },() => {
             cc.director.loadScene(sceneName);
         });
-        console.log(`Loading scene: ${sceneName}`);
+        Emitter.emit(EventKey.SOUND.STOP_BGM);
     },
 
     executeExitSteps() {
         this.cleanupSingletonList();
-        Emitter.emit(EventKey.GAME.PREPARE_FOR_EXIT);
-        this.node.destroy();
-
+        this.unregisterEventListeners();
+        cc.director.off(cc.Director.EVENT_AFTER_SCENE_LAUNCH, this.onSceneLaunched, this);
+        cc.director.preloadScene('Portal', () => {
+            cc.director.loadScene('Portal');
+            cc.game['GAME_CONTROLLER_EXIST'] = false;
+            cc.game.removePersistRootNode(this.node);
+            this.node.destroy();
+        });
     },
 });

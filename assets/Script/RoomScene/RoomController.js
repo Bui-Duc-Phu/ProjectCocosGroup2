@@ -3,7 +3,7 @@ const EventKey = require("EventKey");
 const GameConfig = require("GameConfig");
 const PopupName = require("PopupName");
 const GoldController = require("GoldController");
-const LocalStorageKey = require("LocalStorageKey");
+
 cc.Class({
     extends: cc.Component,
 
@@ -120,38 +120,4 @@ cc.Class({
         console.log("add Gold", sumGold);
         GoldController.addGold(sumGold);
     },
-    getLeverUltimate() {
-        let lever = cc.sys.localStorage.getItem(LocalStorageKey.PLAYER.ULTIMATE_LEVEL);
-        if (!lever) {
-            cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.ULTIMATE_LEVEL, '1');
-            return 0;
-        }
-        lever = parseInt(lever, 10);
-        return lever;
-    },
-    upgradeLeverNomalAttack() {
-        let currentLever = this.getLeverNomalAttack();
-        if (currentLever >= 10) {
-            return false;
-        }
-        currentLever += 1;
-        cc.sys.localStorage.setItem(LocalStorageKey.PLAYER.NORMAL_ATTACK_LEVEL, currentLever.toString());
-        return true;
-    },
-    getRecordScore() {
-        let recordScore = cc.sys.localStorage.getItem(LocalStorageKey.ROOM.RECORD_SCORE);
-        recordScore = parseInt(recordScore, 10);
-        return recordScore;
-    },
-    updateRecordScore(score) {
-        let recordScore = this.getRecordScore();
-        if (score > recordScore) {
-            cc.sys.localStorage.setItem(LocalStorageKey.ROOM.RECORD_SCORE, score.toString());
-        }
-    },
-    shouldUpdateRecordScore(recordScore, score) {
-        return recordScore < score;
-    }
-
-
 });

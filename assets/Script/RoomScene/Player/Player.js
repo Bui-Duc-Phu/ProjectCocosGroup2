@@ -119,7 +119,6 @@ cc.Class({
             this.playerSpine.setAnimation(0, SpineAnimation.IDLE, true);
             this.node.angle = 5;
             Emitter.emit(EventKey.PLAYER.READY);
-            Emitter.emit(EventKey.SOUND.PLAY_BGM, AudioName.BGM.ROOM);
             this.playerSpine.timeScale = 1;
             this.fsm.toShoot();
         });
@@ -185,12 +184,15 @@ cc.Class({
         });
     },
     handleEnterDie() {
+        this.unschedule(this.boundOnShootBullet);
+        this.boundOnShootBullet = null;
+        this.playerSpine.timeScale = 5;
         this.playerSpine.setAnimation(1, SpineAnimation.DEATH, false);
         this.playerSpine.setCompleteListener(() => {
             this.playerSpine.timeScale = 0;
             this.node.parent.destroy();
         });
-        
+
     },
     takeDamage(amount) {
         if (this.fsm.is(FSM_STATE.DIE)) return;
@@ -202,12 +204,9 @@ cc.Class({
         if (this.currentHP <= 0) {
             Emitter.emit(EventKey.PLAYER.ON_DIE, this.node);
             this.currentHP = 0;
-            this.unschedule(this.boundOnShootBullet);
-            this.boundOnShootBullet = null;
-            this.playerSpine.clearTrack(1);
             this.fsm.toDie();
         } else {
-            cc.tween(this.node)
+            this.moveTween = cc.tween(this.node)
                 .to(0.1, { opacity: 80 }, { easing: 'sineInOut' })
                 .to(0.1, { opacity: 255 }, { easing: 'sineInOut' })
                 .to(0.1, { opacity: 80 }, { easing: 'sineInOut' })

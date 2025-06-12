@@ -33,6 +33,9 @@ cc.Class({
     },
 
     onLoad() {
+        this.init();
+    },
+    init() {
         if (cc.game['SOUND_CONTROLLER_EXIST']) {
             this.node.destroy();
             return;
@@ -52,11 +55,16 @@ cc.Class({
             [EventKey.SOUND.PLAY_SFX]: this.playSFX.bind(this),
             [EventKey.SOUND.PLAY_BGM]: this.playBGM.bind(this),
             [EventKey.SOUND.STOP_BGM]: this.stopBGM.bind(this),
-            [EventKey.GAME.PREPARE_FOR_EXIT]: this.onDestroy.bind(this),
+            [EventKey.GAME.PREPARE_FOR_EXIT]: this.onSelfDestroy.bind(this),
         };
         for (const event in this.eventHandlers) {
             Emitter.registerEvent(event, this.eventHandlers[event]);
         }
+    },
+    onSelfDestroy() {
+        cc.game.removePersistRootNode(this.node);
+        this.node.destroy();
+        console.log("SoundController destroyed");
     },
     onDestroy() {
         for (const event in this.eventHandlers) {

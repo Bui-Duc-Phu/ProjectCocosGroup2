@@ -34,6 +34,7 @@ cc.Class({
     init() {
         this.onShowPopup = this.showPopup.bind(this);
         this.onUpdateResult = this.updateResult.bind(this);
+        this.selfDestroy = this.onSelfDestroy.bind(this);
         this.hideAllPopup();
         this.overlay.active = false;
         this.registerEvent();
@@ -47,6 +48,7 @@ cc.Class({
     registerEvent() {
         Emitter.registerEvent(EventKey.POPUP.SHOW, this.onShowPopup)
         Emitter.registerEvent(EventKey.ROOM.UPDATE_RESULT, this.onUpdateResult);
+        Emitter.registerEvent(EventKey.GAME.PREPARE_FOR_EXIT, this.selfDestroy);
     },
     showPopup(type) {
         this.overlay.active = true;
@@ -76,8 +78,15 @@ cc.Class({
         this.popupHero.hide();
         this.popupResult.hide();
     },
+    onSelfDestroy() {
+        console.log('PopupController selfDestroy');
+        this.hideAllPopup();
+        cc.game.removePersistRootNode(this.node);
+        this.node.destroy();
+    },
     onDestroy() {
         Emitter.removeEvent(EventKey.POPUP.SHOW, this.onShowPopup);
         Emitter.removeEvent(EventKey.ROOM.UPDATE_RESULT, this.onUpdateResult);
+        Emitter.removeEvent(EventKey.GAME.PREPARE_FOR_EXIT, this.selfDestroy);
     }
 });
