@@ -84,7 +84,6 @@ cc.Class({
             this.sliderSoundBGM.progress = 0;
         }
     },
-
     onSliderBGMChange() {
         let volume = this.sliderSoundBGM.progress;
         this.backGroundSliderBGM.width = volume * this.sliderSoundBGM.node.width;
@@ -101,7 +100,6 @@ cc.Class({
             this.toggleBGM.isChecked = true;
         }
     },
-
     onSliderSFXChange() {
         let volume = this.sliderSoundSFX.progress;
         this.backGroundSliderSFX.width = volume * this.sliderSoundSFX.node.width;
@@ -115,7 +113,6 @@ cc.Class({
             this.toggleSFX.isChecked = true;
         }
     },
-
     onSliderSFXEnd() {
         let volume = this.sliderSoundSFX.progress;
 
@@ -132,7 +129,6 @@ cc.Class({
             this.toggleSFX.isChecked = true;
         }
     },
-
     onToggleSFXChanged() {
         if (this.toggleSFX.isChecked) {
 

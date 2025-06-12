@@ -12,8 +12,6 @@ cc.Class({
             visible: false,
         },
     },
-
-
     init(data) {
         this.id = data.id;
         this.type = data.type;
@@ -21,12 +19,9 @@ cc.Class({
     playHitEffect() {
 
     },
-
-
     onStopEffect() {
 
     },
-
     onDestroy() {
         this.onStopEffect();
     },

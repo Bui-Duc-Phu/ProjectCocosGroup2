@@ -26,76 +26,108 @@ cc.Class({
         },
         gameAsset: require("GameAsset"),
     },
+
     onLoad() {
-        this.colisionManager();
+        this.initCollisionManager();
         this.registerEvent();
         this.initGame();    
     },
-    colisionManager() {
-        let manager = cc.director.getCollisionManager();
-        manager.enabled = true
+    initCollisionManager() {
+        const manager = cc.director.getCollisionManager();
+        manager.enabled = true;
     },
     registerEvent() {
-        this.eventMap = new Map([
+        this.eventMap = this.createEventMap();
+        this.registerEventHandlers();
+    },
+    createEventMap() {
+        return new Map([
             [EventKey.PLAYER.ON_DIE, this.gameOver.bind(this)],
             [EventKey.WAVE.WAVE_COMPLETE, this.summaryWave.bind(this)],
             [EventKey.ROOM.SUMMARY_GAME, this.summaryGame.bind(this)],
             [EventKey.ROOM.EXIT, this.onExitRoom.bind(this)],
         ]);
+    },
+    registerEventHandlers() {
         this.eventMap.forEach((handler, key) => {
             Emitter.registerEvent(key, handler);
         });
     },
-    summaryGame(sumGold, sumMonsterKill) {
-        this.sumGold = parseInt(sumGold);
-        this.sumMonsterKill = parseInt(sumMonsterKill);
-        this.score = this.caculateScore();
-        this.updateResult(this.score,this.sumGold);
-        this.showPopupResult();
-        this.saveGoldtoLocalStorage(sumGold);
-    },
-    initTitleWave() {
-        const wordPos = cc.v2(GameConfig.ROOM.WORD_POS.X,GameConfig.ROOM.WORD_POS.Y);
-        this.titleWave = cc.instantiate(this.gameAsset.getTitleWavePrefab());
-        this.componentTitleWave = this.titleWave.getComponent('Round');
-        this.componentTitleWave.init(this.waveCurrent);
-        this.titleWave.parent = this.node;
-        this.setPosition(this.titleWave,wordPos);
-    },
-    enableTitleWave(enable) {
-        this.titleWave.active = enable;
-    },
-    setPosition(node,wordPos) {
-        const pos =  this.node.convertToNodeSpaceAR(wordPos);
-        node.setPosition(pos);
-    },
     unregisterEvent() {
         if (!this.eventMap) return;
+        this.unregisterEventHandlers();
+        this.clearEventMap();
+    },
+    unregisterEventHandlers() {
         this.eventMap.forEach((handler, key) => {
             Emitter.removeEvent(key, handler);
         });
-        this.eventMap.clear();
     },
-    gameOver() {
-        Emitter.emit(EventKey.ROOM.GAME_OVER);
+    clearEventMap() {
+        this.eventMap.clear();
     },
     initGame() {
         this.initTitleWave();
+        this.scheduleGameStart();
+        this.playBackgroundMusic();
+    },
+    scheduleGameStart() {
         this.scheduleOnce(() => {
             this.startGame();
             this.enableTitleWave(false);
         }, GameConfig.ROOM.TIME_START_GAME);
+    },
+    playBackgroundMusic() {
         Emitter.emit(EventKey.SOUND.PLAY_BGM, AudioName.BGM.ROOM);
     },
+    initTitleWave() {
+        const wavePosition = this.getWavePosition();
+        this.createTitleWave(wavePosition);
+    },
+    getWavePosition() {
+        return cc.v2(GameConfig.ROOM.WORD_POS.X, GameConfig.ROOM.WORD_POS.Y);
+    },
+    createTitleWave(position) {
+        this.titleWave = cc.instantiate(this.gameAsset.getTitleWavePrefab());
+        this.componentTitleWave = this.titleWave.getComponent('Round');
+        this.componentTitleWave.init(this.waveCurrent);
+        this.titleWave.parent = this.node;
+        this.setPosition(this.titleWave, position);
+    },
+    enableTitleWave(enable) {
+        this.titleWave.active = enable;
+    },
+    setPosition(node, worldPos) {
+        const localPos = this.node.convertToNodeSpaceAR(worldPos);
+        node.setPosition(localPos);
+    },
+    gameOver() {
+        Emitter.emit(EventKey.ROOM.GAME_OVER);
+    },
     summaryWave() {
-        if(this.waveCurrent == 3) {
-            this.gameOver();
-            console.log('game over');
+        if (this.isLastWave()) {
+            this.handleLastWave();
             return;
         }
+        this.handleNextWave();
+    },
+    isLastWave() {
+        return this.waveCurrent === 3;
+    },
+    handleLastWave() {
+        this.gameOver();
+        console.log('game over');
+    },
+    handleNextWave() {
         console.log('summary wave', this.waveCurrent);
+        this.updateWaveTitle();
+        this.scheduleNextWave();
+    },
+    updateWaveTitle() {
         this.componentTitleWave.updateTitleWave(this.waveCurrent + 1);
         this.enableTitleWave(true);
+    },
+    scheduleNextWave() {
         this.scheduleOnce(() => {
             this.nextWave();
             this.enableTitleWave(false);
@@ -105,13 +137,36 @@ cc.Class({
         Emitter.emit(EventKey.WAVE.START_SPECIFIC_WAVE, this.waveCurrent);
     },
     nextWave() {
-        this.waveCurrent++;
-        Emitter.emit(EventKey.WAVE.START_SPECIFIC_WAVE, this.waveCurrent);
+        this.incrementWave();
+        this.startGame();
     },
-    caculateScore() {
-        const scoreKill = this.sumMonsterKill * GameConfig.ROOM.SUMMARY_GAME.SCORE_ONE_KILL;
-        const scoreWave = this.waveCurrent * GameConfig.ROOM.SUMMARY_GAME.SCORE_ONE_WAVE;
+    incrementWave() {
+        this.waveCurrent++;
+    },
+    summaryGame(sumGold, sumMonsterKill) {
+        this.updateGameStats(sumGold, sumMonsterKill);
+        this.handleGameSummary();
+    },
+    updateGameStats(sumGold, sumMonsterKill) {
+        this.sumGold = parseInt(sumGold);
+        this.sumMonsterKill = parseInt(sumMonsterKill);
+        this.score = this.calculateScore();
+    },
+    handleGameSummary() {
+        this.updateResult(this.score, this.sumGold);
+        this.showPopupResult();
+        this.saveGoldToLocalStorage(this.sumGold);
+    },
+    calculateScore() {
+        const scoreKill = this.calculateKillScore();
+        const scoreWave = this.calculateWaveScore();
         return scoreKill + scoreWave;
+    },
+    calculateKillScore() {
+        return this.sumMonsterKill * GameConfig.ROOM.SUMMARY_GAME.SCORE_ONE_KILL;
+    },
+    calculateWaveScore() {
+        return this.waveCurrent * GameConfig.ROOM.SUMMARY_GAME.SCORE_ONE_WAVE;
     },
     showPopupResult() {
         Emitter.emit(EventKey.POPUP.SHOW, PopupName.RESULT);
@@ -119,13 +174,16 @@ cc.Class({
     updateResult(score, sumGold) {
         Emitter.emit(EventKey.ROOM.UPDATE_RESULT, score, sumGold);
     },
-    saveGoldtoLocalStorage(sumGold) {
+    saveGoldToLocalStorage(sumGold) {
         console.log("add Gold", sumGold);
         GoldController.addGold(sumGold);
     },
     onExitRoom() {
+        this.scheduleSceneTransition();
+    },
+    scheduleSceneTransition() {
         this.scheduleOnce(() => {
             Emitter.emit(EventKey.SCENE.LOAD_LOBBY);
         }, 0.3);
-    },
+    }
 });
