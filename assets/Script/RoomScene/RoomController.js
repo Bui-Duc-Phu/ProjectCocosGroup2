@@ -120,8 +120,4 @@ cc.Class({
         console.log("add Gold", sumGold);
         GoldController.addGold(sumGold);
     },
-
-    
-
-
 });
