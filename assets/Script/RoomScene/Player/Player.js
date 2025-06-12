@@ -113,7 +113,6 @@ cc.Class({
         });
     },
     handleEnterPortal() {
-        this.playerSpine.timeScale = 2;
         this.playerSpine.setAnimation(1, SpineAnimation.PORTAL, false);
         this.playerSpine.setCompleteListener(() => {
             this.playerSpine.setAnimation(0, SpineAnimation.IDLE, true);
@@ -133,6 +132,7 @@ cc.Class({
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
         let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
         Emitter.emit(EventKey.PLAYER.SHOOT_NORMAL, bulletPosition);
+        Emitter.emit(EventKey.SOUND.PLAY_SFX, AudioName.SFX.SHOOT_NORMAL);
     },
     handleUseBomb() {
         this.unschedule(this.boundOnShootBullet);
@@ -178,6 +178,7 @@ cc.Class({
         this.playerSpine.setAnimation(1, SpineAnimation.SHOOT, false);
         let bulletPosition = this.node.parent.convertToWorldSpaceAR(this.bulletPointer.position);
         Emitter.emit(EventKey.PLAYER.SHOOT_ULTIMATE, bulletPosition);
+        Emitter.emit(EventKey.SOUND.PLAY_SFX, AudioName.SFX.SHOOT_NORMAL);
         this.playerSpine.setCompleteListener(() => {
             this.fsm.toShoot();
             console.log(bulletPosition);

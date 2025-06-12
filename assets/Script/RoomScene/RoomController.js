@@ -3,6 +3,7 @@ const EventKey = require("EventKey");
 const GameConfig = require("GameConfig");
 const PopupName = require("PopupName");
 const GoldController = require("GoldController");
+const AudioName = require("../Util/CommonKey/AudioName");
 
 cc.Class({
     extends: cc.Component,
@@ -29,7 +30,6 @@ cc.Class({
         this.colisionManager();
         this.registerEvent();
         this.initGame();    
-       
     },
     colisionManager() {
         let manager = cc.director.getCollisionManager();
@@ -83,6 +83,7 @@ cc.Class({
         this.scheduleOnce(() => {
             this.startGame();
             this.enableTitleWave(false);
+            Emitter.emit(EventKey.SOUND.PLAY_BGM, AudioName.BGM.ROOM);
         }, GameConfig.ROOM.TIME_START_GAME);
     },
     summaryWave() {

@@ -199,10 +199,10 @@
     "_enabled": true,
     "bgmList": [
       {
-        "__uuid__": "81ab88be-9d50-4129-862c-7e0223dcc9bc"
+        "__uuid__": "8d6bb95b-07a0-4992-a489-550ceaf319d4"
       },
       {
-        "__uuid__": "8d6bb95b-07a0-4992-a489-550ceaf319d4"
+        "__uuid__": "81ab88be-9d50-4129-862c-7e0223dcc9bc"
       }
     ],
     "sfxList": [
@@ -211,6 +211,12 @@
       },
       {
         "__uuid__": "dc18859f-a693-406d-aa8b-6e6589fd03ee"
+      },
+      {
+        "__uuid__": "afc29f88-a798-4855-b10b-da436fff3cec"
+      },
+      {
+        "__uuid__": "8f97c155-16d9-44ea-9333-a2570438d1c5"
       }
     ],
     "bgmVolume": 1,
