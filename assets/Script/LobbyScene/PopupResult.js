@@ -1,5 +1,7 @@
 const GoldController = require('GoldController');
 const ScoreController = require('ScoreController');
+const Emitter = require('Emitter');
+const EventKey = require('EventKey');
 cc.Class({
     extends: require('PopupItem'),
 
@@ -40,18 +42,13 @@ cc.Class({
     },
     onDisable(){
         this.highScoreTextLabel.string = "High Score:";
-
+    },
+    hide() {
+        this._super();
+        console.log("PopupResult hide");
+    },
+    onBackButtonClick() {
+        Emitter.emit(EventKey.ROOM.EXIT);
+        this.hide();
     }
-
-
-
-
-    
-
-
-
-
-
-   
-    
 });

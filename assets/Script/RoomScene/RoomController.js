@@ -3,6 +3,7 @@ const EventKey = require("EventKey");
 const GameConfig = require("GameConfig");
 const PopupName = require("PopupName");
 const GoldController = require("GoldController");
+const AudioName = require("AudioName");
 
 cc.Class({
     extends: cc.Component,
@@ -29,7 +30,6 @@ cc.Class({
         this.colisionManager();
         this.registerEvent();
         this.initGame();    
-       
     },
     colisionManager() {
         let manager = cc.director.getCollisionManager();
@@ -40,6 +40,7 @@ cc.Class({
             [EventKey.PLAYER.ON_DIE, this.gameOver.bind(this)],
             [EventKey.WAVE.WAVE_COMPLETE, this.summaryWave.bind(this)],
             [EventKey.ROOM.SUMMARY_GAME, this.summaryGame.bind(this)],
+            [EventKey.ROOM.EXIT, this.onExitRoom.bind(this)],
         ]);
         this.eventMap.forEach((handler, key) => {
             Emitter.registerEvent(key, handler);
@@ -84,6 +85,7 @@ cc.Class({
             this.startGame();
             this.enableTitleWave(false);
         }, GameConfig.ROOM.TIME_START_GAME);
+        Emitter.emit(EventKey.SOUND.PLAY_BGM, AudioName.BGM.ROOM);
     },
     summaryWave() {
         if(this.waveCurrent == 3) {
@@ -119,5 +121,10 @@ cc.Class({
     saveGoldtoLocalStorage(sumGold) {
         console.log("add Gold", sumGold);
         GoldController.addGold(sumGold);
+    },
+    onExitRoom() {
+        this.scheduleOnce(() => {
+            Emitter.emit(EventKey.SCENE.LOAD_LOBBY);
+        }, 0.3);
     },
 });

@@ -156,7 +156,8 @@ cc.Class({
         if (cc.director.getScene().name === 'Lobby') {
             Emitter.emit(EventKey.GAME.REQUEST_EXIT);
         } else {
-            Emitter.emit(EventKey.SCENE.LOAD_LOBBY);
+            Emitter.emit(EventKey.ROOM.EXIT);
+            this.hide();
         }
     },
 

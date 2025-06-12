@@ -24,7 +24,7 @@ cc.Class({
         this.onChangeGold();
         this._onChangeGold = this.onChangeGold.bind(this);
         this.registerEvent();
-        Emitter.emit(EventKey.SOUND.ENABLE_BGM, this.enableBGM, AudioName.BGM.LOBBY);
+        Emitter.emit(EventKey.SOUND.PLAY_BGM, AudioName.BGM.LOBBY);
 
     },
     registerEvent() {

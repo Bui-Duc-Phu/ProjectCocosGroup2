@@ -12,7 +12,6 @@ cc.Class({
         },
 
     },
-
     onLoad() {
         this.registerEvent();
     },
@@ -74,19 +73,4 @@ cc.Class({
         const worldPos = cc.v2(BomDType.POSITION.INIT.X, BomDType.POSITION.INIT.Y)
         this.initBulletByType(BomDType, worldPos);
     },
-    shootUltimateBullet(worldPos) {
-        this.onShootUltimateBullet(cc.v2(155, 355))
-    },
-    shootNomalBullet(worldPos) {
-        this.onShootNomalBullet(cc.v2(155, 355))
-    },
-    shootBombBullet(worldPos) {
-        this.onShootBombBullet(cc.v2(155, 355))
-    },
-
-
-
-
-
-
 });
