@@ -21,6 +21,11 @@ cc.Class({
             })
             .start();
     },
+    onExplode() {
+        this.activateTriggerState();
+        Emitter.emit(EventKey.BULLET.BOMB.ON_EXPLODE, this);
+        this.bombDamage();
+    },
     onCollide(target, self) {
         if (!this.canAddTarget()) { return }
         this.addTargetIfValid(target);
@@ -33,25 +38,26 @@ cc.Class({
         if (this.currentTarget.includes(monster)) { return }
         this.currentTarget.push(monster);
     },
-    emitAndClear() {
+    emitBombDamage(){
         if (this.currentTarget.length <= 0) { return }
         const worldPos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
         Emitter.emit(EventKey.MONSTER.ON_BOMB_HIT, this.currentTarget, this, worldPos);
-        this.onClear();
+       
     },
     activateTriggerState() {
         this.enableCollider(true);
         this.node.opacity = 0;
     },
-    onExplode() {
-        this.activateTriggerState();
-        this.scheduleOnce(() => { this.emitAndClear() }, 0.2);
+    bombDamage() {
+        this.scheduleOnce(() => { 
+            this.emitBombDamage()
+            this.onClear();      
+         }, 0.2);
     },
     enableCollider(enable) {
         const collider = this.getComponent(cc.Collider);
         collider.enabled = enable;
     },
-
     onClear() {
         this.stopTween(this.moveTween)
         this.node.destroy();

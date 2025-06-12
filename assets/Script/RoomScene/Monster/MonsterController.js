@@ -74,20 +74,19 @@ cc.Class({
     },
 
     selectMonsterTypeForSpawn(waveData) {
-        if (waveData.level % 5 === 0 && this.shouldSpawnBoss(this.spawnedCount, waveData.totalMonsters)) {
+        if (this.shouldSpawnBoss(waveData)) {
             return GameConfig.MONSTER.TYPE.BOSS;
         }
-        for (const [type, count] of Object.entries(waveData.monsterTypeCounts)) {
-            if (count > 0) {
-                waveData.monsterTypeCounts[type]--;
-                return GameConfig.MONSTER.TYPE[type];
-            }
-        }
-        return GameConfig.MONSTER.TYPE.DOG;
+        const monsterTypes = Object.keys(waveData.monsterTypeCounts);
+        const randomIndex = Math.floor(Math.random() * monsterTypes.length);
+        const selectedType = monsterTypes[randomIndex];
+        waveData.monsterTypeCounts[selectedType]--;
+        return GameConfig.MONSTER.TYPE[selectedType];
     },
-    shouldSpawnBoss(spawnIndex, totalMonsters) {
-        const bossPosition = Math.floor(Math.random() * totalMonsters);
-        return spawnIndex === bossPosition;
+    shouldSpawnBoss(waveData) {
+       const level = waveData.level;
+       if(level % 2 === 0) return this.spawnedCount === waveData.totalMonsters - 5;
+       return false;
     },
 
     spawnMonster(type, level) {
@@ -213,5 +212,7 @@ cc.Class({
             this.sumMonsterKill++;
         }
     }
+
+    
 
 });
