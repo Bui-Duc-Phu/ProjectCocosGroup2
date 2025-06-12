@@ -29,7 +29,7 @@ cc.Class({
         this._onChangeGold = this.onChangeGold.bind(this);
         this._onChangeName = this.onChangeName.bind(this);
         this.registerEvent();   
-        Emitter.emit(EventKey.SOUND.ENABLE_BGM, this.enableBGM, AudioName.BGM.LOBBY);
+        Emitter.emit(EventKey.SOUND.PLAY_BGM, AudioName.BGM.LOBBY);
         
         let username = this.getUsername();
         this.username.string = username;
