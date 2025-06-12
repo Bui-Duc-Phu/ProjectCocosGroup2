@@ -201,6 +201,7 @@ cc.Class({
         }
     },
     isGoldEnough(priceUpgrade){
+        console.log(priceUpgrade);
         return this.currentGold >= priceUpgrade;
     },
     initButtonUpgrade(){

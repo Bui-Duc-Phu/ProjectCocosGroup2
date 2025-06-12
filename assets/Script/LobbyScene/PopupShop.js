@@ -66,7 +66,7 @@ cc.Class({
     },
     initItem() {
         this.itemList.forEach(item => {
-            let priceItem = Number(item.getComponent("Item").price.string);
+            let priceItem = Number(item.getComponent("Item")?.price?.string);
             if (!this.isGoldEnough(priceItem)) {           
                 item.getComponent("Item").price.node.color = cc.Color.RED;
             } else {
