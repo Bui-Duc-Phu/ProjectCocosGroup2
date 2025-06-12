@@ -49,7 +49,7 @@ const EventKey = {
         GAME_OVER: 'GAME_OVER',
         SUMMARY_GAME: 'SUMMARY_GAME',
         UPDATE_RESULT: 'UPDATE_RESULT',
-        RESTART: 'RESTART',
+        EXIT: 'EXIT_ROOM',
     },
     WAVE: {
         WAVE_COMPLETE: 'WAVE_COMPLETE',
