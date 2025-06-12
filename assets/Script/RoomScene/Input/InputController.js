@@ -2,6 +2,7 @@ const GameConfig = require('GameConfig');
 const Emitter = require('Emitter');
 const EventKey = require('EventKey');
 const LocalStorageKey = require('LocalStorageKey');
+const PopupName = require('PopupName');
 cc.Class({
     extends: cc.Component,
 
@@ -148,7 +149,10 @@ cc.Class({
     },
     onSettingButtonClick() {
         console.log('Setting button clicked');
-        Emitter.emit(EventKey.POPUP.SHOW, 'Setting');
+        Emitter.emit(EventKey.POPUP.SHOW, PopupName.SETTING);
+        this.scheduleOnce(() => {
+            cc.director.pause();
+        }, 0.2);
     },
     update(dt) {
         if (this.moveCooldown > 0) {

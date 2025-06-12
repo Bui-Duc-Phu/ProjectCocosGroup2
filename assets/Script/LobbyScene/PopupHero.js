@@ -5,6 +5,7 @@ const GoldController = require('GoldController');
 const UpgradeController = require('UpgradeController');
 const Emitter = require('Emitter');
 const EventKey = require('EventKey');
+const AudioName = require('AudioName');
 cc.Class({
     extends: require('PopupItem'),
     properties: {
@@ -223,7 +224,7 @@ cc.Class({
             UpgradeController.upgradeLeverUltimate();
             GoldController.subtractGold(this.priceUpgradeUltimate);
         }
-        Emitter.emit(EventKey.SOUND.PLAY_SFX_UPGRADE, "name");
+        Emitter.emit(EventKey.SOUND.PLAY_SFX, AudioName.SFX.BUY_SUCCESS);
         Emitter.emit(EventKey.GOLD.CHANGE_GOLD);
         this.currentGold = GoldController.getGoldValue();
         this.initSkill();

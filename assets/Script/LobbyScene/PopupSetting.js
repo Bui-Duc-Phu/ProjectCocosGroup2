@@ -153,7 +153,13 @@ cc.Class({
             Emitter.emit(EventKey.GAME.REQUEST_EXIT);
         } else {
             Emitter.emit(EventKey.ROOM.EXIT);
+            cc.director.resume();
             this.hide();
+        }
+    },
+    onRoomResume() {
+        if (cc.director.getScene().name === 'Room') {
+            cc.director.resume();
         }
     },
 
