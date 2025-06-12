@@ -124,9 +124,15 @@ cc.Class({
         this.singletonList = [];
     },
     onLoadLobbyRequest() {
+        if (this.fsm.is(FSM_STATES.LOBBY)) {
+            return;
+        }
         this.fsm.leaveRoom();
     },
     onLoadRoomRequest() {
+        if (this.fsm.is(FSM_STATES.ROOM)) {
+            return;
+        }
         this.fsm.enterRoom();
     },
     onRequestExit() {

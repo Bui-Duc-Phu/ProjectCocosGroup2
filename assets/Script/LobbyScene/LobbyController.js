@@ -95,5 +95,4 @@ cc.Class({
         Emitter.removeEvent(EventKey.PLAYER.CHANGE_NAME, this._onChangeName);
 
     },
-    
 });
