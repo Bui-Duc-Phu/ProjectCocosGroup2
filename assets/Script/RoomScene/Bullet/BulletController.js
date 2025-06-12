@@ -1,7 +1,8 @@
 const GameConfig = require('GameConfig');
 const Emitter = require('Emitter');
 const EventKey = require('EventKey');
-
+const LocalStorageKey = require('LocalStorageKey');
+const UpgradeController = require('UpgradeController');
 cc.Class({
     extends: cc.Component,
 
@@ -10,6 +11,11 @@ cc.Class({
             default: null,
             type: require('GameAsset')
         },
+        listBullet: {
+            default: [],
+            type: [require('BulletItem')],
+            visible: false
+        }
 
     },
 
@@ -24,6 +30,7 @@ cc.Class({
             [EventKey.PLAYER.SHOOT_NORMAL, this.onShootNormalBullet.bind(this)],
             [EventKey.PLAYER.SHOOT_ULTIMATE, this.onShootUltimateBullet.bind(this)],
             [EventKey.PLAYER.SHOOT_BOMB, this.onShootBombBullet.bind(this)],
+            [EventKey.ROOM.GAME_OVER, this.gameOver.bind(this)],
         ]);
         this.eventMap.forEach((handler, key) => {
             Emitter.registerEvent(key, handler);
@@ -40,10 +47,11 @@ cc.Class({
         const prefab = this.gameAsset.getBulletPrefabByType(type.NAME);
         const bullet = cc.instantiate(prefab);
         const component = bullet.getComponent('BulletItem');
-        const initData = this.parseData(type);
+        const initData = this.getAndParseData(type);
         component.init(initData);
         this.node.addChild(bullet);
         this.initPositionBullet(bullet, worldPos);
+        this.listBullet.push(component);
         component.onMove();
     },
 
@@ -51,12 +59,12 @@ cc.Class({
         const nodePos = this.node.convertToNodeSpaceAR(worldPos);
         bullet.setPosition(nodePos.x, nodePos.y);
     },
-    parseData(type) {
+    getAndParseData(type) {
         return {
             id: this.genID(),
             type: type.NAME,
             durationMove: type.DURATION_MOVE,
-            damage: GameConfig.BULLET.DAMAGE_BASE * type.COEFFICIENT_DAMAGE,
+            damage: this.caculateDamage(type, this.getLevelByTypeName(type.NAME)),
             countTarget: type.COUNT_TARGET,
         }
     },
@@ -74,19 +82,28 @@ cc.Class({
         const worldPos = cc.v2(BomDType.POSITION.INIT.X, BomDType.POSITION.INIT.Y)
         this.initBulletByType(BomDType, worldPos);
     },
-    shootUltimateBullet(worldPos) {
-        this.onShootUltimateBullet(cc.v2(155, 355))
+    caculateDamage(type, level) {
+        const percentDamage = level * type.UPGRADE.PERCENT_DAMAGE_ADD;
+        const damageBase = GameConfig.BULLET.DAMAGE_BASE * type.COEFFICIENT_DAMAGE;
+        const newDamage = damageBase + damageBase * percentDamage;
+        return newDamage;
     },
-    shootNomalBullet(worldPos) {
-        this.onShootNomalBullet(cc.v2(155, 355))
+    getLevelByTypeName(typeName) {
+        if (typeName === GameConfig.BULLET.TYPE.NOMAL.NAME) {
+            return UpgradeController.getLeverNomalAttack();
+        } else if (typeName === GameConfig.BULLET.TYPE.ULTIMATE.NAME) {
+            return UpgradeController.getLeverUltimate();
+        }
+        return 1;
     },
-    shootBombBullet(worldPos) {
-        this.onShootBombBullet(cc.v2(155, 355))
+    clearAllBullet() {
+        this.listBullet.forEach((bullet) => {
+            if (bullet.node) {
+                bullet.onClear();
+            }
+        });
     },
-
-
-
-
-
-
+    gameOver() {
+        this.clearAllBullet();
+    }
 });
