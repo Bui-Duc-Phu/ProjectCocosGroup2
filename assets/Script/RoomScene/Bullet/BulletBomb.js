@@ -1,7 +1,6 @@
 const EventKey = require('EventKey');
 const Emitter = require('Emitter');
 const GameConfig = require('GameConfig');
-const AudioName = require('AudioName');
 cc.Class({
     extends: require('BulletItem'),
 

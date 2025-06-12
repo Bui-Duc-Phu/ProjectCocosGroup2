@@ -29,7 +29,7 @@ cc.Class({
             slide: true
         },
         currentBgmAudioId: null,
-        currentSFXAudioId: null,
+        currentClickAudioId: null,
     },
 
     onLoad() {
@@ -45,6 +45,7 @@ cc.Class({
         this.getSFXVolume();
         this.registerEvents();
         cc.game.addPersistRootNode(this.node);
+        console.log("SoundController initialized with BGM volume:", this.bgmVolume, "and SFX volume:", this.sfxVolume);
     },
     registerEvents() {
         this.eventHandlers = {
@@ -63,6 +64,7 @@ cc.Class({
     onSelfDestroy() {
         cc.game.removePersistRootNode(this.node);
         this.node.destroy();
+        console.log("SoundController destroyed");
     },
     onDestroy() {
         for (const event in this.eventHandlers) {
@@ -96,7 +98,7 @@ cc.Class({
     },
     setSFXVolume(newVolume) {
         this.sfxVolume = newVolume;
-        cc.audioEngine.setVolume(this.currentSFXAudioId, this.sfxVolume);
+        cc.audioEngine.setVolume(this.currentClickAudioId, this.sfxVolume);
         cc.sys.localStorage.setItem(LocalStorageKey.SOUND.SFX_VOLUME_KEY, this.sfxVolume.toString());
     },
     onEnableBGM(isEnabled, bgmName) {
@@ -115,7 +117,7 @@ cc.Class({
     },
     playSFX(sfxName) {
         let sfxClip = this.sfxList.find(clip => clip.name === sfxName);
-        this.currentSFXAudioId = cc.audioEngine.play(sfxClip, false, this.sfxVolume);
+        this.sfxAudioId = cc.audioEngine.play(sfxClip, false, this.sfxVolume);
     },
     stopBGM() {
         if (this.currentBgmAudioId !== null) {
@@ -123,10 +125,4 @@ cc.Class({
             this.currentBgmAudioId = null;
         }
     },
-    stopSFX() {
-        if (this.currentSFXAudioId !== null) {
-            cc.audioEngine.stop(this.currentSFXAudioId);
-            this.currentSFXAudioId = null;
-        }
-    }
 });

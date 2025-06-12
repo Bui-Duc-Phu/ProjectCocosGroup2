@@ -42,6 +42,7 @@ cc.Class({
         this.playerScript.node.name = `Player${this.playerIndex}`;
     },
     registerEventListener() {
+        console.log("PlayerController registerEventListener");
         const eventHandlers = {
             [EventKey.INPUT.MOVE_UP]: this.onMoveUp.bind(this),
             [EventKey.INPUT.MOVE_DOWN]: this.onMoveDown.bind(this),
@@ -60,12 +61,14 @@ cc.Class({
             return;
         }
         this.playerScript.fsm.toMoveUp();
+        console.log('PlayerController onMoveUp');
     },
     onMoveDown() {
         if (!this.playerScript.fsm.can('toMoveDown')) {
             return;
         }
         this.playerScript.fsm.toMoveDown();
+        console.log('PlayerController onMoveDown');
     },
     onShootUltimate() {
         if (!this.playerScript.fsm.can('toShootUltimate')) {
@@ -79,11 +82,22 @@ cc.Class({
         }
         this.playerScript.fsm.toUseBomb();
     },
+    // onPause() {
+    //     this.playerScriptList.forEach(player => {
+    //         player.onPause();
+    //     });
+    // },
+    // onResume() {
+    //     this.playerScriptList.forEach(player => {
+    //         player.onResume();
+    //     });
+    // },
     onRestart() {
         if (!this.boundedOnRestart) {
             this.boundedOnRestart = true;
             return;
         }
+        console.log("PlayerController onRestart");
         this.playerList.forEach(player, index => {
             player.destroy();
         })
