@@ -4,15 +4,12 @@ const StateMachine = require('javascript-state-machine');
 const GoldController = require('GoldController');
 const UpgradeController = require('UpgradeController');
 const LocalStorageKey = require('LocalStorageKey');
-const ItemName = require('ItemName');
-
 
 const FSM_STATES = {
     LOBBY: 'Lobby',
     ROOM: 'Room',
     EXITING: 'Exiting',
 };
-
 cc.Class({
     extends: cc.Component,
 
@@ -34,7 +31,6 @@ cc.Class({
             visible: false,
         },
     },
-
     onLoad() {
         this.init();
     },
@@ -58,7 +54,6 @@ cc.Class({
     addSingletonToList() {
         this.singletonList.push(Emitter);
     },
-
     initializeStateMachine() {
         this.fsm = new StateMachine({
             init: 'init',
@@ -93,11 +88,9 @@ cc.Class({
             }
         });
     },
-
     emitStateChange(newState, oldState) {
         Emitter.emit(EventKey.GAME.STATE_CHANGED, newState, oldState);
     },
-
     registerEventListeners() {
         this.eventHandlers = {
             [EventKey.SCENE.LOAD_LOBBY]: this.onLoadLobbyRequest.bind(this),
@@ -108,7 +101,6 @@ cc.Class({
             Emitter.registerEvent(eventName, this.eventHandlers[eventName]);
         }
     },
-
     unregisterEventListeners() {
         if (this.eventHandlers) {
             for (const eventName in this.eventHandlers) {
@@ -149,9 +141,9 @@ cc.Class({
             return;
         }
         this.isSceneLoading = true;
-        cc.director.preloadScene(sceneName, (completedCount, totalCount,item) => {
+        cc.director.preloadScene(sceneName, (completedCount, totalCount, item) => {
             console.log(`Preloading scene ${sceneName}: ${completedCount}/${totalCount}`);
-        },() => {
+        }, () => {
             cc.director.loadScene(sceneName);
             this.isSceneLoading = false;
         });

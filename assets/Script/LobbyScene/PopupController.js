@@ -31,10 +31,9 @@ cc.Class({
             default: null
         },
         overlay: {
-            type:cc.Node,
+            type: cc.Node,
             default: null
         }
-
     },
     onLoad() {
         this.init();
@@ -46,11 +45,8 @@ cc.Class({
         this.hideAllPopup();
         this.overlay.active = false;
         this.registerEvent();
-
     },
-
     updateResult(score, gold) {
-        console.log("updateResult11", score, gold);
         this.popupResult.updateResult(score, gold);
     },
     registerEvent() {
@@ -93,12 +89,8 @@ cc.Class({
         this.popupResult.hide();
         this.popupInfor.hide();
         this.popupChangeName.hide();
-
-
-        
     },
     onSelfDestroy() {
-        console.log('PopupController selfDestroy');
         this.hideAllPopup();
         cc.game.removePersistRootNode(this.node);
         this.node.destroy();
