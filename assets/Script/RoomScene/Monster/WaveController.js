@@ -39,8 +39,6 @@ cc.Class({
     startWave() {
         this.totalMonstersThisWave = WaveCalculator.calculateMonsterCountForLevel(this.currentLevel);
         this.monsterTypeCounts = WaveCalculator.calculateMonsterTypeCounts(this.currentLevel, this.totalMonstersThisWave);
-        console.log("monsterTypeCounts", this.monsterTypeCounts);
-        console.log("totalMonstersThisWave", this.totalMonstersThisWave);
         Emitter.emit(EventKey.WAVE.START_WAVE, {
             level: this.currentLevel,
             totalMonsters: this.totalMonstersThisWave,
